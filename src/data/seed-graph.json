@@ -115,6 +115,15 @@
           "e-skhynix-memory-amd",
           "e-samsung-memory-amd"
         ]
+      },
+      "narrative": {
+        "title": "HBM / memory supply crunch — how to read the map",
+        "bullets": [
+          "HBM is co-packaged with the GPU, so when memory makers can't supply enough stacks, accelerator shipments are capped no matter how many wafers the foundry turns out.",
+          "Only three firms make HBM at scale — SK hynix, Samsung and Micron — with Micron the sole US-based source, making this a near-duopoly chokepoint (SK hynix, Samsung, Micron annual filings).",
+          "Map: the three memory makers are chokepoints and their HBM → NVIDIA / AMD arcs are disrupted; NVIDIA and AMD are stressed downstream.",
+          "Illustrative knob: HBM supply at ~70% of demand — directional, not a sourced forecast."
+        ]
       }
     },
     {
@@ -139,6 +148,15 @@
           "fab-cxmt-hefei"
         ],
         "disrupted_edge_ids": ["e-asml-supplies-smic"]
+      },
+      "narrative": {
+        "title": "Export controls deepen — how to read the map",
+        "bullets": [
+          "Leading-edge fabs depend on EUV and advanced DUV tools from a handful of US, Dutch and Japanese vendors, so cutting tool access caps a country's leading edge without any physical disruption.",
+          "EUV has never been licensed to China; this models tighter DUV and service restrictions reaching SMIC, with YMTC and CXMT held to trailing nodes (ASML, Huawei filings).",
+          "Map: SMIC, Huawei, YMTC and CXMT are chokepoints and the ASML → SMIC DUV arc is disrupted; their fabs are stressed.",
+          "Illustrative knob: China advanced-tool access at ~40% — policy tightening, not a shortage."
+        ]
       }
     },
     {
@@ -174,6 +192,15 @@
           "e-skhynix-memory-amd",
           "e-samsung-memory-amd"
         ]
+      },
+      "narrative": {
+        "title": "Korea memory disruption — how to read the map",
+        "bullets": [
+          "Korea concentrates the majority of the world's DRAM and HBM in two firms, so a single-country shock pulls DRAM, NAND and HBM offline at once — the memory mirror of a Taiwan logic shock.",
+          "Micron (US/Japan/Taiwan) is the only comparable relief, and China's CXMT / YMTC can substitute only at trailing nodes (Samsung, SK hynix, Micron filings).",
+          "Map: Korea, Samsung and SK hynix are chokepoints, Micron is partial relief, CXMT / YMTC are limited substitution, and HBM arcs are disrupted.",
+          "Illustrative knob: Korean memory capacity at ~20% of baseline."
+        ]
       }
     },
     {
@@ -194,6 +221,15 @@
           "fab-samsung-hwaseong"
         ],
         "stressed_edge_ids": ["e-tel-supplies-tsmc", "e-tel-supplies-samsung"]
+      },
+      "narrative": {
+        "title": "Japan toolchain & materials shock — how to read the map",
+        "bullets": [
+          "Every advanced fab leans on a narrow set of Japanese inputs — photoresist, specialty chemicals and Tokyo Electron coat/develop tools — so a Japan shock slows leading-edge output everywhere at once.",
+          "Unlike a single fab outage, this hits TSMC, Samsung and Intel in parallel because they share the same upstream suppliers (Tokyo Electron integrated report).",
+          "Map: Tokyo Electron and Japan are chokepoints with TEL → TSMC / Samsung equipment arcs stressed; leading-edge fabs are stressed.",
+          "Photoresist and wafer chemicals aren't modeled as their own nodes yet — the shock is represented through the TEL toolchain."
+        ]
       }
     },
     {
@@ -213,6 +249,15 @@
           "fab-smic-beijing",
           "fab-umc-singapore",
           "fab-gf-dresden"
+        ]
+      },
+      "narrative": {
+        "title": "Mature-node overcapacity glut — how to read the map",
+        "bullets": [
+          "This is a margin story, not a shortage: subsidized Chinese mature-node capacity plus UMC and GlobalFoundries expansions outpace demand for the trailing-edge chips that run cars, appliances and industrial gear.",
+          "Leading-edge logic and HBM stay largely untouched; the pressure lands on legacy-node prices and utilization (SMIC, UMC, GlobalFoundries filings).",
+          "Map: UMC, GlobalFoundries and SMIC and their mature-node fabs are stressed while the leading edge stays neutral.",
+          "Illustrative knob: mature-node utilization at ~70% — watch average selling prices, not supply."
         ]
       }
     },
@@ -237,6 +282,15 @@
           "e-tsmc-supplies-nvidia",
           "e-tsmc-supplies-amd",
           "e-tsmc-supplies-apple"
+        ]
+      },
+      "narrative": {
+        "title": "US CHIPS buildout matures — how to read the map",
+        "bullets": [
+          "A resilience case, not a shock: TSMC Arizona, Samsung Taylor, Intel, SK hynix's Indiana packaging and Amkor Arizona reach scale and give the US a partial domestic buffer in logic, memory and packaging.",
+          "It reduces but does not remove concentration — leading-edge capacity still centers on Taiwan and Korea (TSMC, Samsung, Intel, Micron, Amkor filings).",
+          "Map: US fab pins are partial relief, Amkor is a substitution buffer, and key TSMC → fabless arcs are buffered rather than disrupted.",
+          "Illustrative knob: US leading-edge self-sufficiency at ~35%."
         ]
       }
     }

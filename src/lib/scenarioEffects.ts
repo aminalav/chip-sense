@@ -316,7 +316,7 @@ export function computeScenarioEffects(
     nodeRoles,
     edgeRoles,
     assumptionLines: assumptionLines(scenario),
-    narrative: {
+    narrative: scenario.narrative ?? {
       title: scenario.label,
       bullets: [scenario.description],
     },

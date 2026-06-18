@@ -63,6 +63,40 @@ Sourced registry + cited fab pins. The "normal" map. Use it to introduce the fou
 
 ---
 
+## Writer URLs (bookmarkable views)
+
+Paste these straight into a draft. Base URL: `https://chip-sense-ten.vercel.app`. All work as relative paths in local dev too. Layer flags: `supply` / `equips` / `pkg` / `mem` / `asm` (set `=0` to hide), `trade=1` for country arcs, `node=` to preselect, `essay1=1` for the clean teaching pins.
+
+| Scenario | View | URL |
+| --- | --- | --- |
+| Baseline | Clean teaching pins | `/?essay1=1` |
+| Baseline | Full board | `/` |
+| Constrained packaging | ASE as chokepoint | `/?scenario=constrained-packaging&node=co-ase` |
+| Constrained packaging | Packaging layer only | `/?scenario=constrained-packaging&supply=0&equips=0&mem=0&asm=0` |
+| Constrained packaging | GPU track lens | `/track/gpus?scenario=constrained-packaging` |
+| Taiwan Strait disruption | TSMC selected | `/?scenario=taiwan-crisis&node=co-tsmc` |
+| Taiwan Strait disruption | With trade arcs | `/?scenario=taiwan-crisis&trade=1` |
+| Taiwan Strait disruption | GPU track lens | `/track/gpus?scenario=taiwan-crisis` |
+| HBM / memory crunch | SK hynix selected | `/?scenario=hbm-shortage&node=co-sk-hynix` |
+| HBM / memory crunch | NVIDIA (downstream) | `/?scenario=hbm-shortage&node=co-nvidia` |
+| HBM / memory crunch | GPU track lens | `/track/gpus?scenario=hbm-shortage` |
+| Export controls deepen | SMIC selected | `/?scenario=export-controls&node=co-smic` |
+| Export controls deepen | Huawei selected | `/?scenario=export-controls&node=co-huawei` |
+| Export controls deepen | CPU track lens | `/track/cpus?scenario=export-controls` |
+| Korea memory disruption | SK hynix selected | `/?scenario=korea-memory-shock&node=co-sk-hynix` |
+| Korea memory disruption | Micron (relief) | `/?scenario=korea-memory-shock&node=co-micron` |
+| Korea memory disruption | Memory track lens | `/track/memory?scenario=korea-memory-shock` |
+| Japan toolchain shock | Tokyo Electron selected | `/?scenario=japan-toolchain-shock&node=co-tel` |
+| Japan toolchain shock | Equipment layer only | `/?scenario=japan-toolchain-shock&supply=0&pkg=0&mem=0&asm=0` |
+| Japan toolchain shock | CPU track lens | `/track/cpus?scenario=japan-toolchain-shock` |
+| Mature-node glut | UMC selected | `/?scenario=mature-node-glut&node=co-umc` |
+| Mature-node glut | GlobalFoundries selected | `/?scenario=mature-node-glut&node=co-globalfoundries` |
+| US CHIPS buildout | TSMC Arizona pin | `/?scenario=us-chips-buildout&node=fab-tsmc-az` |
+| US CHIPS buildout | Amkor (buffer) | `/?scenario=us-chips-buildout&node=co-amkor` |
+| US CHIPS buildout | GPU track lens | `/track/gpus?scenario=us-chips-buildout` |
+
+---
+
 ## Connection-driven writing topics (no new scenario required)
 
 These come straight from the relationship arcs already on the map:
@@ -82,8 +116,8 @@ These come straight from the relationship arcs already on the map:
 
 ## Adding a new scenario
 
-1. Add an object to `scenarios[]` in `src/data/seed-graph.json` with `id`, `label`, `description`, `assumptions`, and an `affects` block referencing real node/edge ids.
+1. Add an object to `scenarios[]` in `src/data/seed-graph.json` with `id`, `label`, `description`, `assumptions`, and an `affects` block referencing real node/edge ids. Optionally add a `narrative` block (`{ title, bullets[] }`) with 2–4 grounded reader sentences — keep illustrative numbers labeled as such.
 2. Affects keys: `chokepoint_node_ids`, `stressed_node_ids`, `partial_relief_node_ids`, `substitution_buffer_node_ids`, `disrupted_edge_ids`, `stressed_edge_ids`, `buffered_edge_ids`.
-3. The generic engine in `src/lib/scenarioEffects.ts` styles the map and builds the impact list automatically; `taiwan-crisis` and `constrained-packaging` also have bespoke computed logic.
+3. The generic engine in `src/lib/scenarioEffects.ts` styles the map and builds the impact list automatically, using your `narrative` block in the panel when present (otherwise it falls back to the description); `taiwan-crisis` and `constrained-packaging` also have bespoke computed logic.
 4. Run `npm run check:data`.
 5. Share via URL: `/?scenario=hbm-shortage` (add `pkg=0` / `mem=0` to hide layers, `node=co-sk-hynix` to preselect).

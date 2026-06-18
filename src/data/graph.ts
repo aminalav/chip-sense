@@ -93,6 +93,8 @@ export interface Scenario {
   /** Multipliers or overrides applied in UI layer later; document assumptions in copy */
   assumptions: Record<string, string | number | boolean>;
   affects?: ScenarioAffects;
+  /** Optional grounded reader narrative; used by the generic scenario engine when present. */
+  narrative?: { title: string; bullets: string[] };
 }
 
 export type TradeFlowRank = "high" | "medium" | "low";

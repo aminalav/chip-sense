@@ -1,20 +1,128 @@
 [
-  { "id": "country-tw", "label": "Taiwan", "iso": "TW", "coordinates": [121.0, 23.7] },
-  { "id": "country-us", "label": "United States", "iso": "US", "coordinates": [-98.35, 39.5] },
-  { "id": "country-kr", "label": "South Korea", "iso": "KR", "coordinates": [127.77, 35.91] },
-  { "id": "country-cn", "label": "China", "iso": "CN", "coordinates": [104.2, 35.86] },
-  { "id": "country-jp", "label": "Japan", "iso": "JP", "coordinates": [138.25, 36.2] },
-  { "id": "country-nl", "label": "Netherlands", "iso": "NL", "coordinates": [5.75, 52.13] },
-  { "id": "country-sg", "label": "Singapore", "iso": "SG", "coordinates": [103.85, 1.35] },
-  { "id": "country-de", "label": "Germany", "iso": "DE", "coordinates": [10.45, 51.16] },
-  { "id": "country-ie", "label": "Ireland", "iso": "IE", "coordinates": [-7.69, 53.35] },
-  { "id": "country-il", "label": "Israel", "iso": "IL", "coordinates": [34.85, 31.05] },
-  { "id": "country-my", "label": "Malaysia", "iso": "MY", "coordinates": [101.98, 4.21] },
-  { "id": "country-in", "label": "India", "iso": "IN", "coordinates": [78.96, 20.59] },
-  { "id": "country-ca", "label": "Canada", "iso": "CA", "coordinates": [-106.35, 56.13] },
-  { "id": "country-cr", "label": "Costa Rica", "iso": "CR", "coordinates": [-84.2, 10.27] },
-  { "id": "country-pl", "label": "Poland", "iso": "PL", "coordinates": [19.39, 52.13] },
-  { "id": "country-vn", "label": "Vietnam", "iso": "VN", "coordinates": [108.28, 14.06] },
-  { "id": "country-mx", "label": "Mexico", "iso": "MX", "coordinates": [-102.55, 23.63] },
-  { "id": "country-ph", "label": "Philippines", "iso": "PH", "coordinates": [121.77, 12.88] }
+  {
+    "id": "country-tw",
+    "label": "Taiwan",
+    "iso": "TW",
+    "coordinates": [121.0, 23.7],
+    "description": "Global hub for leading-edge foundry (TSMC) and OSAT (ASE). Concentration of advanced logic and CoWoS packaging makes Taiwan the central chokepoint in the chain."
+  },
+  {
+    "id": "country-us",
+    "label": "United States",
+    "iso": "US",
+    "coordinates": [-98.35, 39.5],
+    "description": "Home to fabless giants (NVIDIA, AMD, Apple, Qualcomm), wafer-fab equipment (Applied Materials, Lam, KLA), and CHIPS Act fabs — but still dependent on Taiwan/Korea for leading-edge volume."
+  },
+  {
+    "id": "country-kr",
+    "label": "South Korea",
+    "iso": "KR",
+    "coordinates": [127.77, 35.91],
+    "description": "Dominates DRAM, NAND, and HBM (Samsung, SK hynix). Korea is the memory counterpart to Taiwan's logic concentration — a second Asian single point of failure."
+  },
+  {
+    "id": "country-cn",
+    "label": "China",
+    "iso": "CN",
+    "coordinates": [104.2, 35.86],
+    "description": "Hosts foreign memory/OSAT/foundry assets and pushes domestic champions (SMIC, YMTC, CXMT). Export controls cap leading-edge tool access; mature-node capacity is expanding fast."
+  },
+  {
+    "id": "country-jp",
+    "label": "Japan",
+    "iso": "JP",
+    "coordinates": [138.25, 36.2],
+    "description": "Quiet dominance in photoresist, specialty chemicals, and Tokyo Electron coat/develop tools. A materials or toolchain shock here slows every advanced fab worldwide."
+  },
+  {
+    "id": "country-nl",
+    "label": "Netherlands",
+    "iso": "NL",
+    "coordinates": [5.75, 52.13],
+    "description": "ASML's EUV lithography monopoly makes the Netherlands the strategic gatekeeper of the leading edge — central to US/EU export-control policy toward China."
+  },
+  {
+    "id": "country-sg",
+    "label": "Singapore",
+    "iso": "SG",
+    "coordinates": [103.85, 1.35],
+    "description": "Mature-node foundry (UMC) and packaging/test hub in Southeast Asia. Regional staging point between Taiwan/Korea fabs and global customers."
+  },
+  {
+    "id": "country-de",
+    "label": "Germany",
+    "iso": "DE",
+    "coordinates": [10.45, 51.16],
+    "description": "GlobalFoundries Dresden and European auto/industrial chip demand. EU industrial policy and automotive supply depend on trailing-edge capacity here."
+  },
+  {
+    "id": "country-ie",
+    "label": "Ireland",
+    "iso": "IE",
+    "coordinates": [-7.69, 53.35],
+    "description": "Major Intel fab and European fabless back-office hub. Part of the US/EU manufacturing footprint outside Asia."
+  },
+  {
+    "id": "country-il",
+    "label": "Israel",
+    "iso": "IL",
+    "coordinates": [34.85, 31.05],
+    "description": "Intel leading-edge R&D and fab campus; strong fabless design ecosystem. Key US-allied manufacturing node in the Middle East."
+  },
+  {
+    "id": "country-my",
+    "label": "Malaysia",
+    "iso": "MY",
+    "coordinates": [101.98, 4.21],
+    "description": "Backend assembly, test, and packaging for memory and logic. Lower-cost Southeast Asian node in the downstream chain."
+  },
+  {
+    "id": "country-in",
+    "label": "India",
+    "iso": "IN",
+    "coordinates": [78.96, 20.59],
+    "description": "Growing assembly, design, and packaging footprint as firms diversify out of China. Micron and others expanding memory-related capacity."
+  },
+  {
+    "id": "country-ca",
+    "label": "Canada",
+    "iso": "CA",
+    "coordinates": [-106.35, 56.13],
+    "description": "Design and research presence for US-linked chip firms. Not a major fab geography but part of the North American talent pool."
+  },
+  {
+    "id": "country-cr",
+    "label": "Costa Rica",
+    "iso": "CR",
+    "coordinates": [-84.2, 10.27],
+    "description": "Intel mature-node assembly and test. Illustrative of nearshore Americas capacity for trailing-edge work."
+  },
+  {
+    "id": "country-pl",
+    "label": "Poland",
+    "iso": "PL",
+    "coordinates": [19.39, 52.13],
+    "description": "Intel back-end and European supply-chain diversification. Part of EU efforts to spread manufacturing beyond Germany."
+  },
+  {
+    "id": "country-vn",
+    "label": "Vietnam",
+    "iso": "VN",
+    "coordinates": [108.28, 14.06],
+    "description": "Fast-growing EMS and assembly alternative to China (Samsung, Intel, and Apple suppliers). Downstream systems layer shifting south."
+  },
+  {
+    "id": "country-mx",
+    "label": "Mexico",
+    "iso": "MX",
+    "coordinates": [-102.55, 23.63],
+    "description": "Nearshore EMS and systems assembly for North America. Foxconn and others expanding as firms de-risk China-only assembly."
+  },
+  {
+    "id": "country-ph",
+    "label": "Philippines",
+    "iso": "PH",
+    "coordinates": [121.77, 12.88],
+    "description": "OSAT and packaging operations (Amkor and others). Southeast Asian packaging node supporting US and Taiwan customers."
+  }
 ]

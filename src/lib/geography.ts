@@ -100,7 +100,10 @@ function mergeCountryNodes(nodes: GraphNode[]): GraphNode[] {
       kind: "country",
       label: c.label,
       tracks: ALL_TRACKS,
-      meta: { country_iso: c.iso },
+      meta: {
+        country_iso: c.iso,
+        description: (c as { description?: string }).description,
+      },
       coordinates: c.coordinates as [number, number],
     });
   }
@@ -126,6 +129,7 @@ function mergeFabSites(
     const tracks = companyTracks(site.company_id);
     const existing = nodeById.get(site.id);
     const iso = countries.find((c) => c.id === countryId)?.iso;
+    const operator = COMPANY_RECORDS.find((c) => c.id === site.company_id);
     const fabNode: GraphNode = {
       id: site.id,
       kind: "fab",
@@ -138,6 +142,10 @@ function mergeFabSites(
         segment: SEGMENT_BY_COMPANY.get(site.company_id) ?? existing?.meta?.segment,
         city: site.city,
         country_iso: iso,
+        specialization: operator?.specialization,
+        description: operator
+          ? `${site.label} — operated by ${operator.name}. ${operator.specialization}.`
+          : `${site.label} — semiconductor fab or packaging site in ${site.city}, ${site.country}.`,
         must_show_essay_1: site.must_show_essay_1 ?? existing?.meta?.must_show_essay_1,
       },
       coordinates: site.coordinates,
@@ -259,9 +267,13 @@ function addOperatingFootprint(
           tracks,
           meta: {
             segment: company.segment,
+            specialization: company.specialization,
+            description: company.description,
             hq_country: company.hq_country,
             operating_countries: [countryName],
-            notes: "Country-level operating presence (no dedicated fab pin yet).",
+            notes: `Operating presence in ${countryName} (no dedicated fab pin on map). Sales, assembly, design, or back-office footprint per company filing.`,
+            source_label: company.source_label,
+            source_url: company.source_url,
           },
           coordinates: presenceOffset(base, company.id, presenceSlot),
         });

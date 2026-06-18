@@ -103,6 +103,6 @@ One-page reference for drafting from the board. Production base URL: **https://c
 1. Open the **Board URL** for the piece; confirm scenario styling and sidebar narrative.
 2. Click each **highlight node/edge** — copy citation text from the selection panel into your draft.
 3. Toggle **trade flows** per the table above.
-4. **Export map PNG**; save with the suggested filename.
+4. **Screenshot the map:** **Export map PNG** captures basemap + arcs only (HTML pins are omitted). For posts that need pins visible, use a browser screenshot of the framed board URL; save with the suggested filename.
 5. Paste the board URL into your post as an interactive figure link.
 6. Cross-check numbers against `sources.json` before publishing — never treat scenario multipliers as forecasts.

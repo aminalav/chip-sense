@@ -54,7 +54,7 @@ src/
 ├── hooks/       # Client hooks (URL state)
 └── lib/         # Graph merge, map filters, scenario logic
 scripts/         # Data validators + Comtrade fetch
-docs/            # Essay outline
+docs/            # Essay outline + writing cheat sheet
 ```
 
 ## Documentation
@@ -65,6 +65,8 @@ docs/            # Essay outline
 | [MAP.md](./MAP.md) | Map visibility rules, URL params, pin colors |
 | [SOURCES.md](./SOURCES.md) | What counts as sourced vs. illustrative |
 | [SCENARIOS.md](./SCENARIOS.md) | Scenario list and writing prompts |
+| [docs/essay-1.md](./docs/essay-1.md) | Essay outline with board links |
+| [docs/writing-cheat-sheet.md](./docs/writing-cheat-sheet.md) | Phase 4: piece briefs, URLs, screenshot names |
 | [COMPANIES.md](./COMPANIES.md) | Company registry table |
 | [DATA_COVERAGE.md](./DATA_COVERAGE.md) | Coverage metrics (regenerate with `data:coverage`) |
 

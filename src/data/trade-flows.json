@@ -16,7 +16,7 @@
         "un-comtrade-plus",
         "us-census-foreign-trade"
       ],
-      "notes": "Comtrade preview has no TW→US HS8542 rows; value ≈ U.S. imports of HTS 8542 from Taiwan (2023), per Census foreign-trade / industry trade summaries.",
+      "notes": "Estimated: no direct Comtrade rows for this pair, so the value approximates U.S. chip imports from Taiwan in 2023 (U.S. Census trade data).",
       "tracks": [
         "cpus",
         "gpus",
@@ -34,7 +34,7 @@
       "source_ids": [
         "un-comtrade-plus"
       ],
-      "notes": "Samsung / SK hynix memory exports; verify DRAM/NAND HS codes. Comtrade preview API, trade-kr-us-memory-2023 (410 X → 842 8542) [US import mirror], pulled 2026-05-27.",
+      "notes": "Mainly Samsung and SK hynix memory chips exported to the U.S.",
       "tracks": [
         "memory"
       ]
@@ -50,7 +50,7 @@
       "source_ids": [
         "un-comtrade-plus"
       ],
-      "notes": "Includes assembled modules and some domestic chips; control-sensitive categories. Comtrade preview API, trade-cn-us-ics-2023 (156 X → 842 8542) [US import mirror], pulled 2026-05-27.",
+      "notes": "Includes assembled modules and some China-made chips; spans export-control-sensitive categories.",
       "tracks": [
         "cpus",
         "memory"
@@ -67,7 +67,7 @@
       "source_ids": [
         "un-comtrade-plus"
       ],
-      "notes": "WFE and related equipment subject to export controls; verify HS 8486 series. Comtrade preview API, trade-us-cn-equipment-2023 (842 X → 156 8486), pulled 2026-05-27.",
+      "notes": "Chip-making equipment, much of it now restricted by U.S. export controls.",
       "tracks": [
         "cpus",
         "gpus",
@@ -86,7 +86,7 @@
         "un-comtrade-plus",
         "asml-annual-2024"
       ],
-      "notes": "ASML systems; EU/export-license constrained. Cross-check ASML China revenue disclosures. Comtrade preview API, trade-nl-cn-equipment-2023 (528 X → 156 8486), pulled 2026-05-27.",
+      "notes": "Largely ASML lithography systems, constrained by EU export licensing.",
       "tracks": [
         "cpus",
         "gpus",
@@ -104,7 +104,7 @@
       "source_ids": [
         "un-comtrade-plus"
       ],
-      "notes": "Korea memory into China assembly ecosystem (e.g. Wuxi packaging). Comtrade preview API, trade-kr-cn-memory-2023 (410 X → 156 8542), pulled 2026-05-27.",
+      "notes": "Korean memory feeding China's assembly and packaging hubs (e.g. Wuxi).",
       "tracks": [
         "memory"
       ]
@@ -121,7 +121,7 @@
         "un-comtrade-plus",
         "taiwan-mof-trade-2023"
       ],
-      "notes": "Comtrade preview has no TW→CN HS8542 rows; estimate ≈ Taiwan IC exports (MOF 2023, US$166.6B) × ~55% to mainland China/Hong Kong (USTBC semiconductor trade report pattern).",
+      "notes": "Estimated: roughly 55% of Taiwan's 2023 chip exports (Taiwan Ministry of Finance) routed to mainland China and Hong Kong.",
       "tracks": [
         "cpus",
         "gpus"
@@ -140,7 +140,7 @@
         "amat-10k-2024",
         "taiwan-cbc-bop-2023"
       ],
-      "notes": "Comtrade preview has no US→TW HS8486 rows; order-of-magnitude from Taiwan imports from U.S. (CBC 2023, US$40.7B) and machinery/equipment share (USITC Taiwan trade overview).",
+      "notes": "Estimated: order-of-magnitude figure for U.S. chip-equipment exports to Taiwan, based on Taiwan's 2023 import data.",
       "tracks": [
         "cpus",
         "gpus",

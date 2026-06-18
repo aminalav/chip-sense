@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "updated": "2026-05-27",
+  "methodology": "UN Comtrade public preview API (HS 8542 / 8486, 2023). Taiwan bilateral rows often empty — MOF / U.S. Census overrides documented per flow. Re-run: node scripts/fetch-comtrade-trade.mjs --write",
+  "source_catalog_id": "un-comtrade-plus",
+  "flows": [
+    {
+      "id": "trade-tw-us-ics-2023",
+      "exporter_country_id": "country-tw",
+      "importer_country_id": "country-us",
+      "hs_label": "HS 8542 — ICs (Taiwan → US)",
+      "year": 2023,
+      "value_usd_millions": 48760,
+      "rank": "high",
+      "source_ids": [
+        "un-comtrade-plus",
+        "us-census-foreign-trade"
+      ],
+      "notes": "Comtrade preview has no TW→US HS8542 rows; value ≈ U.S. imports of HTS 8542 from Taiwan (2023), per Census foreign-trade / industry trade summaries.",
+      "tracks": [
+        "cpus",
+        "gpus",
+        "data-centers"
+      ]
+    },
+    {
+      "id": "trade-kr-us-memory-2023",
+      "exporter_country_id": "country-kr",
+      "importer_country_id": "country-us",
+      "hs_label": "HS 8542 — memory ICs (KR → US)",
+      "year": 2023,
+      "value_usd_millions": 2400.5,
+      "rank": "high",
+      "source_ids": [
+        "un-comtrade-plus"
+      ],
+      "notes": "Samsung / SK hynix memory exports; verify DRAM/NAND HS codes. Comtrade preview API, trade-kr-us-memory-2023 (410 X → 842 8542) [US import mirror], pulled 2026-05-27.",
+      "tracks": [
+        "memory"
+      ]
+    },
+    {
+      "id": "trade-cn-us-ics-2023",
+      "exporter_country_id": "country-cn",
+      "importer_country_id": "country-us",
+      "hs_label": "HS 8542 — ICs (China → US)",
+      "year": 2023,
+      "value_usd_millions": 1845.7,
+      "rank": "medium",
+      "source_ids": [
+        "un-comtrade-plus"
+      ],
+      "notes": "Includes assembled modules and some domestic chips; control-sensitive categories. Comtrade preview API, trade-cn-us-ics-2023 (156 X → 842 8542) [US import mirror], pulled 2026-05-27.",
+      "tracks": [
+        "cpus",
+        "memory"
+      ]
+    },
+    {
+      "id": "trade-us-cn-equipment-2023",
+      "exporter_country_id": "country-us",
+      "importer_country_id": "country-cn",
+      "hs_label": "HS 8486 — semiconductor equipment (US → CN)",
+      "year": 2023,
+      "value_usd_millions": 4406.7,
+      "rank": "medium",
+      "source_ids": [
+        "un-comtrade-plus"
+      ],
+      "notes": "WFE and related equipment subject to export controls; verify HS 8486 series. Comtrade preview API, trade-us-cn-equipment-2023 (842 X → 156 8486), pulled 2026-05-27.",
+      "tracks": [
+        "cpus",
+        "gpus",
+        "data-centers"
+      ]
+    },
+    {
+      "id": "trade-nl-cn-equipment-2023",
+      "exporter_country_id": "country-nl",
+      "importer_country_id": "country-cn",
+      "hs_label": "HS 8486 — lithography equipment (NL → CN)",
+      "year": 2023,
+      "value_usd_millions": 6790.4,
+      "rank": "medium",
+      "source_ids": [
+        "un-comtrade-plus",
+        "asml-annual-2024"
+      ],
+      "notes": "ASML systems; EU/export-license constrained. Cross-check ASML China revenue disclosures. Comtrade preview API, trade-nl-cn-equipment-2023 (528 X → 156 8486), pulled 2026-05-27.",
+      "tracks": [
+        "cpus",
+        "gpus",
+        "data-centers"
+      ]
+    },
+    {
+      "id": "trade-kr-cn-memory-2023",
+      "exporter_country_id": "country-kr",
+      "importer_country_id": "country-cn",
+      "hs_label": "HS 8542 — memory ICs (KR → CN)",
+      "year": 2023,
+      "value_usd_millions": 33178.7,
+      "rank": "high",
+      "source_ids": [
+        "un-comtrade-plus"
+      ],
+      "notes": "Korea memory into China assembly ecosystem (e.g. Wuxi packaging). Comtrade preview API, trade-kr-cn-memory-2023 (410 X → 156 8542), pulled 2026-05-27.",
+      "tracks": [
+        "memory"
+      ]
+    },
+    {
+      "id": "trade-tw-cn-ics-2023",
+      "exporter_country_id": "country-tw",
+      "importer_country_id": "country-cn",
+      "hs_label": "HS 8542 — ICs (Taiwan → CN)",
+      "year": 2023,
+      "value_usd_millions": 91641,
+      "rank": "medium",
+      "source_ids": [
+        "un-comtrade-plus",
+        "taiwan-mof-trade-2023"
+      ],
+      "notes": "Comtrade preview has no TW→CN HS8542 rows; estimate ≈ Taiwan IC exports (MOF 2023, US$166.6B) × ~55% to mainland China/Hong Kong (USTBC semiconductor trade report pattern).",
+      "tracks": [
+        "cpus",
+        "gpus"
+      ]
+    },
+    {
+      "id": "trade-us-tw-equipment-2023",
+      "exporter_country_id": "country-us",
+      "importer_country_id": "country-tw",
+      "hs_label": "HS 8486 — semiconductor equipment (US → TW)",
+      "year": 2023,
+      "value_usd_millions": 10200,
+      "rank": "high",
+      "source_ids": [
+        "un-comtrade-plus",
+        "amat-10k-2024",
+        "taiwan-cbc-bop-2023"
+      ],
+      "notes": "Comtrade preview has no US→TW HS8486 rows; order-of-magnitude from Taiwan imports from U.S. (CBC 2023, US$40.7B) and machinery/equipment share (USITC Taiwan trade overview).",
+      "tracks": [
+        "cpus",
+        "gpus",
+        "data-centers"
+      ]
+    }
+  ]
+}

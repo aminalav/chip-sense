@@ -1,0 +1,253 @@
+[
+  {
+    "id": "maplibre-demo-style",
+    "title": "MapLibre Demo Style",
+    "url": "https://demotiles.maplibre.org/style.json",
+    "publisher": "MapLibre",
+    "retrieved_at": "2026-04-30",
+    "notes": "Current basemap used by SupplyMap."
+  },
+  {
+    "id": "sec-edgar",
+    "title": "SEC EDGAR Company Filings",
+    "url": "https://www.sec.gov/edgar",
+    "publisher": "U.S. Securities and Exchange Commission",
+    "notes": "Primary source for company segment, geography, and historical disclosures."
+  },
+  {
+    "id": "wikipedia-fab-list",
+    "title": "List of Semiconductor Fabrication Plants",
+    "url": "https://en.wikipedia.org/wiki/List_of_semiconductor_fabrication_plants",
+    "publisher": "Wikipedia",
+    "notes": "Checklist only; verify each fact with operator disclosures."
+  },
+  {
+    "id": "un-comtrade-plus",
+    "title": "UN Comtrade Plus",
+    "url": "https://comtradeplus.un.org/",
+    "publisher": "United Nations",
+    "notes": "Trade flow reference by HS code and partner country."
+  },
+  {
+    "id": "natural-earth",
+    "title": "Natural Earth Data",
+    "url": "https://www.naturalearthdata.com/",
+    "publisher": "Natural Earth",
+    "notes": "Country boundary datasets for future choropleth layers."
+  },
+  {
+    "id": "tsmc-20f-2024",
+    "title": "TSMC Form 20-F (FY2024)",
+    "url": "https://investor.tsmc.com/english/sec-filings",
+    "publisher": "TSMC",
+    "published_at": "2025-04-17",
+    "retrieved_at": "2026-05-22",
+    "notes": "HQ Hsinchu; global fab footprint in Item 4 and properties."
+  },
+  {
+    "id": "samsung-ir-2024",
+    "title": "Samsung Electronics Investor Relations",
+    "url": "https://www.samsung.com/sec/",
+    "publisher": "Samsung Electronics",
+    "retrieved_at": "2026-05-22",
+    "notes": "Device Solutions segment; Korea/US/China manufacturing."
+  },
+  {
+    "id": "skhynix-annual-2024",
+    "title": "SK hynix Annual Report",
+    "url": "https://www.skhynix.com/eng/",
+    "publisher": "SK hynix",
+    "retrieved_at": "2026-05-22",
+    "notes": "Memory operations Korea, China, US expansion."
+  },
+  {
+    "id": "micron-10k-2024",
+    "title": "Micron Form 10-K (FY2024)",
+    "url": "https://investors.micron.com/financial-info/sec-filings",
+    "publisher": "Micron Technology",
+    "published_at": "2024-10-04",
+    "retrieved_at": "2026-05-22",
+    "notes": "Boise HQ; properties table for global fabs."
+  },
+  {
+    "id": "intel-10k-2024",
+    "title": "Intel Form 10-K (FY2024)",
+    "url": "https://www.intc.com/financial-info/sec-filings",
+    "publisher": "Intel Corporation",
+    "retrieved_at": "2026-05-22",
+    "notes": "IDM and IFS; global manufacturing network."
+  },
+  {
+    "id": "nvidia-10k-2024",
+    "title": "NVIDIA Form 10-K (FY2024)",
+    "url": "https://investor.nvidia.com/financial-info/sec-filings/default.aspx",
+    "publisher": "NVIDIA Corporation",
+    "published_at": "2024-02-21",
+    "retrieved_at": "2026-05-22",
+    "notes": "Fabless; suppliers and geographic risk disclosures."
+  },
+  {
+    "id": "amd-10k-2024",
+    "title": "AMD Form 10-K (FY2024)",
+    "url": "https://ir.amd.com/financial-information/sec-filings",
+    "publisher": "Advanced Micro Devices",
+    "retrieved_at": "2026-05-22",
+    "notes": "Fabless; foundry dependence and global sites."
+  },
+  {
+    "id": "apple-10k-2024",
+    "title": "Apple Form 10-K (FY2024)",
+    "url": "https://investor.apple.com/sec-filings/default.aspx",
+    "publisher": "Apple Inc.",
+    "published_at": "2024-11-01",
+    "retrieved_at": "2026-05-22",
+    "notes": "Supply chain geographic disclosures."
+  },
+  {
+    "id": "asml-annual-2024",
+    "title": "ASML Annual Report (2024)",
+    "url": "https://www.asml.com/en/investors/annual-report",
+    "publisher": "ASML",
+    "retrieved_at": "2026-05-22",
+    "notes": "Lithography; Netherlands HQ and global service footprint."
+  },
+  {
+    "id": "smic-annual-2024",
+    "title": "SMIC Annual Report",
+    "url": "https://www.smics.com/en/site/smic_annualreports/index",
+    "publisher": "Semiconductor Manufacturing International Corporation",
+    "retrieved_at": "2026-05-22",
+    "notes": "China domestic foundry footprint."
+  },
+  {
+    "id": "qualcomm-10k-2024",
+    "title": "Qualcomm Form 10-K (FY2024)",
+    "url": "https://investor.qualcomm.com/financial-information/sec-filings",
+    "publisher": "Qualcomm",
+    "retrieved_at": "2026-05-22"
+  },
+  {
+    "id": "broadcom-10k-2024",
+    "title": "Broadcom Form 10-K (FY2024)",
+    "url": "https://investors.broadcom.com/financial-information/annual-reports",
+    "publisher": "Broadcom Inc.",
+    "retrieved_at": "2026-05-22"
+  },
+  {
+    "id": "mediatek-annual-2024",
+    "title": "MediaTek Annual Report (2024)",
+    "url": "https://cdn-www.mediatek.com/posts/2024-English-Annual-Report.pdf",
+    "publisher": "MediaTek",
+    "retrieved_at": "2026-05-22"
+  },
+  {
+    "id": "umc-financial-2024",
+    "title": "UMC Financial Statements",
+    "url": "https://www.umc.com/en/Download/financial_statements",
+    "publisher": "UMC",
+    "retrieved_at": "2026-05-22"
+  },
+  {
+    "id": "gf-sec-2024",
+    "title": "GlobalFoundries SEC Filings",
+    "url": "https://investors.gf.com/financial-information/sec-filings",
+    "publisher": "GlobalFoundries",
+    "retrieved_at": "2026-05-22"
+  },
+  {
+    "id": "ase-20f-2024",
+    "title": "ASE Technology Holding Form 20-F (FY2024)",
+    "url": "https://www.aseglobal.com/en/investor/financial",
+    "publisher": "ASE Technology Holding",
+    "retrieved_at": "2026-05-22"
+  },
+  {
+    "id": "amkor-10k-2024",
+    "title": "Amkor Form 10-K (FY2024)",
+    "url": "https://ir.amkor.com/financials/sec-filings",
+    "publisher": "Amkor Technology",
+    "retrieved_at": "2026-05-22"
+  },
+  {
+    "id": "amat-10k-2024",
+    "title": "Applied Materials Form 10-K (FY2024)",
+    "url": "https://ir.appliedmaterials.com/financial-information/sec-filings",
+    "publisher": "Applied Materials",
+    "retrieved_at": "2026-05-22"
+  },
+  {
+    "id": "lam-10k-2024",
+    "title": "Lam Research Form 10-K (FY2024)",
+    "url": "https://investor.lamresearch.com/annual-reports-and-proxy",
+    "publisher": "Lam Research",
+    "retrieved_at": "2026-05-22"
+  },
+  {
+    "id": "kla-10k-2024",
+    "title": "KLA Form 10-K (FY2024)",
+    "url": "https://ir.kla.com/financials/sec-filings",
+    "publisher": "KLA",
+    "retrieved_at": "2026-05-22"
+  },
+  {
+    "id": "tel-integrated-2024",
+    "title": "Tokyo Electron Integrated Report (FY2024)",
+    "url": "https://www.tel.com/ir/library/ar/index.html",
+    "publisher": "Tokyo Electron",
+    "retrieved_at": "2026-05-22"
+  },
+  {
+    "id": "foxconn-ir-2024",
+    "title": "Hon Hai / Foxconn Financial Reports",
+    "url": "https://www.honhai.com/en-us/investor-relations/financial-reports",
+    "publisher": "Hon Hai Precision Industry",
+    "retrieved_at": "2026-05-22"
+  },
+  {
+    "id": "ymtc-corporate-2024",
+    "title": "YMTC Corporate Site",
+    "url": "https://www.ymtc.com/en/",
+    "publisher": "YMTC",
+    "notes": "HQ and primary NAND fabs: No. 88 Weilai 3rd Road, East Lake High-Tech Development Zone, Wuhan. Private company; supplement with trade press for capacity claims.",
+    "retrieved_at": "2026-05-22"
+  },
+  {
+    "id": "cxmt-ipo-2025",
+    "title": "CXMT / Changxin STAR Market IPO disclosures",
+    "url": "https://www.cxmt.com/",
+    "publisher": "CXMT",
+    "retrieved_at": "2026-05-22",
+    "notes": "DRAM manufacturing centered in Hefei, Anhui (IPO prospectus / corporate site)."
+  },
+  {
+    "id": "huawei-annual-2024",
+    "title": "Huawei Annual Report (2024)",
+    "url": "https://www.huawei.com/en/annual-report/2024",
+    "publisher": "Huawei",
+    "retrieved_at": "2026-05-22"
+  },
+  {
+    "id": "taiwan-mof-trade-2023",
+    "title": "Taiwan Ministry of Finance — Trade Statistics (2023)",
+    "url": "https://www.mof.gov.tw/Eng/singlehtml/f48d641f159a4866b1d31c0916fbcc71?cntId=2ca04b9dbe464f729831e55f71052852",
+    "publisher": "Taiwan MOF",
+    "retrieved_at": "2026-05-27",
+    "notes": "Annual export tables; integrated circuits (HS 8542) and China/Hong Kong partner shares."
+  },
+  {
+    "id": "taiwan-cbc-bop-2023",
+    "title": "Taiwan CBC — Balance of Payments (2023)",
+    "url": "https://www.cbc.gov.tw/dl-206078-556f286ec4c940269c21c3c6d27e4e8d.html",
+    "publisher": "Central Bank of the Republic of China (Taiwan)",
+    "retrieved_at": "2026-05-27",
+    "notes": "Bilateral goods trade with U.S. and mainland China; used when Comtrade omits Taiwan rows."
+  },
+  {
+    "id": "us-census-foreign-trade",
+    "title": "U.S. Census Bureau — Foreign Trade Statistics",
+    "url": "https://www.census.gov/foreign-trade/statistics/index.html",
+    "publisher": "U.S. Census Bureau",
+    "retrieved_at": "2026-05-27",
+    "notes": "HTS-level U.S. imports/exports; used for Taiwan HS 8542 when Comtrade bilateral rows are empty."
+  }
+]

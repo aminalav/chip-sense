@@ -1,0 +1,332 @@
+[
+  {
+    "id": "fab-tsmc-sc",
+    "company_id": "co-tsmc",
+    "label": "TSMC — Southern Taiwan (Tainan)",
+    "city": "Tainan Science Park",
+    "country": "Taiwan",
+    "coordinates": [120.28, 23.12],
+    "source_ids": ["tsmc-20f-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-tsmc-az",
+    "company_id": "co-tsmc",
+    "label": "TSMC — Arizona (Fab 21)",
+    "city": "Phoenix area",
+    "country": "United States",
+    "coordinates": [-111.75, 33.42],
+    "source_ids": ["tsmc-20f-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-tsmc-jp",
+    "company_id": "co-tsmc",
+    "label": "TSMC — Kumamoto (JASM)",
+    "city": "Kumamoto",
+    "country": "Japan",
+    "coordinates": [130.85, 32.89],
+    "source_ids": ["tsmc-20f-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-samsung-hwaseong",
+    "company_id": "co-samsung",
+    "label": "Samsung — Hwaseong",
+    "city": "Hwaseong",
+    "country": "South Korea",
+    "coordinates": [126.98, 37.2],
+    "source_ids": ["samsung-ir-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-samsung-taylor",
+    "company_id": "co-samsung",
+    "label": "Samsung — Taylor, Texas",
+    "city": "Taylor",
+    "country": "United States",
+    "coordinates": [-97.17, 30.56],
+    "source_ids": ["samsung-ir-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-samsung-austin",
+    "company_id": "co-samsung",
+    "label": "Samsung — Austin, Texas",
+    "city": "Austin",
+    "country": "United States",
+    "coordinates": [-97.74, 30.41],
+    "source_ids": ["samsung-ir-2024"],
+    "must_show_essay_1": false
+  },
+  {
+    "id": "fab-samsung-xian",
+    "company_id": "co-samsung",
+    "label": "Samsung — Xi'an NAND",
+    "city": "Xi'an",
+    "country": "China",
+    "coordinates": [108.93, 34.36],
+    "source_ids": ["samsung-ir-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-sk-hynix-icheon",
+    "company_id": "co-sk-hynix",
+    "label": "SK hynix — Icheon",
+    "city": "Icheon",
+    "country": "South Korea",
+    "coordinates": [127.11, 37.24],
+    "source_ids": ["skhynix-annual-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-sk-hynix-wuxi",
+    "company_id": "co-sk-hynix",
+    "label": "SK hynix — Wuxi",
+    "city": "Wuxi",
+    "country": "China",
+    "coordinates": [120.31, 31.57],
+    "source_ids": ["skhynix-annual-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-sk-hynix-indiana",
+    "company_id": "co-sk-hynix",
+    "label": "SK hynix — West Lafayette (planned)",
+    "city": "West Lafayette",
+    "country": "United States",
+    "coordinates": [-86.92, 40.43],
+    "source_ids": ["skhynix-annual-2024"],
+    "must_show_essay_1": false
+  },
+  {
+    "id": "fab-micron-taichung",
+    "company_id": "co-micron",
+    "label": "Micron — Taichung",
+    "city": "Taichung",
+    "country": "Taiwan",
+    "coordinates": [120.62, 24.19],
+    "source_ids": ["micron-10k-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-micron-hiroshima",
+    "company_id": "co-micron",
+    "label": "Micron — Hiroshima",
+    "city": "Hiroshima",
+    "country": "Japan",
+    "coordinates": [132.46, 34.4],
+    "source_ids": ["micron-10k-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-micron-singapore",
+    "company_id": "co-micron",
+    "label": "Micron — Singapore NAND",
+    "city": "Singapore",
+    "country": "Singapore",
+    "coordinates": [103.78, 1.33],
+    "source_ids": ["micron-10k-2024"],
+    "must_show_essay_1": false
+  },
+  {
+    "id": "fab-micron-malaysia",
+    "company_id": "co-micron",
+    "label": "Micron — Penang (Malaysia)",
+    "city": "Penang",
+    "country": "Malaysia",
+    "coordinates": [100.33, 5.41],
+    "source_ids": ["micron-10k-2024"],
+    "must_show_essay_1": false
+  },
+  {
+    "id": "fab-intel-or",
+    "company_id": "co-intel",
+    "label": "Intel — Oregon (Ronler Acres)",
+    "city": "Hillsboro",
+    "country": "United States",
+    "coordinates": [-122.99, 45.55],
+    "source_ids": ["intel-10k-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-intel-ie",
+    "company_id": "co-intel",
+    "label": "Intel — Leixlip, Ireland",
+    "city": "Leixlip",
+    "country": "Ireland",
+    "coordinates": [-6.49, 53.36],
+    "source_ids": ["intel-10k-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-intel-israel",
+    "company_id": "co-intel",
+    "label": "Intel — Kiryat Gat",
+    "city": "Kiryat Gat",
+    "country": "Israel",
+    "coordinates": [34.77, 31.61],
+    "source_ids": ["intel-10k-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-intel-malaysia",
+    "company_id": "co-intel",
+    "label": "Intel — Penang, Malaysia",
+    "city": "Penang",
+    "country": "Malaysia",
+    "coordinates": [100.39, 5.28],
+    "source_ids": ["intel-10k-2024"],
+    "must_show_essay_1": false
+  },
+  {
+    "id": "fab-intel-chengdu",
+    "company_id": "co-intel",
+    "label": "Intel — Chengdu (China)",
+    "city": "Chengdu",
+    "country": "China",
+    "coordinates": [104.07, 30.57],
+    "source_ids": ["intel-10k-2024"],
+    "must_show_essay_1": false
+  },
+  {
+    "id": "fab-umc-singapore",
+    "company_id": "co-umc",
+    "label": "UMC — Singapore",
+    "city": "Singapore",
+    "country": "Singapore",
+    "coordinates": [103.78, 1.3],
+    "source_ids": ["umc-financial-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-umc-suzhou",
+    "company_id": "co-umc",
+    "label": "UMC — Suzhou (China)",
+    "city": "Suzhou",
+    "country": "China",
+    "coordinates": [120.62, 31.32],
+    "source_ids": ["umc-financial-2024"],
+    "must_show_essay_1": false
+  },
+  {
+    "id": "fab-smic-shanghai",
+    "company_id": "co-smic",
+    "label": "SMIC — Shanghai cluster",
+    "city": "Shanghai",
+    "country": "China",
+    "coordinates": [121.47, 31.23],
+    "source_ids": ["smic-annual-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-smic-beijing",
+    "company_id": "co-smic",
+    "label": "SMIC — Beijing",
+    "city": "Beijing",
+    "country": "China",
+    "coordinates": [116.18, 40.09],
+    "source_ids": ["smic-annual-2024"],
+    "must_show_essay_1": false
+  },
+  {
+    "id": "fab-gf-dresden",
+    "company_id": "co-globalfoundries",
+    "label": "GlobalFoundries — Dresden (Fab 1)",
+    "city": "Dresden",
+    "country": "Germany",
+    "coordinates": [13.72, 51.05],
+    "source_ids": ["gf-sec-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-gf-singapore",
+    "company_id": "co-globalfoundries",
+    "label": "GlobalFoundries — Singapore",
+    "city": "Singapore",
+    "country": "Singapore",
+    "coordinates": [103.92, 1.35],
+    "source_ids": ["gf-sec-2024"],
+    "must_show_essay_1": false
+  },
+  {
+    "id": "fab-ase-kaohsiung",
+    "company_id": "co-ase",
+    "label": "ASE — Kaohsiung packaging hub",
+    "city": "Kaohsiung",
+    "country": "Taiwan",
+    "coordinates": [120.35, 22.62],
+    "source_ids": ["ase-20f-2024"],
+    "must_show_essay_1": true
+  },
+  {
+    "id": "fab-ase-shanghai",
+    "company_id": "co-ase",
+    "label": "ASE — Shanghai (China)",
+    "city": "Shanghai",
+    "country": "China",
+    "coordinates": [121.55, 31.22],
+    "source_ids": ["ase-20f-2024"],
+    "must_show_essay_1": false
+  },
+  {
+    "id": "fab-amkor-korea",
+    "company_id": "co-amkor",
+    "label": "Amkor — Gwangju (Korea)",
+    "city": "Gwangju",
+    "country": "South Korea",
+    "coordinates": [126.85, 35.16],
+    "source_ids": ["amkor-10k-2024"],
+    "must_show_essay_1": false
+  },
+  {
+    "id": "fab-amkor-philippines",
+    "company_id": "co-amkor",
+    "label": "Amkor — Philippines (Muntinlupa)",
+    "city": "Muntinlupa",
+    "country": "Philippines",
+    "coordinates": [121.04, 14.41],
+    "source_ids": ["amkor-10k-2024"],
+    "must_show_essay_1": false
+  },
+  {
+    "id": "fab-cxmt-hefei",
+    "company_id": "co-cxmt",
+    "label": "CXMT — Hefei DRAM fab cluster",
+    "city": "Hefei",
+    "country": "China",
+    "coordinates": [117.28, 31.86],
+    "source_ids": ["cxmt-ipo-2025"],
+    "must_show_essay_1": false
+  },
+  {
+    "id": "fab-ymtc-wuhan",
+    "company_id": "co-ymtc",
+    "label": "YMTC — Wuhan NAND campus (East Lake)",
+    "city": "Wuhan",
+    "country": "China",
+    "coordinates": [114.42, 30.49],
+    "source_ids": ["ymtc-corporate-2024"],
+    "must_show_essay_1": false
+  },
+  {
+    "id": "fab-foxconn-zhengzhou",
+    "company_id": "co-foxconn",
+    "label": "Foxconn — Zhengzhou",
+    "city": "Zhengzhou",
+    "country": "China",
+    "coordinates": [113.65, 34.76],
+    "source_ids": ["foxconn-ir-2024"],
+    "must_show_essay_1": false
+  },
+  {
+    "id": "fab-foxconn-shenzhen",
+    "company_id": "co-foxconn",
+    "label": "Foxconn — Shenzhen Longhua",
+    "city": "Shenzhen",
+    "country": "China",
+    "coordinates": [114.04, 22.69],
+    "source_ids": ["foxconn-ir-2024"],
+    "must_show_essay_1": false
+  }
+]

@@ -1,0 +1,2201 @@
+{
+  "version": 1,
+  "updated": "2026-05-22",
+  "scenarios": [
+    {
+      "id": "baseline",
+      "label": "Baseline",
+      "description": "Sourced company registry (companies.json) plus cited fab footprint pins for essay 1.",
+      "assumptions": {}
+    },
+    {
+      "id": "constrained-packaging",
+      "label": "Constrained advanced packaging",
+      "description": "Hypothetical stress on advanced packaging capacity; tune weights in app later.",
+      "assumptions": {
+        "advanced_packaging_capacity_multiplier": 0.85,
+        "notes": "Document real sources before publishing scenarios as factual."
+      },
+      "affects": {
+        "chokepoint_node_ids": [
+          "fab-ase-kaohsiung",
+          "fab-ase-shanghai",
+          "fab-amkor-korea",
+          "co-ase",
+          "co-amkor"
+        ],
+        "stressed_node_ids": ["co-tsmc", "fab-tsmc-sc", "fab-micron-taichung"],
+        "stressed_edge_ids": [
+          "e-tsmc-supplies-nvidia",
+          "e-tsmc-supplies-amd",
+          "e-tsmc-supplies-apple",
+          "e-tsmc-supplies-qualcomm",
+          "e-tsmc-supplies-mediatek",
+          "e-tsmc-supplies-broadcom"
+        ]
+      }
+    },
+    {
+      "id": "taiwan-crisis",
+      "label": "Taiwan Strait disruption (illustrative)",
+      "description": "Illustrative shock: Taiwan leading-edge wafer and CoWoS-style packaging largely offline for 6–12 months. US fabless GPU/CPU flows stall first; memory and China fabs partially buffer. Not a forecast—assumptions for essay stress-testing only.",
+      "assumptions": {
+        "taiwan_wafer_capacity_multiplier": 0.1,
+        "taiwan_packaging_capacity_multiplier": 0.25,
+        "us_fabless_leading_edge_delay_months": 18,
+        "china_domestic_substitution_rate": 0.15,
+        "notes": "Pair with cited TSMC→fabless supply edges and fab pins (Tainan, Arizona, Kumamoto). Add sourced scenario impacts before treating outputs as quantitative."
+      },
+      "affects": {
+        "chokepoint_node_ids": [
+          "country-tw",
+          "co-tsmc",
+          "fab-tsmc-sc",
+          "fab-micron-taichung",
+          "fab-ase-kaohsiung",
+          "co-umc",
+          "co-ase"
+        ],
+        "partial_relief_node_ids": [
+          "fab-tsmc-az",
+          "fab-tsmc-jp",
+          "fab-samsung-taylor",
+          "fab-sk-hynix-indiana",
+          "fab-intel-or"
+        ],
+        "substitution_buffer_node_ids": [
+          "country-cn",
+          "co-smic",
+          "fab-smic-shanghai",
+          "fab-smic-beijing",
+          "co-ymtc",
+          "fab-ymtc-wuhan",
+          "co-cxmt",
+          "fab-cxmt-hefei",
+          "fab-samsung-xian",
+          "fab-sk-hynix-wuxi"
+        ],
+        "disrupted_edge_ids": [
+          "e-tsmc-supplies-nvidia",
+          "e-tsmc-supplies-amd",
+          "e-tsmc-supplies-apple",
+          "e-tsmc-supplies-qualcomm",
+          "e-tsmc-supplies-mediatek",
+          "e-tsmc-supplies-broadcom"
+        ],
+        "stressed_edge_ids": [
+          "e-asml-supplies-tsmc",
+          "e-amat-supplies-tsmc",
+          "e-lam-supplies-tsmc",
+          "e-amat-supplies-intel"
+        ]
+      }
+    },
+    {
+      "id": "hbm-shortage",
+      "label": "HBM / memory supply crunch (illustrative)",
+      "description": "Illustrative shock: high-bandwidth memory (HBM) demand outruns supply, so the SK hynix / Samsung / Micron memory makers become the binding constraint on AI accelerators rather than wafer fabrication. NVIDIA and AMD GPU output is gated by HBM allocation. Not a forecast — assumptions for essay stress-testing only.",
+      "assumptions": {
+        "hbm_supply_vs_demand_ratio": 0.7,
+        "notes": "Pair with memory_supply edges (SK hynix/Samsung/Micron → NVIDIA/AMD). HBM is co-packaged with the GPU, so memory yield and capacity cap accelerator shipments."
+      },
+      "affects": {
+        "chokepoint_node_ids": [
+          "co-sk-hynix",
+          "co-samsung",
+          "co-micron",
+          "fab-sk-hynix-icheon",
+          "fab-micron-hiroshima"
+        ],
+        "stressed_node_ids": ["co-nvidia", "co-amd"],
+        "disrupted_edge_ids": [
+          "e-skhynix-memory-nvidia",
+          "e-samsung-memory-nvidia",
+          "e-micron-memory-nvidia",
+          "e-skhynix-memory-amd",
+          "e-samsung-memory-amd"
+        ]
+      }
+    },
+    {
+      "id": "export-controls",
+      "label": "US–China export controls deepen (illustrative)",
+      "description": "Illustrative scenario: tighter US/Dutch/Japanese export controls further restrict advanced tools (EUV already blocked; DUV and service curtailed) to Chinese fabs. SMIC, YMTC and CXMT are capped at trailing nodes; Huawei's leading-edge access tightens. China accelerates domestic toolmaking. Not a forecast — assumptions for essay stress-testing only.",
+      "assumptions": {
+        "china_advanced_tool_access_multiplier": 0.4,
+        "notes": "Pair with ASML→SMIC (DUV) and equipment edges. Models policy tightening, not a physical disruption."
+      },
+      "affects": {
+        "chokepoint_node_ids": [
+          "co-smic",
+          "co-huawei",
+          "co-ymtc",
+          "co-cxmt"
+        ],
+        "stressed_node_ids": [
+          "fab-smic-shanghai",
+          "fab-smic-beijing",
+          "fab-ymtc-wuhan",
+          "fab-cxmt-hefei"
+        ],
+        "disrupted_edge_ids": ["e-asml-supplies-smic"]
+      }
+    },
+    {
+      "id": "korea-memory-shock",
+      "label": "Korea memory disruption (illustrative)",
+      "description": "Illustrative shock: a disruption to Korea's memory cluster (Samsung + SK hynix) removes most of the world's DRAM, NAND and HBM at once. Micron in the US/Japan/Taiwan provides partial relief; China's CXMT and YMTC offer limited mature-node substitution. Not a forecast — assumptions for essay stress-testing only.",
+      "assumptions": {
+        "korea_memory_capacity_multiplier": 0.2,
+        "notes": "Korea concentrates a majority of global DRAM and HBM. Pair with memory_supply edges and Korean fab pins."
+      },
+      "affects": {
+        "chokepoint_node_ids": [
+          "country-kr",
+          "co-samsung",
+          "co-sk-hynix",
+          "fab-samsung-hwaseong",
+          "fab-sk-hynix-icheon"
+        ],
+        "partial_relief_node_ids": [
+          "co-micron",
+          "fab-micron-taichung",
+          "fab-micron-hiroshima"
+        ],
+        "substitution_buffer_node_ids": [
+          "co-cxmt",
+          "fab-cxmt-hefei",
+          "co-ymtc",
+          "fab-ymtc-wuhan"
+        ],
+        "disrupted_edge_ids": [
+          "e-skhynix-memory-nvidia",
+          "e-samsung-memory-nvidia",
+          "e-skhynix-memory-amd",
+          "e-samsung-memory-amd"
+        ]
+      }
+    },
+    {
+      "id": "japan-toolchain-shock",
+      "label": "Japan toolchain & materials shock (illustrative)",
+      "description": "Illustrative shock: disruption to Japan's specialty chemicals, photoresist and Tokyo Electron coat/develop tools slows leading-edge output everywhere at once, because every advanced fab depends on the same narrow set of Japanese inputs. Not a forecast — assumptions for essay stress-testing only.",
+      "assumptions": {
+        "japan_toolchain_capacity_multiplier": 0.5,
+        "notes": "Pair with Tokyo Electron equips edges. Japan also dominates photoresist and key wafer chemicals not yet modeled as nodes."
+      },
+      "affects": {
+        "chokepoint_node_ids": ["co-tel", "country-jp"],
+        "stressed_node_ids": [
+          "co-tsmc",
+          "co-samsung",
+          "co-intel",
+          "fab-tsmc-sc",
+          "fab-samsung-hwaseong"
+        ],
+        "stressed_edge_ids": ["e-tel-supplies-tsmc", "e-tel-supplies-samsung"]
+      }
+    },
+    {
+      "id": "mature-node-glut",
+      "label": "Mature-node overcapacity glut (illustrative)",
+      "description": "Illustrative scenario: a wave of new Chinese mature-node capacity, plus UMC and GlobalFoundries expansions, outpaces demand for trailing-edge chips — collapsing prices and margins on legacy nodes used in autos, industrial and consumer. Leading-edge logic and HBM are largely unaffected. Not a forecast — a margin/oversupply story for essay stress-testing.",
+      "assumptions": {
+        "mature_node_utilization_multiplier": 0.7,
+        "notes": "Oversupply, not a physical shortage. Watch SMIC/UMC/GF utilization and average selling prices on legacy nodes."
+      },
+      "affects": {
+        "stressed_node_ids": [
+          "co-umc",
+          "co-globalfoundries",
+          "co-smic",
+          "fab-smic-shanghai",
+          "fab-smic-beijing",
+          "fab-umc-singapore",
+          "fab-gf-dresden"
+        ]
+      }
+    },
+    {
+      "id": "us-chips-buildout",
+      "label": "US CHIPS buildout matures (illustrative)",
+      "description": "Illustrative resilience scenario: US-based capacity (TSMC Arizona, Samsung Taylor, Intel, SK hynix packaging, Amkor Arizona) reaches scale and provides a partial domestic buffer for leading-edge logic, memory and packaging. It reduces — but does not remove — concentration risk in Taiwan and Korea. Not a forecast — assumptions for essay stress-testing only.",
+      "assumptions": {
+        "us_leading_edge_self_sufficiency": 0.35,
+        "notes": "A relief scenario: buffered supply arcs indicate partial domestic substitution rather than disruption."
+      },
+      "affects": {
+        "partial_relief_node_ids": [
+          "fab-tsmc-az",
+          "fab-samsung-taylor",
+          "fab-intel-or",
+          "fab-sk-hynix-indiana",
+          "co-micron"
+        ],
+        "substitution_buffer_node_ids": ["co-amkor", "fab-amkor-philippines"],
+        "buffered_edge_ids": [
+          "e-tsmc-supplies-nvidia",
+          "e-tsmc-supplies-amd",
+          "e-tsmc-supplies-apple"
+        ]
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "country-tw",
+      "kind": "country",
+      "label": "Taiwan",
+      "tracks": ["memory", "cpus", "gpus", "data-centers"],
+      "meta": { "country_iso": "TW" },
+      "coordinates": [121.0, 23.7]
+    },
+    {
+      "id": "country-kr",
+      "kind": "country",
+      "label": "South Korea",
+      "tracks": ["memory", "cpus", "gpus", "data-centers"],
+      "meta": { "country_iso": "KR" },
+      "coordinates": [127.77, 35.91]
+    },
+    {
+      "id": "country-us",
+      "kind": "country",
+      "label": "United States",
+      "tracks": ["memory", "cpus", "gpus", "data-centers"],
+      "meta": { "country_iso": "US" },
+      "coordinates": [-98.35, 39.5]
+    },
+    {
+      "id": "country-cn",
+      "kind": "country",
+      "label": "China",
+      "tracks": ["memory", "cpus", "gpus", "data-centers"],
+      "meta": { "country_iso": "CN" },
+      "coordinates": [104.2, 35.86]
+    },
+    {
+      "id": "country-jp",
+      "kind": "country",
+      "label": "Japan",
+      "tracks": ["memory", "cpus", "gpus", "data-centers"],
+      "meta": { "country_iso": "JP" },
+      "coordinates": [138.25, 36.2]
+    },
+    {
+      "id": "country-nl",
+      "kind": "country",
+      "label": "Netherlands",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "meta": { "country_iso": "NL" },
+      "coordinates": [5.75, 52.13]
+    },
+    {
+      "id": "country-sg",
+      "kind": "country",
+      "label": "Singapore",
+      "tracks": ["memory", "cpus", "gpus", "data-centers"],
+      "meta": { "country_iso": "SG" },
+      "coordinates": [103.85, 1.35]
+    },
+    {
+      "id": "country-de",
+      "kind": "country",
+      "label": "Germany",
+      "tracks": ["cpus", "data-centers"],
+      "meta": { "country_iso": "DE" },
+      "coordinates": [10.45, 51.16]
+    },
+    {
+      "id": "country-ie",
+      "kind": "country",
+      "label": "Ireland",
+      "tracks": ["cpus", "data-centers"],
+      "meta": { "country_iso": "IE" },
+      "coordinates": [-7.69, 53.35]
+    },
+    {
+      "id": "country-il",
+      "kind": "country",
+      "label": "Israel",
+      "tracks": ["cpus", "data-centers"],
+      "meta": { "country_iso": "IL" },
+      "coordinates": [34.85, 31.05]
+    },
+    {
+      "id": "cat-memory",
+      "kind": "product_category",
+      "label": "Memory (DRAM / NAND)",
+      "tracks": ["memory"],
+      "meta": { "category_label": "Memory" }
+    },
+    {
+      "id": "cat-gpu",
+      "kind": "product_category",
+      "label": "GPU / accelerator",
+      "tracks": ["gpus", "data-centers"],
+      "meta": { "category_label": "GPU" }
+    },
+    {
+      "id": "cat-cpu",
+      "kind": "product_category",
+      "label": "CPU / host processor",
+      "tracks": ["cpus", "data-centers"],
+      "meta": { "category_label": "CPU" }
+    },
+    {
+      "id": "cat-foundry",
+      "kind": "product_category",
+      "label": "Foundry / wafer fabrication",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "meta": { "category_label": "Foundry" }
+    },
+    {
+      "id": "cat-equipment",
+      "kind": "product_category",
+      "label": "Semiconductor equipment",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "meta": { "category_label": "Equipment" }
+    },
+    {
+      "id": "cat-osat",
+      "kind": "product_category",
+      "label": "OSAT / advanced packaging",
+      "tracks": ["memory", "gpus", "data-centers"],
+      "meta": { "category_label": "OSAT" }
+    },
+    {
+      "id": "mkt-dc",
+      "kind": "end_market",
+      "label": "Data center / cloud",
+      "tracks": ["memory", "cpus", "gpus", "data-centers"]
+    },
+    {
+      "id": "co-tsmc",
+      "kind": "company",
+      "label": "TSMC",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "meta": {
+        "ticker": "TSM",
+        "notes": "Pure-play foundry — leading-edge logic, advanced packaging (CoWoS). Footprint: TW, US, JP."
+      },
+      "coordinates": [120.83, 24.78]
+    },
+    {
+      "id": "fab-tsmc-sc",
+      "kind": "fab",
+      "label": "TSMC — Southern Taiwan cluster (illustrative)",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "meta": {
+        "city": "Tainan Science Park",
+        "country_iso": "TW",
+        "must_show_essay_1": true
+      },
+      "coordinates": [120.28, 23.12]
+    },
+    {
+      "id": "fab-tsmc-az",
+      "kind": "fab",
+      "label": "TSMC — Arizona (Fab 21)",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "meta": {
+        "city": "Phoenix area",
+        "country_iso": "US",
+        "must_show_essay_1": true
+      },
+      "coordinates": [-111.75, 33.42]
+    },
+    {
+      "id": "fab-tsmc-jp",
+      "kind": "fab",
+      "label": "TSMC — Kumamoto (JASM)",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "meta": {
+        "city": "Kumamoto",
+        "country_iso": "JP",
+        "must_show_essay_1": true
+      },
+      "coordinates": [130.85, 32.89]
+    },
+    {
+      "id": "co-samsung",
+      "kind": "company",
+      "label": "Samsung Electronics (Device Solutions)",
+      "tracks": ["memory", "cpus", "gpus"],
+      "meta": {
+        "notes": "DRAM/NAND memory, foundry, advanced logic. Footprint: KR, US, CN (verify)."
+      },
+      "coordinates": [127.05, 37.57]
+    },
+    {
+      "id": "fab-samsung-hwaseong",
+      "kind": "fab",
+      "label": "Samsung — Hwaseong (illustrative)",
+      "tracks": ["memory", "cpus", "gpus"],
+      "meta": {
+        "city": "Hwaseong",
+        "country_iso": "KR",
+        "must_show_essay_1": true
+      },
+      "coordinates": [126.98, 37.2]
+    },
+    {
+      "id": "fab-samsung-taylor",
+      "kind": "fab",
+      "label": "Samsung — Taylor, Texas",
+      "tracks": ["memory", "cpus", "gpus"],
+      "meta": {
+        "city": "Taylor",
+        "country_iso": "US",
+        "must_show_essay_1": true
+      },
+      "coordinates": [-97.17, 30.56]
+    },
+    {
+      "id": "fab-samsung-xian",
+      "kind": "fab",
+      "label": "Samsung — Xi'an NAND",
+      "tracks": ["memory"],
+      "meta": {
+        "city": "Xi'an",
+        "country_iso": "CN",
+        "must_show_essay_1": true
+      },
+      "coordinates": [108.93, 34.36]
+    },
+    {
+      "id": "fab-sk-hynix-icheon",
+      "kind": "fab",
+      "label": "SK hynix — Icheon campus",
+      "tracks": ["memory"],
+      "meta": {
+        "city": "Icheon",
+        "country_iso": "KR",
+        "must_show_essay_1": true
+      },
+      "coordinates": [127.11, 37.24]
+    },
+    {
+      "id": "fab-sk-hynix-wuxi",
+      "kind": "fab",
+      "label": "SK hynix — Wuxi",
+      "tracks": ["memory"],
+      "meta": {
+        "city": "Wuxi",
+        "country_iso": "CN",
+        "must_show_essay_1": true
+      },
+      "coordinates": [120.31, 31.57]
+    },
+    {
+      "id": "fab-micron-taichung",
+      "kind": "fab",
+      "label": "Micron — Taichung",
+      "tracks": ["memory"],
+      "meta": {
+        "city": "Taichung",
+        "country_iso": "TW",
+        "must_show_essay_1": true
+      },
+      "coordinates": [120.62, 24.19]
+    },
+    {
+      "id": "fab-micron-hiroshima",
+      "kind": "fab",
+      "label": "Micron — Hiroshima",
+      "tracks": ["memory"],
+      "meta": {
+        "city": "Hiroshima",
+        "country_iso": "JP",
+        "must_show_essay_1": true
+      },
+      "coordinates": [132.46, 34.4]
+    },
+    {
+      "id": "co-sk-hynix",
+      "kind": "company",
+      "label": "SK Hynix",
+      "tracks": ["memory"],
+      "meta": {
+        "notes": "DRAM, NAND flash. Footprint: KR, CN, US (Indiana planned)."
+      },
+      "coordinates": [127.11, 37.41]
+    },
+    {
+      "id": "co-micron",
+      "kind": "company",
+      "label": "Micron",
+      "tracks": ["memory"],
+      "meta": {
+        "ticker": "MU",
+        "notes": "DRAM, NAND. Footprint: US, TW, JP, SG, MY."
+      },
+      "coordinates": [-116.2, 43.62]
+    },
+    {
+      "id": "co-intel",
+      "kind": "company",
+      "label": "Intel",
+      "tracks": ["cpus", "data-centers"],
+      "meta": {
+        "ticker": "INTC",
+        "notes": "x86 CPUs, leading-edge IDM, foundry services (IFS). Footprint: US, IE, IL, MY, CN (verify)."
+      },
+      "coordinates": [-121.97, 37.39]
+    },
+    {
+      "id": "fab-intel-or",
+      "kind": "fab",
+      "label": "Intel — Oregon (illustrative)",
+      "tracks": ["cpus", "data-centers"],
+      "meta": {
+        "city": "Hillsboro",
+        "country_iso": "US",
+        "must_show_essay_1": true
+      },
+      "coordinates": [-122.99, 45.55]
+    },
+    {
+      "id": "fab-intel-ie",
+      "kind": "fab",
+      "label": "Intel — Leixlip, Ireland",
+      "tracks": ["cpus", "data-centers"],
+      "meta": {
+        "city": "Leixlip",
+        "country_iso": "IE",
+        "must_show_essay_1": true
+      },
+      "coordinates": [-6.49, 53.36]
+    },
+    {
+      "id": "fab-intel-israel",
+      "kind": "fab",
+      "label": "Intel — Kiryat Gat",
+      "tracks": ["cpus", "data-centers"],
+      "meta": {
+        "city": "Kiryat Gat",
+        "country_iso": "IL",
+        "must_show_essay_1": true
+      },
+      "coordinates": [34.77, 31.61]
+    },
+    {
+      "id": "fab-umc-singapore",
+      "kind": "fab",
+      "label": "UMC — Singapore fab",
+      "tracks": ["cpus"],
+      "meta": {
+        "city": "Singapore",
+        "country_iso": "SG",
+        "must_show_essay_1": true
+      },
+      "coordinates": [103.78, 1.3]
+    },
+    {
+      "id": "fab-gf-dresden",
+      "kind": "fab",
+      "label": "GlobalFoundries — Dresden (Fab 1)",
+      "tracks": ["cpus"],
+      "meta": {
+        "city": "Dresden",
+        "country_iso": "DE",
+        "must_show_essay_1": true
+      },
+      "coordinates": [13.72, 51.05]
+    },
+    {
+      "id": "fab-smic-shanghai",
+      "kind": "fab",
+      "label": "SMIC — Shanghai cluster",
+      "tracks": ["cpus", "memory"],
+      "meta": {
+        "city": "Shanghai",
+        "country_iso": "CN",
+        "must_show_essay_1": true
+      },
+      "coordinates": [121.47, 31.23]
+    },
+    {
+      "id": "fab-foxconn-zhengzhou",
+      "kind": "fab",
+      "label": "Foxconn — Zhengzhou assembly hub",
+      "tracks": ["cpus", "data-centers"],
+      "meta": {
+        "city": "Zhengzhou",
+        "country_iso": "CN",
+        "must_show_essay_1": false
+      },
+      "coordinates": [113.65, 34.76]
+    },
+    {
+      "id": "co-nvidia",
+      "kind": "company",
+      "label": "NVIDIA",
+      "tracks": ["gpus", "data-centers"],
+      "meta": {
+        "ticker": "NVDA",
+        "notes": "GPU / AI accelerators, data-center networking. Design US; leading-edge fabs via TW/KR partners."
+      },
+      "coordinates": [-121.96, 37.37]
+    },
+    {
+      "id": "co-amd",
+      "kind": "company",
+      "label": "AMD",
+      "tracks": ["cpus", "gpus"],
+      "meta": {
+        "ticker": "AMD",
+        "notes": "CPUs, GPUs, adaptive SoC (fabless). HQ US; foundry supply TW/KR."
+      },
+      "coordinates": [-121.97, 37.33]
+    },
+    {
+      "id": "co-apple",
+      "kind": "company",
+      "label": "Apple",
+      "tracks": ["cpus", "gpus"],
+      "meta": {
+        "ticker": "AAPL",
+        "notes": "Mobile & PC SoC design (fabless). HQ US; fabrication TW; assembly CN."
+      },
+      "coordinates": [-122.03, 37.33]
+    },
+    {
+      "id": "co-qualcomm",
+      "kind": "company",
+      "label": "Qualcomm",
+      "tracks": ["cpus", "gpus"],
+      "meta": {
+        "ticker": "QCOM",
+        "notes": "Mobile SoC, RF, automotive (fabless). HQ US; partners TW/KR."
+      },
+      "coordinates": [-117.16, 32.9]
+    },
+    {
+      "id": "co-broadcom",
+      "kind": "company",
+      "label": "Broadcom",
+      "tracks": ["gpus", "data-centers"],
+      "meta": {
+        "ticker": "AVGO",
+        "notes": "Networking ASIC, custom silicon, infrastructure. HQ US; SG; TW partners."
+      },
+      "coordinates": [-122.08, 37.44]
+    },
+    {
+      "id": "co-mediatek",
+      "kind": "company",
+      "label": "MediaTek",
+      "tracks": ["cpus"],
+      "meta": {
+        "notes": "Mobile & connectivity SoC (fabless). HQ Taiwan."
+      },
+      "coordinates": [120.97, 24.78]
+    },
+    {
+      "id": "co-umc",
+      "kind": "company",
+      "label": "UMC",
+      "tracks": ["cpus"],
+      "meta": {
+        "notes": "Mature / mid-node foundry. Footprint: TW, SG, CN (verify)."
+      },
+      "coordinates": [120.99, 24.79]
+    },
+    {
+      "id": "co-smic",
+      "kind": "company",
+      "label": "SMIC",
+      "tracks": ["cpus", "memory"],
+      "meta": {
+        "notes": "China domestic foundry; leading-edge constrained by export controls. Footprint: CN."
+      },
+      "coordinates": [121.47, 31.23]
+    },
+    {
+      "id": "co-globalfoundries",
+      "kind": "company",
+      "label": "GlobalFoundries",
+      "tracks": ["cpus"],
+      "meta": {
+        "notes": "Mature-node foundry. Footprint: US, DE, SG."
+      },
+      "coordinates": [-73.78, 43.0]
+    },
+    {
+      "id": "co-ase",
+      "kind": "company",
+      "label": "ASE Technology Holding",
+      "tracks": ["memory", "gpus", "data-centers"],
+      "meta": {
+        "notes": "OSAT, advanced packaging. Footprint: TW, CN, US, MY, other Asia."
+      },
+      "coordinates": [120.27, 22.63]
+    },
+    {
+      "id": "co-amkor",
+      "kind": "company",
+      "label": "Amkor Technology",
+      "tracks": ["memory", "gpus", "data-centers"],
+      "meta": {
+        "notes": "OSAT, advanced packaging. Footprint: US, KR, CN, TW, PH."
+      },
+      "coordinates": [-111.94, 33.42]
+    },
+    {
+      "id": "co-asml",
+      "kind": "company",
+      "label": "ASML",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "meta": {
+        "notes": "EUV / DUV lithography systems. HQ Netherlands; US ops."
+      },
+      "coordinates": [5.39, 51.42]
+    },
+    {
+      "id": "co-applied-materials",
+      "kind": "company",
+      "label": "Applied Materials",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "meta": {
+        "ticker": "AMAT",
+        "notes": "Wafer-fab equipment (deposition, etch, CMP). HQ US; global install base."
+      },
+      "coordinates": [-121.96, 37.37]
+    },
+    {
+      "id": "co-lam-research",
+      "kind": "company",
+      "label": "Lam Research",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "meta": {
+        "ticker": "LRCX",
+        "notes": "Etch, deposition, wafer cleaning equipment. HQ US."
+      },
+      "coordinates": [-121.98, 37.48]
+    },
+    {
+      "id": "co-kla",
+      "kind": "company",
+      "label": "KLA",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "meta": {
+        "ticker": "KLAC",
+        "notes": "Process control & metrology. HQ US."
+      },
+      "coordinates": [-121.89, 37.43]
+    },
+    {
+      "id": "co-tel",
+      "kind": "company",
+      "label": "Tokyo Electron (TEL)",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "meta": {
+        "notes": "Coater/developer, etch, deposition equipment. HQ Japan."
+      },
+      "coordinates": [139.69, 35.68]
+    },
+    {
+      "id": "co-foxconn",
+      "kind": "company",
+      "label": "Foxconn (Hon Hai)",
+      "tracks": ["cpus", "data-centers"],
+      "meta": {
+        "notes": "EMS, systems assembly, some advanced packaging. HQ TW; largest mfg CN."
+      },
+      "coordinates": [121.45, 25.07]
+    },
+    {
+      "id": "co-ymtc",
+      "kind": "company",
+      "label": "YMTC",
+      "tracks": ["memory"],
+      "meta": {
+        "notes": "3D NAND flash (China). Footprint: Wuhan region."
+      },
+      "coordinates": [114.31, 30.59]
+    },
+    {
+      "id": "co-cxmt",
+      "kind": "company",
+      "label": "CXMT (Innotron)",
+      "tracks": ["memory"],
+      "meta": {
+        "notes": "DRAM (China domestic). Footprint: Hefei."
+      },
+      "coordinates": [117.28, 31.86]
+    },
+    {
+      "id": "co-huawei",
+      "kind": "company",
+      "label": "Huawei / HiSilicon",
+      "tracks": ["cpus", "gpus"],
+      "meta": {
+        "notes": "Telecom & mobile SoC design; leading-edge supply constrained vs TW/US toolchain."
+      },
+      "coordinates": [114.06, 22.55]
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-tsmc-hq",
+      "kind": "hq_in",
+      "source": "co-tsmc",
+      "target": "country-tw",
+      "tracks": ["cpus", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-tsmc-fab-tw",
+      "kind": "operates",
+      "source": "co-tsmc",
+      "target": "fab-tsmc-sc",
+      "tracks": ["cpus", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-tsmc-fab-us",
+      "kind": "operates",
+      "source": "co-tsmc",
+      "target": "fab-tsmc-az",
+      "tracks": ["cpus", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-fab-tsmc-tw-loc",
+      "kind": "located_in",
+      "source": "fab-tsmc-sc",
+      "target": "country-tw",
+      "tracks": ["cpus", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-fab-tsmc-us-loc",
+      "kind": "located_in",
+      "source": "fab-tsmc-az",
+      "target": "country-us",
+      "tracks": ["cpus", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-tsmc-fab-jp",
+      "kind": "operates",
+      "source": "co-tsmc",
+      "target": "fab-tsmc-jp",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "facts": {
+        "footprint": {
+          "source_ids": ["tsmc-20f-2024"],
+          "notes": "Japan Kumamoto (JASM) advanced fab per TSMC 20-F / IR."
+        }
+      }
+    },
+    {
+      "id": "e-fab-tsmc-jp-loc",
+      "kind": "located_in",
+      "source": "fab-tsmc-jp",
+      "target": "country-jp",
+      "tracks": ["cpus", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-tsmc-foundry",
+      "kind": "exposed_to_category",
+      "source": "co-tsmc",
+      "target": "cat-foundry",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "facts": {
+        "role": {
+          "source_ids": ["tsmc-20f-2024"],
+          "notes": "TSMC 20-F: pure-play foundry; leading-edge wafer fabrication and advanced packaging disclosures."
+        }
+      }
+    },
+    {
+      "id": "e-samsung-hq",
+      "kind": "hq_in",
+      "source": "co-samsung",
+      "target": "country-kr",
+      "tracks": ["memory", "cpus", "gpus"]
+    },
+    {
+      "id": "e-samsung-fab",
+      "kind": "operates",
+      "source": "co-samsung",
+      "target": "fab-samsung-hwaseong",
+      "tracks": ["memory", "cpus", "gpus"]
+    },
+    {
+      "id": "e-samsung-fab-loc",
+      "kind": "located_in",
+      "source": "fab-samsung-hwaseong",
+      "target": "country-kr",
+      "tracks": ["memory", "cpus", "gpus"]
+    },
+    {
+      "id": "e-samsung-fab-taylor",
+      "kind": "operates",
+      "source": "co-samsung",
+      "target": "fab-samsung-taylor",
+      "tracks": ["memory", "cpus", "gpus"],
+      "facts": {
+        "footprint": {
+          "source_ids": ["samsung-ir-2024"],
+          "notes": "Taylor, Texas advanced fab (CHIPS-related US expansion)."
+        }
+      }
+    },
+    {
+      "id": "e-fab-samsung-taylor-loc",
+      "kind": "located_in",
+      "source": "fab-samsung-taylor",
+      "target": "country-us",
+      "tracks": ["memory", "cpus", "gpus"]
+    },
+    {
+      "id": "e-samsung-fab-xian",
+      "kind": "operates",
+      "source": "co-samsung",
+      "target": "fab-samsung-xian",
+      "tracks": ["memory"],
+      "facts": {
+        "footprint": {
+          "source_ids": ["samsung-ir-2024"],
+          "notes": "Xi'an NAND flash manufacturing footprint."
+        }
+      }
+    },
+    {
+      "id": "e-fab-samsung-xian-loc",
+      "kind": "located_in",
+      "source": "fab-samsung-xian",
+      "target": "country-cn",
+      "tracks": ["memory"]
+    },
+    {
+      "id": "e-samsung-memory",
+      "kind": "exposed_to_category",
+      "source": "co-samsung",
+      "target": "cat-memory",
+      "tracks": ["memory"]
+    },
+    {
+      "id": "e-samsung-foundry",
+      "kind": "exposed_to_category",
+      "source": "co-samsung",
+      "target": "cat-foundry",
+      "tracks": ["cpus", "gpus"]
+    },
+    {
+      "id": "e-sk-hynix-hq",
+      "kind": "hq_in",
+      "source": "co-sk-hynix",
+      "target": "country-kr",
+      "tracks": ["memory"]
+    },
+    {
+      "id": "e-sk-hynix-memory",
+      "kind": "exposed_to_category",
+      "source": "co-sk-hynix",
+      "target": "cat-memory",
+      "tracks": ["memory"]
+    },
+    {
+      "id": "e-sk-hynix-fab-kr",
+      "kind": "operates",
+      "source": "co-sk-hynix",
+      "target": "fab-sk-hynix-icheon",
+      "tracks": ["memory"],
+      "facts": {
+        "footprint": {
+          "source_ids": ["skhynix-annual-2024"],
+          "notes": "Icheon/M11 memory campus per SK hynix disclosures."
+        }
+      }
+    },
+    {
+      "id": "e-fab-sk-hynix-kr-loc",
+      "kind": "located_in",
+      "source": "fab-sk-hynix-icheon",
+      "target": "country-kr",
+      "tracks": ["memory"]
+    },
+    {
+      "id": "e-sk-hynix-fab-cn",
+      "kind": "operates",
+      "source": "co-sk-hynix",
+      "target": "fab-sk-hynix-wuxi",
+      "tracks": ["memory"],
+      "facts": {
+        "footprint": {
+          "source_ids": ["skhynix-annual-2024"],
+          "notes": "Wuxi, China manufacturing site."
+        }
+      }
+    },
+    {
+      "id": "e-fab-sk-hynix-cn-loc",
+      "kind": "located_in",
+      "source": "fab-sk-hynix-wuxi",
+      "target": "country-cn",
+      "tracks": ["memory"]
+    },
+    {
+      "id": "e-micron-us",
+      "kind": "hq_in",
+      "source": "co-micron",
+      "target": "country-us",
+      "tracks": ["memory"]
+    },
+    {
+      "id": "e-micron-memory",
+      "kind": "exposed_to_category",
+      "source": "co-micron",
+      "target": "cat-memory",
+      "tracks": ["memory"]
+    },
+    {
+      "id": "e-micron-fab-tw",
+      "kind": "operates",
+      "source": "co-micron",
+      "target": "fab-micron-taichung",
+      "tracks": ["memory"],
+      "facts": {
+        "footprint": {
+          "source_ids": ["micron-10k-2024"],
+          "notes": "Taiwan DRAM assembly/test and fab footprint per 10-K."
+        }
+      }
+    },
+    {
+      "id": "e-fab-micron-tw-loc",
+      "kind": "located_in",
+      "source": "fab-micron-taichung",
+      "target": "country-tw",
+      "tracks": ["memory"]
+    },
+    {
+      "id": "e-micron-fab-jp",
+      "kind": "operates",
+      "source": "co-micron",
+      "target": "fab-micron-hiroshima",
+      "tracks": ["memory"],
+      "facts": {
+        "footprint": {
+          "source_ids": ["micron-10k-2024"],
+          "notes": "Hiroshima wafer fab per Micron properties disclosure."
+        }
+      }
+    },
+    {
+      "id": "e-fab-micron-jp-loc",
+      "kind": "located_in",
+      "source": "fab-micron-hiroshima",
+      "target": "country-jp",
+      "tracks": ["memory"]
+    },
+    {
+      "id": "e-intel-hq",
+      "kind": "hq_in",
+      "source": "co-intel",
+      "target": "country-us",
+      "tracks": ["cpus", "data-centers"]
+    },
+    {
+      "id": "e-intel-fab",
+      "kind": "operates",
+      "source": "co-intel",
+      "target": "fab-intel-or",
+      "tracks": ["cpus", "data-centers"]
+    },
+    {
+      "id": "e-intel-fab-loc",
+      "kind": "located_in",
+      "source": "fab-intel-or",
+      "target": "country-us",
+      "tracks": ["cpus", "data-centers"]
+    },
+    {
+      "id": "e-intel-fab-ie",
+      "kind": "operates",
+      "source": "co-intel",
+      "target": "fab-intel-ie",
+      "tracks": ["cpus", "data-centers"],
+      "facts": {
+        "footprint": {
+          "source_ids": ["intel-10k-2024"],
+          "notes": "Leixlip, Ireland leading-edge fab campus."
+        }
+      }
+    },
+    {
+      "id": "e-fab-intel-ie-loc",
+      "kind": "located_in",
+      "source": "fab-intel-ie",
+      "target": "country-ie",
+      "tracks": ["cpus", "data-centers"]
+    },
+    {
+      "id": "e-intel-fab-il",
+      "kind": "operates",
+      "source": "co-intel",
+      "target": "fab-intel-israel",
+      "tracks": ["cpus", "data-centers"],
+      "facts": {
+        "footprint": {
+          "source_ids": ["intel-10k-2024"],
+          "notes": "Kiryat Gat, Israel manufacturing site."
+        }
+      }
+    },
+    {
+      "id": "e-fab-intel-il-loc",
+      "kind": "located_in",
+      "source": "fab-intel-israel",
+      "target": "country-il",
+      "tracks": ["cpus", "data-centers"]
+    },
+    {
+      "id": "e-intel-cpu",
+      "kind": "exposed_to_category",
+      "source": "co-intel",
+      "target": "cat-cpu",
+      "tracks": ["cpus", "data-centers"]
+    },
+    {
+      "id": "e-intel-foundry",
+      "kind": "exposed_to_category",
+      "source": "co-intel",
+      "target": "cat-foundry",
+      "tracks": ["cpus", "data-centers"]
+    },
+    {
+      "id": "e-nvidia-hq",
+      "kind": "hq_in",
+      "source": "co-nvidia",
+      "target": "country-us",
+      "tracks": ["gpus", "data-centers"]
+    },
+    {
+      "id": "e-nvidia-gpu",
+      "kind": "exposed_to_category",
+      "source": "co-nvidia",
+      "target": "cat-gpu",
+      "tracks": ["gpus", "data-centers"]
+    },
+    {
+      "id": "e-nvidia-dc",
+      "kind": "serves_market",
+      "source": "co-nvidia",
+      "target": "mkt-dc",
+      "tracks": ["gpus", "data-centers"]
+    },
+    {
+      "id": "e-amd-hq",
+      "kind": "hq_in",
+      "source": "co-amd",
+      "target": "country-us",
+      "tracks": ["cpus", "gpus"]
+    },
+    {
+      "id": "e-amd-cpu",
+      "kind": "exposed_to_category",
+      "source": "co-amd",
+      "target": "cat-cpu",
+      "tracks": ["cpus"]
+    },
+    {
+      "id": "e-amd-gpu",
+      "kind": "exposed_to_category",
+      "source": "co-amd",
+      "target": "cat-gpu",
+      "tracks": ["gpus"]
+    },
+    {
+      "id": "e-apple-hq",
+      "kind": "hq_in",
+      "source": "co-apple",
+      "target": "country-us",
+      "tracks": ["cpus", "gpus"]
+    },
+    {
+      "id": "e-apple-cpu",
+      "kind": "exposed_to_category",
+      "source": "co-apple",
+      "target": "cat-cpu",
+      "tracks": ["cpus"]
+    },
+    {
+      "id": "e-qualcomm-hq",
+      "kind": "hq_in",
+      "source": "co-qualcomm",
+      "target": "country-us",
+      "tracks": ["cpus", "gpus"]
+    },
+    {
+      "id": "e-qualcomm-cpu",
+      "kind": "exposed_to_category",
+      "source": "co-qualcomm",
+      "target": "cat-cpu",
+      "tracks": ["cpus"]
+    },
+    {
+      "id": "e-broadcom-hq",
+      "kind": "hq_in",
+      "source": "co-broadcom",
+      "target": "country-us",
+      "tracks": ["gpus", "data-centers"]
+    },
+    {
+      "id": "e-broadcom-dc",
+      "kind": "serves_market",
+      "source": "co-broadcom",
+      "target": "mkt-dc",
+      "tracks": ["data-centers"]
+    },
+    {
+      "id": "e-mediatek-hq",
+      "kind": "hq_in",
+      "source": "co-mediatek",
+      "target": "country-tw",
+      "tracks": ["cpus"]
+    },
+    {
+      "id": "e-mediatek-cpu",
+      "kind": "exposed_to_category",
+      "source": "co-mediatek",
+      "target": "cat-cpu",
+      "tracks": ["cpus"]
+    },
+    {
+      "id": "e-umc-hq",
+      "kind": "hq_in",
+      "source": "co-umc",
+      "target": "country-tw",
+      "tracks": ["cpus"]
+    },
+    {
+      "id": "e-umc-foundry",
+      "kind": "exposed_to_category",
+      "source": "co-umc",
+      "target": "cat-foundry",
+      "tracks": ["cpus"]
+    },
+    {
+      "id": "e-umc-fab-sg",
+      "kind": "operates",
+      "source": "co-umc",
+      "target": "fab-umc-singapore",
+      "tracks": ["cpus"],
+      "facts": {
+        "footprint": {
+          "source_ids": ["umc-financial-2024"],
+          "notes": "Singapore fab operations per UMC financial disclosures."
+        }
+      }
+    },
+    {
+      "id": "e-fab-umc-sg-loc",
+      "kind": "located_in",
+      "source": "fab-umc-singapore",
+      "target": "country-sg",
+      "tracks": ["cpus"]
+    },
+    {
+      "id": "e-smic-hq",
+      "kind": "hq_in",
+      "source": "co-smic",
+      "target": "country-cn",
+      "tracks": ["cpus", "memory"]
+    },
+    {
+      "id": "e-smic-foundry",
+      "kind": "exposed_to_category",
+      "source": "co-smic",
+      "target": "cat-foundry",
+      "tracks": ["cpus"],
+      "facts": {
+        "role": {
+          "source_ids": ["smic-annual-2024"],
+          "notes": "SMIC annual report: China-based foundry; mature/trailing nodes per disclosure."
+        }
+      }
+    },
+    {
+      "id": "e-smic-fab-sh",
+      "kind": "operates",
+      "source": "co-smic",
+      "target": "fab-smic-shanghai",
+      "tracks": ["cpus", "memory"],
+      "facts": {
+        "footprint": {
+          "source_ids": ["smic-annual-2024"],
+          "notes": "Shanghai-region 12-inch fabs per SMIC annual report."
+        }
+      }
+    },
+    {
+      "id": "e-fab-smic-sh-loc",
+      "kind": "located_in",
+      "source": "fab-smic-shanghai",
+      "target": "country-cn",
+      "tracks": ["cpus", "memory"]
+    },
+    {
+      "id": "e-gf-hq",
+      "kind": "hq_in",
+      "source": "co-globalfoundries",
+      "target": "country-us",
+      "tracks": ["cpus"]
+    },
+    {
+      "id": "e-gf-foundry",
+      "kind": "exposed_to_category",
+      "source": "co-globalfoundries",
+      "target": "cat-foundry",
+      "tracks": ["cpus"]
+    },
+    {
+      "id": "e-gf-fab-de",
+      "kind": "operates",
+      "source": "co-globalfoundries",
+      "target": "fab-gf-dresden",
+      "tracks": ["cpus"],
+      "facts": {
+        "footprint": {
+          "source_ids": ["gf-sec-2024"],
+          "notes": "Dresden Fab 1 (Germany) per GlobalFoundries SEC filings."
+        }
+      }
+    },
+    {
+      "id": "e-fab-gf-de-loc",
+      "kind": "located_in",
+      "source": "fab-gf-dresden",
+      "target": "country-de",
+      "tracks": ["cpus"]
+    },
+    {
+      "id": "e-ase-hq",
+      "kind": "hq_in",
+      "source": "co-ase",
+      "target": "country-tw",
+      "tracks": ["memory", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-ase-osat",
+      "kind": "exposed_to_category",
+      "source": "co-ase",
+      "target": "cat-osat",
+      "tracks": ["memory", "gpus", "data-centers"],
+      "facts": {
+        "role": {
+          "source_ids": ["ase-20f-2024"],
+          "notes": "ASE 20-F: OSAT and advanced packaging services; geographic customer mix."
+        }
+      }
+    },
+    {
+      "id": "e-amkor-hq",
+      "kind": "hq_in",
+      "source": "co-amkor",
+      "target": "country-us",
+      "tracks": ["memory", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-amkor-osat",
+      "kind": "exposed_to_category",
+      "source": "co-amkor",
+      "target": "cat-osat",
+      "tracks": ["memory", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-asml-hq",
+      "kind": "hq_in",
+      "source": "co-asml",
+      "target": "country-nl",
+      "tracks": ["cpus", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-asml-equipment",
+      "kind": "exposed_to_category",
+      "source": "co-asml",
+      "target": "cat-equipment",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "facts": {
+        "role": {
+          "source_ids": ["asml-annual-2024"],
+          "notes": "ASML annual report: lithography systems (EUV/DUV); export-control and China revenue disclosures."
+        }
+      }
+    },
+    {
+      "id": "e-amat-hq",
+      "kind": "hq_in",
+      "source": "co-applied-materials",
+      "target": "country-us",
+      "tracks": ["cpus", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-amat-equipment",
+      "kind": "exposed_to_category",
+      "source": "co-applied-materials",
+      "target": "cat-equipment",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "facts": {
+        "role": {
+          "source_ids": ["amat-10k-2024"],
+          "notes": "Applied Materials 10-K: wafer-fab equipment (deposition, etch, CMP) sold globally."
+        }
+      }
+    },
+    {
+      "id": "e-lam-hq",
+      "kind": "hq_in",
+      "source": "co-lam-research",
+      "target": "country-us",
+      "tracks": ["cpus", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-lam-equipment",
+      "kind": "exposed_to_category",
+      "source": "co-lam-research",
+      "target": "cat-equipment",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "facts": {
+        "role": {
+          "source_ids": ["lam-10k-2024"],
+          "notes": "Lam Research 10-K: etch and deposition equipment for semiconductor manufacturing."
+        }
+      }
+    },
+    {
+      "id": "e-kla-hq",
+      "kind": "hq_in",
+      "source": "co-kla",
+      "target": "country-us",
+      "tracks": ["cpus", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-kla-equipment",
+      "kind": "exposed_to_category",
+      "source": "co-kla",
+      "target": "cat-equipment",
+      "tracks": ["cpus", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-tel-hq",
+      "kind": "hq_in",
+      "source": "co-tel",
+      "target": "country-jp",
+      "tracks": ["cpus", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-tel-equipment",
+      "kind": "exposed_to_category",
+      "source": "co-tel",
+      "target": "cat-equipment",
+      "tracks": ["cpus", "gpus", "data-centers"]
+    },
+    {
+      "id": "e-foxconn-hq",
+      "kind": "hq_in",
+      "source": "co-foxconn",
+      "target": "country-tw",
+      "tracks": ["cpus", "data-centers"]
+    },
+    {
+      "id": "e-foxconn-osat",
+      "kind": "exposed_to_category",
+      "source": "co-foxconn",
+      "target": "cat-osat",
+      "tracks": ["cpus", "data-centers"]
+    },
+    {
+      "id": "e-foxconn-zhengzhou",
+      "kind": "operates",
+      "source": "co-foxconn",
+      "target": "fab-foxconn-zhengzhou",
+      "tracks": ["cpus", "data-centers"],
+      "facts": {
+        "footprint": {
+          "source_ids": ["foxconn-ir-2024"],
+          "notes": "Major China assembly hub (Zhengzhou) per Hon Hai disclosures."
+        }
+      }
+    },
+    {
+      "id": "e-fab-foxconn-zhengzhou-loc",
+      "kind": "located_in",
+      "source": "fab-foxconn-zhengzhou",
+      "target": "country-cn",
+      "tracks": ["cpus", "data-centers"]
+    },
+    {
+      "id": "e-ymtc-hq",
+      "kind": "hq_in",
+      "source": "co-ymtc",
+      "target": "country-cn",
+      "tracks": ["memory"]
+    },
+    {
+      "id": "e-ymtc-memory",
+      "kind": "exposed_to_category",
+      "source": "co-ymtc",
+      "target": "cat-memory",
+      "tracks": ["memory"]
+    },
+    {
+      "id": "e-cxmt-hq",
+      "kind": "hq_in",
+      "source": "co-cxmt",
+      "target": "country-cn",
+      "tracks": ["memory"]
+    },
+    {
+      "id": "e-cxmt-memory",
+      "kind": "exposed_to_category",
+      "source": "co-cxmt",
+      "target": "cat-memory",
+      "tracks": ["memory"]
+    },
+    {
+      "id": "e-huawei-hq",
+      "kind": "hq_in",
+      "source": "co-huawei",
+      "target": "country-cn",
+      "tracks": ["cpus", "gpus"]
+    },
+    {
+      "id": "e-huawei-cpu",
+      "kind": "exposed_to_category",
+      "source": "co-huawei",
+      "target": "cat-cpu",
+      "tracks": ["cpus"]
+    },
+    {
+      "id": "e-tsmc-supplies-nvidia",
+      "kind": "supplies",
+      "source": "co-tsmc",
+      "target": "co-nvidia",
+      "tracks": ["gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["nvidia-10k-2024", "tsmc-20f-2024"],
+          "source_label": "Foundry supply relationship",
+          "notes": "NVIDIA 10-K: names TSMC and Samsung among foundry suppliers for GPUs/accelerators; discusses supplier geography risk. TSMC 20-F: major customer disclosures."
+        }
+      }
+    },
+    {
+      "id": "e-tsmc-supplies-amd",
+      "kind": "supplies",
+      "source": "co-tsmc",
+      "target": "co-amd",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["amd-10k-2024", "tsmc-20f-2024"],
+          "source_label": "Foundry supply relationship",
+          "notes": "AMD 10-K: CPUs/GPUs manufactured by third-party foundries; names Taiwan concentration and TSMC as a leading foundry supplier class. TSMC 20-F: customer concentration disclosures."
+        }
+      }
+    },
+    {
+      "id": "e-tsmc-supplies-apple",
+      "kind": "supplies",
+      "source": "co-tsmc",
+      "target": "co-apple",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["apple-10k-2024", "tsmc-20f-2024"],
+          "source_label": "Foundry supply relationship",
+          "notes": "Apple 10-K: sole-sourced custom silicon and supply-chain risk disclosures; advanced SoCs widely reported and risk-disclosed as Taiwan-foundry dependent. TSMC 20-F: major customer disclosures."
+        }
+      }
+    },
+    {
+      "id": "e-tsmc-supplies-qualcomm",
+      "kind": "supplies",
+      "source": "co-tsmc",
+      "target": "co-qualcomm",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["qualcomm-10k-2024", "tsmc-20f-2024"],
+          "source_label": "Foundry supply relationship",
+          "notes": "Qualcomm 10-K: fabless model using third-party manufacturers (foundry and assembly); geographic supplier risk including Taiwan. TSMC 20-F: customer disclosures."
+        }
+      }
+    },
+    {
+      "id": "e-tsmc-supplies-mediatek",
+      "kind": "supplies",
+      "source": "co-tsmc",
+      "target": "co-mediatek",
+      "tracks": ["cpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["mediatek-annual-2024", "tsmc-20f-2024"],
+          "source_label": "Foundry supply relationship",
+          "notes": "MediaTek annual report: Taiwan-headquartered fabless; leading-edge wafer supply from foundry partners (TSMC primary for advanced nodes). TSMC 20-F: customer disclosures."
+        }
+      }
+    },
+    {
+      "id": "e-tsmc-supplies-broadcom",
+      "kind": "supplies",
+      "source": "co-tsmc",
+      "target": "co-broadcom",
+      "tracks": ["gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["broadcom-10k-2024", "tsmc-20f-2024"],
+          "source_label": "Foundry supply relationship",
+          "notes": "Broadcom 10-K: outsourced manufacturing model using third-party foundries and OSAT; supplier/geography risk factors. TSMC 20-F: customer disclosures for leading-edge wafer fabrication."
+        }
+      }
+    },
+    {
+      "id": "e-samsung-supplies-qualcomm",
+      "kind": "supplies",
+      "source": "co-samsung",
+      "target": "co-qualcomm",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["qualcomm-10k-2024", "samsung-ir-2024"],
+          "source_label": "Foundry / wafer supply (alternate to TSMC)",
+          "notes": "Qualcomm 10-K: fabless model with multiple foundry suppliers; names third-party manufacturers including geography risk. Samsung IR: foundry and memory divisions disclose external customers and capacity."
+        }
+      }
+    },
+    {
+      "id": "e-asml-supplies-tsmc",
+      "kind": "equips",
+      "source": "co-asml",
+      "target": "co-tsmc",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["asml-annual-2024", "tsmc-20f-2024"],
+          "source_label": "Lithography equipment",
+          "notes": "ASML annual report: systems sold to leading foundries; TSMC 20-F: capital equipment suppliers and concentration risk."
+        }
+      }
+    },
+    {
+      "id": "e-amat-supplies-tsmc",
+      "kind": "equips",
+      "source": "co-applied-materials",
+      "target": "co-tsmc",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["amat-10k-2024", "tsmc-20f-2024"],
+          "source_label": "Wafer-fab equipment",
+          "notes": "Applied Materials 10-K: semiconductor systems revenue by region; TSMC as leading capex spender class per industry disclosures."
+        }
+      }
+    },
+    {
+      "id": "e-amat-supplies-intel",
+      "kind": "equips",
+      "source": "co-applied-materials",
+      "target": "co-intel",
+      "tracks": ["cpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["amat-10k-2024", "intel-10k-2024"],
+          "source_label": "Wafer-fab equipment",
+          "notes": "Intel 10-K: capital investments in manufacturing; AMAT 10-K: equipment sales to IDM and foundry customers."
+        }
+      }
+    },
+    {
+      "id": "e-lam-supplies-tsmc",
+      "kind": "equips",
+      "source": "co-lam-research",
+      "target": "co-tsmc",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["lam-10k-2024", "tsmc-20f-2024"],
+          "source_label": "Etch / deposition equipment",
+          "notes": "Lam 10-K: customer concentration in foundry segment; TSMC equipment procurement in capex cycle."
+        }
+      }
+    },
+    {
+      "id": "e-lam-supplies-samsung",
+      "kind": "equips",
+      "source": "co-lam-research",
+      "target": "co-samsung",
+      "tracks": ["memory", "cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["lam-10k-2024", "samsung-ir-2024"],
+          "source_label": "Etch / deposition equipment",
+          "notes": "Samsung IR: device solutions capex; Lam customer disclosures for memory and foundry fabs."
+        }
+      }
+    },
+    {
+      "id": "e-asml-supplies-intel",
+      "kind": "equips",
+      "source": "co-asml",
+      "target": "co-intel",
+      "tracks": ["cpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["asml-annual-2024", "intel-10k-2024"],
+          "source_label": "Lithography equipment",
+          "notes": "Intel 10-K: EUV adoption and supplier dependencies; ASML as sole EUV source for leading-edge lithography."
+        }
+      }
+    },
+    {
+      "id": "e-samsung-supplies-nvidia",
+      "kind": "supplies",
+      "source": "co-samsung",
+      "target": "co-nvidia",
+      "tracks": ["gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["samsung-ir-2024", "nvidia-10k-2024"],
+          "source_label": "Foundry supply (alternate to TSMC)",
+          "notes": "NVIDIA 10-K names Samsung among foundry suppliers (Samsung built earlier-generation GPUs); Samsung Foundry positions itself as the leading-edge alternative to TSMC."
+        }
+      }
+    },
+    {
+      "id": "e-gf-supplies-qualcomm",
+      "kind": "supplies",
+      "source": "co-globalfoundries",
+      "target": "co-qualcomm",
+      "tracks": ["cpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["gf-sec-2024", "qualcomm-10k-2024"],
+          "source_label": "Mature / specialty foundry supply",
+          "notes": "GlobalFoundries SEC filings: long-term wafer agreements with key customers; Qualcomm 10-K: multiple foundry suppliers for RF and mature-node content."
+        }
+      }
+    },
+    {
+      "id": "e-umc-supplies-mediatek",
+      "kind": "supplies",
+      "source": "co-umc",
+      "target": "co-mediatek",
+      "tracks": ["cpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["umc-financial-2024", "mediatek-annual-2024"],
+          "source_label": "Mature / mid-node foundry supply",
+          "notes": "MediaTek sources mature and specialty nodes from multiple Taiwan foundries including UMC alongside leading-edge wafers from TSMC."
+        }
+      }
+    },
+    {
+      "id": "e-asml-supplies-samsung",
+      "kind": "equips",
+      "source": "co-asml",
+      "target": "co-samsung",
+      "tracks": ["memory", "cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["asml-annual-2024", "samsung-ir-2024"],
+          "source_label": "Lithography equipment",
+          "notes": "ASML annual report: EUV/DUV systems sold to leading memory and foundry makers; Samsung is a major EUV customer for DRAM and foundry."
+        }
+      }
+    },
+    {
+      "id": "e-asml-supplies-smic",
+      "kind": "equips",
+      "source": "co-asml",
+      "target": "co-smic",
+      "tracks": ["cpus", "memory"],
+      "facts": {
+        "note": {
+          "source_ids": ["asml-annual-2024", "smic-annual-2024"],
+          "source_label": "DUV lithography (export-controlled)",
+          "notes": "ASML supplies DUV systems to SMIC; EUV is blocked to China under Dutch/US export controls, capping SMIC's leading-edge progress."
+        }
+      }
+    },
+    {
+      "id": "e-amat-supplies-samsung",
+      "kind": "equips",
+      "source": "co-applied-materials",
+      "target": "co-samsung",
+      "tracks": ["memory", "cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["amat-10k-2024", "samsung-ir-2024"],
+          "source_label": "Wafer-fab equipment",
+          "notes": "Applied Materials 10-K: deposition/etch/CMP tools sold to memory and foundry customers; Samsung is a top equipment buyer."
+        }
+      }
+    },
+    {
+      "id": "e-lam-supplies-skhynix",
+      "kind": "equips",
+      "source": "co-lam-research",
+      "target": "co-sk-hynix",
+      "tracks": ["memory"],
+      "facts": {
+        "note": {
+          "source_ids": ["lam-10k-2024", "skhynix-annual-2024"],
+          "source_label": "Etch / deposition equipment",
+          "notes": "Lam Research 10-K: strong exposure to memory capex; SK hynix relies on Lam tools for 3D NAND and DRAM (including HBM base wafers)."
+        }
+      }
+    },
+    {
+      "id": "e-kla-supplies-tsmc",
+      "kind": "equips",
+      "source": "co-kla",
+      "target": "co-tsmc",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["kla-10k-2024", "tsmc-20f-2024"],
+          "source_label": "Process control / metrology",
+          "notes": "KLA 10-K: inspection and metrology concentrated among leading-edge foundries; TSMC is a major process-control customer."
+        }
+      }
+    },
+    {
+      "id": "e-kla-supplies-samsung",
+      "kind": "equips",
+      "source": "co-kla",
+      "target": "co-samsung",
+      "tracks": ["memory", "cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["kla-10k-2024", "samsung-ir-2024"],
+          "source_label": "Process control / metrology",
+          "notes": "KLA process-control tools used across Samsung's memory and foundry fabs."
+        }
+      }
+    },
+    {
+      "id": "e-tel-supplies-tsmc",
+      "kind": "equips",
+      "source": "co-tel",
+      "target": "co-tsmc",
+      "tracks": ["cpus", "gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["tel-integrated-2024", "tsmc-20f-2024"],
+          "source_label": "Coater/developer & etch equipment",
+          "notes": "Tokyo Electron integrated report: coat/develop (track) tools paired with ASML lithography; TSMC is a leading customer at the leading edge."
+        }
+      }
+    },
+    {
+      "id": "e-tel-supplies-samsung",
+      "kind": "equips",
+      "source": "co-tel",
+      "target": "co-samsung",
+      "tracks": ["memory", "cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["tel-integrated-2024", "samsung-ir-2024"],
+          "source_label": "Coater/developer & etch equipment",
+          "notes": "Tokyo Electron tools used in Samsung memory and foundry lines."
+        }
+      }
+    },
+    {
+      "id": "e-ase-packages-nvidia",
+      "kind": "packages",
+      "source": "co-ase",
+      "target": "co-nvidia",
+      "tracks": ["gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["ase-20f-2024", "nvidia-10k-2024"],
+          "source_label": "OSAT / advanced packaging",
+          "notes": "ASE 20-F: advanced packaging and test services for leading fabless customers; AI accelerators depend on advanced packaging capacity downstream of TSMC CoWoS."
+        }
+      }
+    },
+    {
+      "id": "e-ase-packages-amd",
+      "kind": "packages",
+      "source": "co-ase",
+      "target": "co-amd",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["ase-20f-2024", "amd-10k-2024"],
+          "source_label": "OSAT / advanced packaging",
+          "notes": "AMD 10-K: outsourced assembly and test; ASE among OSAT partners for chiplet-based products."
+        }
+      }
+    },
+    {
+      "id": "e-ase-packages-broadcom",
+      "kind": "packages",
+      "source": "co-ase",
+      "target": "co-broadcom",
+      "tracks": ["gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["ase-20f-2024", "broadcom-10k-2024"],
+          "source_label": "OSAT / advanced packaging",
+          "notes": "Broadcom 10-K: outsourced manufacturing and packaging for networking ASICs and custom AI silicon."
+        }
+      }
+    },
+    {
+      "id": "e-ase-packages-qualcomm",
+      "kind": "packages",
+      "source": "co-ase",
+      "target": "co-qualcomm",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["ase-20f-2024", "qualcomm-10k-2024"],
+          "source_label": "OSAT / advanced packaging",
+          "notes": "Qualcomm 10-K: third-party assembly and test partners including large Taiwan OSAT houses."
+        }
+      }
+    },
+    {
+      "id": "e-amkor-packages-nvidia",
+      "kind": "packages",
+      "source": "co-amkor",
+      "target": "co-nvidia",
+      "tracks": ["gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["amkor-10k-2024", "nvidia-10k-2024"],
+          "source_label": "OSAT / advanced packaging",
+          "notes": "Amkor 10-K: advanced packaging partner; planned Arizona facility positioned to package leading-edge US-made silicon."
+        }
+      }
+    },
+    {
+      "id": "e-amkor-packages-apple",
+      "kind": "packages",
+      "source": "co-amkor",
+      "target": "co-apple",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["amkor-10k-2024", "apple-10k-2024"],
+          "source_label": "OSAT / advanced packaging",
+          "notes": "Amkor is a long-standing packaging partner and anchor customer relationship for its US (Arizona) expansion alongside TSMC Arizona."
+        }
+      }
+    },
+    {
+      "id": "e-amkor-packages-qualcomm",
+      "kind": "packages",
+      "source": "co-amkor",
+      "target": "co-qualcomm",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["amkor-10k-2024", "qualcomm-10k-2024"],
+          "source_label": "OSAT / advanced packaging",
+          "notes": "Qualcomm 10-K: outsourced assembly/test; Amkor among packaging suppliers."
+        }
+      }
+    },
+    {
+      "id": "e-skhynix-memory-nvidia",
+      "kind": "memory_supply",
+      "source": "co-sk-hynix",
+      "target": "co-nvidia",
+      "tracks": ["gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["skhynix-annual-2024", "nvidia-10k-2024"],
+          "source_label": "High-bandwidth memory (HBM)",
+          "notes": "SK hynix is the leading HBM supplier and primary memory partner for NVIDIA's AI accelerators; HBM is co-packaged with the GPU and is a key supply constraint."
+        }
+      }
+    },
+    {
+      "id": "e-samsung-memory-nvidia",
+      "kind": "memory_supply",
+      "source": "co-samsung",
+      "target": "co-nvidia",
+      "tracks": ["gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["samsung-ir-2024", "nvidia-10k-2024"],
+          "source_label": "High-bandwidth memory (HBM)",
+          "notes": "Samsung supplies HBM and is qualifying newer HBM generations for AI accelerators; a second source alongside SK hynix and Micron."
+        }
+      }
+    },
+    {
+      "id": "e-micron-memory-nvidia",
+      "kind": "memory_supply",
+      "source": "co-micron",
+      "target": "co-nvidia",
+      "tracks": ["gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["micron-10k-2024", "nvidia-10k-2024"],
+          "source_label": "High-bandwidth memory (HBM)",
+          "notes": "Micron 10-K: HBM ramp targeting AI demand; the only US-based HBM source for NVIDIA accelerators."
+        }
+      }
+    },
+    {
+      "id": "e-skhynix-memory-amd",
+      "kind": "memory_supply",
+      "source": "co-sk-hynix",
+      "target": "co-amd",
+      "tracks": ["gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["skhynix-annual-2024", "amd-10k-2024"],
+          "source_label": "High-bandwidth memory (HBM)",
+          "notes": "AMD Instinct MI-series accelerators integrate HBM; SK hynix is a primary HBM supplier."
+        }
+      }
+    },
+    {
+      "id": "e-samsung-memory-amd",
+      "kind": "memory_supply",
+      "source": "co-samsung",
+      "target": "co-amd",
+      "tracks": ["gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["samsung-ir-2024", "amd-10k-2024"],
+          "source_label": "High-bandwidth memory (HBM)",
+          "notes": "Samsung supplies HBM for AMD data-center accelerators as a second source."
+        }
+      }
+    },
+    {
+      "id": "e-micron-memory-amd",
+      "kind": "memory_supply",
+      "source": "co-micron",
+      "target": "co-amd",
+      "tracks": ["gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["micron-10k-2024", "amd-10k-2024"],
+          "source_label": "High-bandwidth memory (HBM)",
+          "notes": "Micron supplies HBM for AMD Instinct accelerators; the US-based HBM source."
+        }
+      }
+    },
+    {
+      "id": "e-amat-supplies-skhynix",
+      "kind": "equips",
+      "source": "co-applied-materials",
+      "target": "co-sk-hynix",
+      "tracks": ["memory"],
+      "facts": {
+        "note": {
+          "source_ids": ["amat-10k-2024", "skhynix-annual-2024"],
+          "source_label": "Wafer-fab equipment",
+          "notes": "Applied Materials tools used across SK hynix DRAM and 3D NAND lines, including HBM base-die wafers."
+        }
+      }
+    },
+    {
+      "id": "e-kla-supplies-skhynix",
+      "kind": "equips",
+      "source": "co-kla",
+      "target": "co-sk-hynix",
+      "tracks": ["memory"],
+      "facts": {
+        "note": {
+          "source_ids": ["kla-10k-2024", "skhynix-annual-2024"],
+          "source_label": "Process control / metrology",
+          "notes": "KLA inspection/metrology critical to HBM yield at SK hynix."
+        }
+      }
+    },
+    {
+      "id": "e-lam-supplies-micron",
+      "kind": "equips",
+      "source": "co-lam-research",
+      "target": "co-micron",
+      "tracks": ["memory"],
+      "facts": {
+        "note": {
+          "source_ids": ["lam-10k-2024", "micron-10k-2024"],
+          "source_label": "Etch / deposition equipment",
+          "notes": "Lam Research tools central to Micron 3D NAND and DRAM (including HBM)."
+        }
+      }
+    },
+    {
+      "id": "e-asml-supplies-skhynix",
+      "kind": "equips",
+      "source": "co-asml",
+      "target": "co-sk-hynix",
+      "tracks": ["memory"],
+      "facts": {
+        "note": {
+          "source_ids": ["asml-annual-2024", "skhynix-annual-2024"],
+          "source_label": "Lithography equipment",
+          "notes": "ASML EUV/DUV adopted by SK hynix for advanced DRAM."
+        }
+      }
+    },
+    {
+      "id": "e-ase-packages-mediatek",
+      "kind": "packages",
+      "source": "co-ase",
+      "target": "co-mediatek",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["ase-20f-2024", "mediatek-annual-2024"],
+          "source_label": "OSAT / advanced packaging",
+          "notes": "MediaTek (Taiwan fabless) uses local OSAT including ASE for assembly and test."
+        }
+      }
+    },
+    {
+      "id": "e-foxconn-assembles-apple",
+      "kind": "assembles",
+      "source": "co-foxconn",
+      "target": "co-apple",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["foxconn-ir-2024", "apple-10k-2024"],
+          "source_label": "Systems assembly (EMS)",
+          "notes": "Foxconn is Apple's largest contract assembler of finished devices, concentrated in China and expanding to India/Vietnam."
+        }
+      }
+    },
+    {
+      "id": "e-foxconn-assembles-nvidia",
+      "kind": "assembles",
+      "source": "co-foxconn",
+      "target": "co-nvidia",
+      "tracks": ["gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["foxconn-ir-2024", "nvidia-10k-2024"],
+          "source_label": "AI server / systems assembly (EMS)",
+          "notes": "Foxconn is a major builder of NVIDIA-based AI servers and GB-class rack systems for hyperscalers."
+        }
+      }
+    },
+    {
+      "id": "e-foxconn-assembles-amd",
+      "kind": "assembles",
+      "source": "co-foxconn",
+      "target": "co-amd",
+      "tracks": ["cpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["foxconn-ir-2024", "amd-10k-2024"],
+          "source_label": "Server / systems assembly (EMS)",
+          "notes": "Foxconn assembles servers and systems using AMD CPUs/accelerators for data-center customers."
+        }
+      }
+    }
+  ]
+}

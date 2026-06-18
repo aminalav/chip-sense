@@ -1,0 +1,20 @@
+[
+  { "id": "country-tw", "label": "Taiwan", "iso": "TW", "coordinates": [121.0, 23.7] },
+  { "id": "country-us", "label": "United States", "iso": "US", "coordinates": [-98.35, 39.5] },
+  { "id": "country-kr", "label": "South Korea", "iso": "KR", "coordinates": [127.77, 35.91] },
+  { "id": "country-cn", "label": "China", "iso": "CN", "coordinates": [104.2, 35.86] },
+  { "id": "country-jp", "label": "Japan", "iso": "JP", "coordinates": [138.25, 36.2] },
+  { "id": "country-nl", "label": "Netherlands", "iso": "NL", "coordinates": [5.75, 52.13] },
+  { "id": "country-sg", "label": "Singapore", "iso": "SG", "coordinates": [103.85, 1.35] },
+  { "id": "country-de", "label": "Germany", "iso": "DE", "coordinates": [10.45, 51.16] },
+  { "id": "country-ie", "label": "Ireland", "iso": "IE", "coordinates": [-7.69, 53.35] },
+  { "id": "country-il", "label": "Israel", "iso": "IL", "coordinates": [34.85, 31.05] },
+  { "id": "country-my", "label": "Malaysia", "iso": "MY", "coordinates": [101.98, 4.21] },
+  { "id": "country-in", "label": "India", "iso": "IN", "coordinates": [78.96, 20.59] },
+  { "id": "country-ca", "label": "Canada", "iso": "CA", "coordinates": [-106.35, 56.13] },
+  { "id": "country-cr", "label": "Costa Rica", "iso": "CR", "coordinates": [-84.2, 10.27] },
+  { "id": "country-pl", "label": "Poland", "iso": "PL", "coordinates": [19.39, 52.13] },
+  { "id": "country-vn", "label": "Vietnam", "iso": "VN", "coordinates": [108.28, 14.06] },
+  { "id": "country-mx", "label": "Mexico", "iso": "MX", "coordinates": [-102.55, 23.63] },
+  { "id": "country-ph", "label": "Philippines", "iso": "PH", "coordinates": [121.77, 12.88] }
+]

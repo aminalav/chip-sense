@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0c0f14;
+  --foreground: #e8eaed;
+  --muted: #8b919a;
+  --card: #141a22;
+  --accent: #3b82f6;
+  --track-memory: #a78bfa;
+  --track-cpus: #34d399;
+  --track-gpus: #f472b6;
+  --track-data-centers: #38bdf8;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.maplibregl-ctrl-attrib {
+  font-size: 10px;
+  background: rgba(12, 15, 20, 0.85) !important;
+  color: var(--muted) !important;
+}
+
+.maplibregl-map {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.maplibregl-canvas {
+  outline: none;
+}

@@ -17,8 +17,14 @@ Regenerate: `npm run data:coverage` · Updated: 2026-06-18
 | Supplies edges cited | 10 |
 | Seed graph `equips` edges | 18 |
 | Equips edges cited | 18 |
+| Seed graph `packages` edges | 15 |
+| Packages edges cited | 15 |
+| Seed graph `memory_supply` edges | 12 |
+| Memory supply edges cited | 12 |
+| Seed graph `assembles` edges | 6 |
+| Assembles edges cited | 6 |
 | Comtrade trade flows | 8 |
-| Seed edges with cited `facts` | 64 |
+| Seed edges with cited `facts` | 80 |
 | Scenarios | 9 (illustrative except baseline copy) |
 
 See `SOURCES.md` for sourcing rules and `COMPANIES.md` for the human company table.
@@ -128,3 +134,51 @@ See `SOURCES.md` for sourcing rules and `COMPANIES.md` for the human company tab
 | `e-kla-supplies-skhynix` | KLA → SK Hynix | kla-10k-2024, skhynix-annual-2024 |
 | `e-lam-supplies-micron` | Lam Research → Micron | lam-10k-2024, micron-10k-2024 |
 | `e-asml-supplies-skhynix` | ASML → SK Hynix | asml-annual-2024, skhynix-annual-2024 |
+
+## Cited `packages` edges
+
+| Edge ID | Route | source_ids |
+| --- | --- | --- |
+| `e-ase-packages-nvidia` | ASE Technology Holding → NVIDIA | ase-20f-2024, nvidia-10k-2024 |
+| `e-ase-packages-amd` | ASE Technology Holding → AMD | ase-20f-2024, amd-10k-2024 |
+| `e-ase-packages-broadcom` | ASE Technology Holding → Broadcom | ase-20f-2024, broadcom-10k-2024 |
+| `e-ase-packages-qualcomm` | ASE Technology Holding → Qualcomm | ase-20f-2024, qualcomm-10k-2024 |
+| `e-amkor-packages-nvidia` | Amkor Technology → NVIDIA | amkor-10k-2024, nvidia-10k-2024 |
+| `e-amkor-packages-apple` | Amkor Technology → Apple | amkor-10k-2024, apple-10k-2024 |
+| `e-amkor-packages-qualcomm` | Amkor Technology → Qualcomm | amkor-10k-2024, qualcomm-10k-2024 |
+| `e-ase-packages-mediatek` | ASE Technology Holding → MediaTek | ase-20f-2024, mediatek-annual-2024 |
+| `e-ase-packages-apple` | ASE Technology Holding → Apple | ase-20f-2024, apple-10k-2024 |
+| `e-amkor-packages-amd` | Amkor Technology → AMD | amkor-10k-2024, amd-10k-2024 |
+| `e-amkor-packages-broadcom` | Amkor Technology → Broadcom | amkor-10k-2024, broadcom-10k-2024 |
+| `e-amkor-packages-mediatek` | Amkor Technology → MediaTek | amkor-10k-2024, mediatek-annual-2024 |
+| `e-tsmc-packages-nvidia` | TSMC → NVIDIA | tsmc-20f-2024, nvidia-10k-2024 |
+| `e-tsmc-packages-amd` | TSMC → AMD | tsmc-20f-2024, amd-10k-2024 |
+| `e-tsmc-packages-apple` | TSMC → Apple | tsmc-20f-2024, apple-10k-2024 |
+
+## Cited `memory_supply` edges
+
+| Edge ID | Route | source_ids |
+| --- | --- | --- |
+| `e-skhynix-memory-nvidia` | SK Hynix → NVIDIA | skhynix-annual-2024, nvidia-10k-2024 |
+| `e-samsung-memory-nvidia` | Samsung Electronics (Device Solutions) → NVIDIA | samsung-ir-2024, nvidia-10k-2024 |
+| `e-micron-memory-nvidia` | Micron → NVIDIA | micron-10k-2024, nvidia-10k-2024 |
+| `e-skhynix-memory-amd` | SK Hynix → AMD | skhynix-annual-2024, amd-10k-2024 |
+| `e-samsung-memory-amd` | Samsung Electronics (Device Solutions) → AMD | samsung-ir-2024, amd-10k-2024 |
+| `e-micron-memory-amd` | Micron → AMD | micron-10k-2024, amd-10k-2024 |
+| `e-samsung-memory-qualcomm` | Samsung Electronics (Device Solutions) → Qualcomm | samsung-ir-2024, qualcomm-10k-2024 |
+| `e-skhynix-memory-qualcomm` | SK Hynix → Qualcomm | skhynix-annual-2024, qualcomm-10k-2024 |
+| `e-micron-memory-qualcomm` | Micron → Qualcomm | micron-10k-2024, qualcomm-10k-2024 |
+| `e-samsung-memory-apple` | Samsung Electronics (Device Solutions) → Apple | samsung-ir-2024, apple-10k-2024 |
+| `e-skhynix-memory-apple` | SK Hynix → Apple | skhynix-annual-2024, apple-10k-2024 |
+| `e-micron-memory-apple` | Micron → Apple | micron-10k-2024, apple-10k-2024 |
+
+## Cited `assembles` edges
+
+| Edge ID | Route | source_ids |
+| --- | --- | --- |
+| `e-foxconn-assembles-apple` | Foxconn (Hon Hai) → Apple | foxconn-ir-2024, apple-10k-2024 |
+| `e-foxconn-assembles-nvidia` | Foxconn (Hon Hai) → NVIDIA | foxconn-ir-2024, nvidia-10k-2024 |
+| `e-foxconn-assembles-amd` | Foxconn (Hon Hai) → AMD | foxconn-ir-2024, amd-10k-2024 |
+| `e-foxconn-assembles-qualcomm` | Foxconn (Hon Hai) → Qualcomm | foxconn-ir-2024, qualcomm-10k-2024 |
+| `e-foxconn-assembles-intel` | Foxconn (Hon Hai) → Intel | foxconn-ir-2024, intel-10k-2024 |
+| `e-foxconn-assembles-broadcom` | Foxconn (Hon Hai) → Broadcom | foxconn-ir-2024, broadcom-10k-2024 |

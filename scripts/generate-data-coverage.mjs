@@ -44,8 +44,14 @@ function edgeCited(edge) {
 const citedFacts = (graph.edges ?? []).filter((e) => edgeCited(e)).length;
 const supplies = (graph.edges ?? []).filter((e) => e.kind === "supplies");
 const equips = (graph.edges ?? []).filter((e) => e.kind === "equips");
+const packages = (graph.edges ?? []).filter((e) => e.kind === "packages");
+const memorySupply = (graph.edges ?? []).filter((e) => e.kind === "memory_supply");
+const assembles = (graph.edges ?? []).filter((e) => e.kind === "assembles");
 const suppliesCited = supplies.filter(edgeCited).length;
 const equipsCited = equips.filter(edgeCited).length;
+const packagesCited = packages.filter(edgeCited).length;
+const memoryCited = memorySupply.filter(edgeCited).length;
+const assemblesCited = assembles.filter(edgeCited).length;
 const tradeFlowCount = JSON.parse(
   fs.readFileSync(path.join(root, "src/data/trade-flows.json"), "utf8"),
 ).flows.length;
@@ -70,6 +76,12 @@ const lines = [
   `| Supplies edges cited | ${suppliesCited} |`,
   `| Seed graph \`equips\` edges | ${equips.length} |`,
   `| Equips edges cited | ${equipsCited} |`,
+  `| Seed graph \`packages\` edges | ${packages.length} |`,
+  `| Packages edges cited | ${packagesCited} |`,
+  `| Seed graph \`memory_supply\` edges | ${memorySupply.length} |`,
+  `| Memory supply edges cited | ${memoryCited} |`,
+  `| Seed graph \`assembles\` edges | ${assembles.length} |`,
+  `| Assembles edges cited | ${assemblesCited} |`,
   `| Comtrade trade flows | ${tradeFlowCount} |`,
   `| Seed edges with cited \`facts\` | ${citedFacts} |`,
   `| Scenarios | ${(graph.scenarios ?? []).length} (illustrative except baseline copy) |`,
@@ -127,7 +139,7 @@ for (const site of fabSites) {
   );
 }
 
-for (const kind of ["supplies", "equips"]) {
+for (const kind of ["supplies", "equips", "packages", "memory_supply", "assembles"]) {
   lines.push("", `## Cited \`${kind}\` edges`, "", "| Edge ID | Route | source_ids |", "| --- | --- | --- |");
   for (const edge of graph.edges ?? []) {
     if (edge.kind !== kind || !edgeCited(edge)) continue;

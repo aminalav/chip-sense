@@ -42,7 +42,17 @@ Run **`npm run check:data`** before committing data changes.
 3. `ResearchBoardSection` (client) filters the view, computes scenario styling, and syncs filters to the URL.
 4. `SupplyMap` renders MapLibre markers, arcs, and trade lines. It's dynamically imported with `ssr: false`, so MapLibre stays out of the initial bundle.
 
-Shareable URLs: `/?scenario=taiwan-crisis`, `/?track=gpus&trade=1`, `/?node=co-tsmc`.
+Shareable URLs: `/?scenario=taiwan-crisis`, `/?track=gpus&trade=1`, `/?node=co-tsmc`, `/?essay1=1`.
+
+## Deploy
+
+Production site: **[chip-sense-ten.vercel.app](https://chip-sense-ten.vercel.app)** (auto-deploys from `main` on GitHub).
+
+```bash
+npm run check:data && npm run build   # gate before shipping data or UI changes
+```
+
+Connect the repo to [Vercel](https://vercel.com); no env vars required for the static board. See [ARCHITECTURE.md](./ARCHITECTURE.md) for the full stack and data flow.
 
 ## Project layout
 
@@ -54,7 +64,7 @@ src/
 ├── hooks/       # Client hooks (URL state)
 └── lib/         # Graph merge, map filters, scenario logic
 scripts/         # Data validators + Comtrade fetch
-docs/            # Essay outline + writing cheat sheet
+docs/            # Essay outlines + writing cheat sheet
 ```
 
 ## Documentation
@@ -65,8 +75,9 @@ docs/            # Essay outline + writing cheat sheet
 | [MAP.md](./MAP.md) | Map visibility rules, URL params, pin colors |
 | [SOURCES.md](./SOURCES.md) | What counts as sourced vs. illustrative |
 | [SCENARIOS.md](./SCENARIOS.md) | Scenario list and writing prompts |
-| [docs/essay-1.md](./docs/essay-1.md) | Essay outline with board links |
-| [docs/writing-cheat-sheet.md](./docs/writing-cheat-sheet.md) | Phase 4: piece briefs, URLs, screenshot names |
+| [docs/essay-1.md](./docs/essay-1.md) | Taiwan / US–China essay with board links |
+| [docs/essay-scenarios.md](./docs/essay-scenarios.md) | Scenario-series posts (HBM, packaging, export controls, …) |
+| [docs/writing-cheat-sheet.md](./docs/writing-cheat-sheet.md) | Piece briefs, URLs, screenshot names |
 | [COMPANIES.md](./COMPANIES.md) | Company registry table |
 | [DATA_COVERAGE.md](./DATA_COVERAGE.md) | Coverage metrics (regenerate with `data:coverage`) |
 

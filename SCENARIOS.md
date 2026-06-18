@@ -4,7 +4,7 @@ This doc bridges the **map** (scenarios + connections in `src/data/seed-graph.js
 
 > All scenarios are **illustrative stress tests**, not forecasts. Document real sources before publishing any number as factual. Assumptions live in each scenario's `assumptions` block.
 
-**Phase 4 writing workflow:** [docs/writing-cheat-sheet.md](./docs/writing-cheat-sheet.md) · Essay outline: [docs/essay-1.md](./docs/essay-1.md)
+**Phase 4 writing workflow:** [docs/writing-cheat-sheet.md](./docs/writing-cheat-sheet.md) · Essay: [docs/essay-1.md](./docs/essay-1.md) · Scenario series: [docs/essay-scenarios.md](./docs/essay-scenarios.md)
 
 ---
 

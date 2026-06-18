@@ -249,11 +249,14 @@ export function ResearchBoardSection({
             </ul>
           </div>
         ) : null}
-        <div>
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">
+        <details className="rounded-xl border border-white/10 bg-[var(--card)] px-4 py-3">
+          <summary className="cursor-pointer select-none text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">
             Supply relationships ({scopeLabel})
-          </h2>
-          <p className="mt-1 text-xs text-[var(--muted)]">
+            <span className="ml-1 font-normal normal-case text-[var(--foreground)]/70">
+              · {relationships.length} in view
+            </span>
+          </summary>
+          <p className="mt-2 text-xs text-[var(--muted)]">
             Who supplies whom across the chain. Select one to see its citations.
           </p>
           {relationships.length === 0 ? (
@@ -270,7 +273,7 @@ export function ResearchBoardSection({
                     className={`w-full rounded-md border px-2 py-1.5 text-left text-[12px] leading-snug transition ${
                       state.selectedEdgeId === e.id
                         ? "border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--foreground)]"
-                        : "border-white/5 bg-[var(--card)] text-[var(--foreground)]/85 hover:border-white/15"
+                        : "border-white/5 bg-black/20 text-[var(--foreground)]/85 hover:border-white/15"
                     }`}
                   >
                     <span className="font-medium">{e.from}</span>{" "}
@@ -281,7 +284,7 @@ export function ResearchBoardSection({
               ))}
             </ul>
           )}
-        </div>
+        </details>
         </aside>
       </div>
       <SourcesLinkedStrip

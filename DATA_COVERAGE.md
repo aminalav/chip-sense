@@ -1,7 +1,7 @@
 # Data coverage
 
 Auto-generated from `companies.json`, `fab-sites.json`, and `seed-graph.json`.
-Regenerate: `npm run data:coverage` · Updated: 2026-05-27
+Regenerate: `npm run data:coverage` · Updated: 2026-06-18
 
 ## Summary
 
@@ -13,13 +13,13 @@ Regenerate: `npm run data:coverage` · Updated: 2026-05-27
 | Fab / site pins | 33 |
 | Fab pins with `source_ids` | 33 |
 | Source catalog entries | 33 |
-| Seed graph `supplies` edges | 7 |
-| Supplies edges cited | 7 |
-| Seed graph `equips` edges | 6 |
-| Equips edges cited | 6 |
+| Seed graph `supplies` edges | 10 |
+| Supplies edges cited | 10 |
+| Seed graph `equips` edges | 18 |
+| Equips edges cited | 18 |
 | Comtrade trade flows | 8 |
-| Seed edges with cited `facts` | 32 |
-| Scenarios | 3 (illustrative except baseline copy) |
+| Seed edges with cited `facts` | 64 |
+| Scenarios | 9 (illustrative except baseline copy) |
 
 See `SOURCES.md` for sourcing rules and `COMPANIES.md` for the human company table.
 
@@ -28,19 +28,19 @@ See `SOURCES.md` for sourcing rules and `COMPANIES.md` for the human company tab
 | Company | Essay 1 | Sourced | Fab pins | Supplies out (cited?) | Supplies in |
 | --- | :---: | :---: | --- | --- | --- |
 | TSMC | Y | Y | tsmc-sc, tsmc-az, tsmc-jp | NVIDIA ✓; AMD ✓; Apple ✓; Qualcomm ✓; MediaTek ✓; Broadcom ✓ | — |
-| Samsung Electronics (Device Solutions) | Y | Y | samsung-hwaseong, samsung-taylor, samsung-austin, samsung-xian | Qualcomm ✓ | — |
+| Samsung Electronics (Device Solutions) | Y | Y | samsung-hwaseong, samsung-taylor, samsung-austin, samsung-xian | Qualcomm ✓; NVIDIA ✓ | — |
 | SK Hynix | Y | Y | sk-hynix-icheon, sk-hynix-wuxi, sk-hynix-indiana | — | — |
 | Micron Technology | Y | Y | micron-taichung, micron-hiroshima, micron-singapore, micron-malaysia | — | — |
 | Intel | Y | Y | intel-or, intel-ie, intel-israel, intel-malaysia, intel-chengdu | — | — |
-| NVIDIA | Y | Y | — | — | TSMC ✓ |
+| NVIDIA | Y | Y | — | — | TSMC ✓; Samsung Electronics (Device Solutions) ✓ |
 | AMD | Y | Y | — | — | TSMC ✓ |
 | Apple | Y | Y | — | — | TSMC ✓ |
-| Qualcomm |  | Y | — | — | TSMC ✓; Samsung Electronics (Device Solutions) ✓ |
+| Qualcomm |  | Y | — | — | TSMC ✓; Samsung Electronics (Device Solutions) ✓; GlobalFoundries ✓ |
 | Broadcom |  | Y | — | — | TSMC ✓ |
-| MediaTek |  | Y | — | — | TSMC ✓ |
-| UMC | Y | Y | umc-singapore, umc-suzhou | — | — |
+| MediaTek |  | Y | — | — | TSMC ✓; UMC ✓ |
+| UMC | Y | Y | umc-singapore, umc-suzhou | MediaTek ✓ | — |
 | SMIC | Y | Y | smic-shanghai, smic-beijing | — | — |
-| GlobalFoundries |  | Y | gf-dresden, gf-singapore | — | — |
+| GlobalFoundries |  | Y | gf-dresden, gf-singapore | Qualcomm ✓ | — |
 | ASE Technology Holding | Y | Y | ase-kaohsiung, ase-shanghai | — | — |
 | Amkor Technology |  | Y | amkor-korea, amkor-philippines | — | — |
 | ASML | Y | Y | — | — | — |
@@ -102,6 +102,9 @@ See `SOURCES.md` for sourcing rules and `COMPANIES.md` for the human company tab
 | `e-tsmc-supplies-mediatek` | TSMC → MediaTek | mediatek-annual-2024, tsmc-20f-2024 |
 | `e-tsmc-supplies-broadcom` | TSMC → Broadcom | broadcom-10k-2024, tsmc-20f-2024 |
 | `e-samsung-supplies-qualcomm` | Samsung Electronics (Device Solutions) → Qualcomm | qualcomm-10k-2024, samsung-ir-2024 |
+| `e-samsung-supplies-nvidia` | Samsung Electronics (Device Solutions) → NVIDIA | samsung-ir-2024, nvidia-10k-2024 |
+| `e-gf-supplies-qualcomm` | GlobalFoundries → Qualcomm | gf-sec-2024, qualcomm-10k-2024 |
+| `e-umc-supplies-mediatek` | UMC → MediaTek | umc-financial-2024, mediatek-annual-2024 |
 
 ## Cited `equips` edges
 
@@ -113,3 +116,15 @@ See `SOURCES.md` for sourcing rules and `COMPANIES.md` for the human company tab
 | `e-lam-supplies-tsmc` | Lam Research → TSMC | lam-10k-2024, tsmc-20f-2024 |
 | `e-lam-supplies-samsung` | Lam Research → Samsung Electronics (Device Solutions) | lam-10k-2024, samsung-ir-2024 |
 | `e-asml-supplies-intel` | ASML → Intel | asml-annual-2024, intel-10k-2024 |
+| `e-asml-supplies-samsung` | ASML → Samsung Electronics (Device Solutions) | asml-annual-2024, samsung-ir-2024 |
+| `e-asml-supplies-smic` | ASML → SMIC | asml-annual-2024, smic-annual-2024 |
+| `e-amat-supplies-samsung` | Applied Materials → Samsung Electronics (Device Solutions) | amat-10k-2024, samsung-ir-2024 |
+| `e-lam-supplies-skhynix` | Lam Research → SK Hynix | lam-10k-2024, skhynix-annual-2024 |
+| `e-kla-supplies-tsmc` | KLA → TSMC | kla-10k-2024, tsmc-20f-2024 |
+| `e-kla-supplies-samsung` | KLA → Samsung Electronics (Device Solutions) | kla-10k-2024, samsung-ir-2024 |
+| `e-tel-supplies-tsmc` | Tokyo Electron (TEL) → TSMC | tel-integrated-2024, tsmc-20f-2024 |
+| `e-tel-supplies-samsung` | Tokyo Electron (TEL) → Samsung Electronics (Device Solutions) | tel-integrated-2024, samsung-ir-2024 |
+| `e-amat-supplies-skhynix` | Applied Materials → SK Hynix | amat-10k-2024, skhynix-annual-2024 |
+| `e-kla-supplies-skhynix` | KLA → SK Hynix | kla-10k-2024, skhynix-annual-2024 |
+| `e-lam-supplies-micron` | Lam Research → Micron | lam-10k-2024, micron-10k-2024 |
+| `e-asml-supplies-skhynix` | ASML → SK Hynix | asml-annual-2024, skhynix-annual-2024 |

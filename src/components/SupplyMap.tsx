@@ -236,18 +236,29 @@ export const SupplyMap = forwardRef<MapRef, {
 
   const initialView = useMemo(() => {
     if (points.length === 0) {
-      return { longitude: 0, latitude: 20, zoom: 1.5 };
+      return { longitude: 150, latitude: 20, zoom: 1.1 };
     }
-    const lngs = points.map((p) => p.coordinates![0]);
+    // Pacific-centered frame: the chip world spans the Americas to East Asia.
+    // Centering on the raw lng/lat centroid lands in the empty Atlantic/Sahara
+    // with all pins off-screen, so shift the western hemisphere east of the
+    // Atlantic cut into a contiguous [~ -30..330] range before averaging.
+    const lngs = points.map((p) => {
+      const lng = p.coordinates![0];
+      return lng < -30 ? lng + 360 : lng;
+    });
     const lats = points.map((p) => p.coordinates![1]);
     const minLng = Math.min(...lngs);
     const maxLng = Math.max(...lngs);
     const minLat = Math.min(...lats);
     const maxLat = Math.max(...lats);
+    const centerLng = (minLng + maxLng) / 2;
+    const lngSpan = maxLng - minLng;
+    const latSpan = maxLat - minLat;
+    const zoom = lngSpan > 180 || latSpan > 100 ? 1.1 : lngSpan > 80 ? 1.6 : 2.4;
     return {
-      longitude: (minLng + maxLng) / 2,
+      longitude: centerLng > 180 ? centerLng - 360 : centerLng,
       latitude: (minLat + maxLat) / 2,
-      zoom: 2.2,
+      zoom,
     };
   }, [points]);
 

@@ -8,17 +8,17 @@ Chip Sense mixes **sourced registry data** (companies, fabs, supply links) with 
 | --- | --- | ---: | --- | --- |
 | Company registry | `src/data/companies.json`, `COMPANIES.md` | 25 | **Yes** | Each row: `sourced: true`, `source_url` (IR/SEC/annual report). Validated by `validate:companies`. |
 | Fab / site pins | `src/data/fab-sites.json` | 33 | **Yes** | Each site: `source_ids[]` → `sources.json`. Merged at runtime in `geography.ts`. |
-| Source catalog | `src/data/sources.json` | 30 | **Catalog** | Canonical URLs for citations; not auto-verified against live filings. |
-| Supply relationships | `seed-graph.json` (`supplies` edges) | 7 | **Yes** | All cite `source_ids` (TSMC→fabless + Samsung→Qualcomm). |
-| Equipment links | `seed-graph.json` (`equips` edges) | 6 | **Yes** | ASML/AMAT/Lam → TSMC, Intel, Samsung (cited). |
+| Source catalog | `src/data/sources.json` | 33 | **Catalog** | Canonical URLs for citations; not auto-verified against live filings. |
+| Supply relationships | `seed-graph.json` (`supplies` edges) | 10 | **Yes** | All cite `source_ids` (TSMC→fabless + Samsung→Qualcomm). |
+| Equipment links | `seed-graph.json` (`equips` edges) | 18 | **Yes** | ASML/AMAT/Lam → TSMC, Intel, Samsung (cited). |
 | Trade flows (Comtrade) | `trade-flows.json` | 8 | **Yes** | All flows have `value_usd_millions` (Comtrade preview + MOF/Census overrides for Taiwan). Re-fetch: `npm run fetch:trade`. |
 | Other graph edges | `seed-graph.json` + runtime geography | ~95+ | **Partial** | Role/category edges cited where added; many `hq_in` still uncited. |
-| Scenarios `affects` | `seed-graph.json` → `scenarios[].affects` | 2 | **Declarative** | Explicit node/edge IDs for map styling (illustrative scenarios). |
+| Scenarios `affects` | `seed-graph.json` → `scenarios[].affects` | 8 | **Declarative** | Explicit node/edge IDs for map styling (illustrative scenarios). |
 | Country centroids | `src/data/countries.json` | 18 | Reference | Map pins; not tied to trade statistics. |
-| Scenarios | `seed-graph.json` → `scenarios` | 3 | **Illustrative** | Assumptions for UI stress-testing, not forecasts. |
+| Scenarios | `seed-graph.json` → `scenarios` | 9 | **Illustrative** | Assumptions for UI stress-testing, not forecasts. |
 | Essay outline | `docs/essay-1.md` | — | Reference | Points at graph IDs; not primary research. |
 
-**Validator output (typical):** 25 companies sourced · 12 essay-1 must-show companies · 25+ cited fact blocks in `seed-graph.json` · 33 fab `source_id` refs.
+**Validator output (typical):** 25 companies sourced · 12 essay-1 must-show companies · 64 cited fact blocks in `seed-graph.json` · 33 fab `source_id` refs.
 
 ---
 

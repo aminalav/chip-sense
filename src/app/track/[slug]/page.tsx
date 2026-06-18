@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { BoardDisclaimer } from "@/components/BoardDisclaimer";
 import { ResearchBoardSection } from "@/components/ResearchBoardSection";
 import { getTrack, TRACKS, isTrackSlug } from "@/data/tracks";
 import { loadGraph } from "@/lib/graphQueries";
@@ -57,11 +58,17 @@ export default async function TrackPage({ params }: { params: Promise<{ slug: st
           scenarios={graph.scenarios}
           accentHex={track.accentHex}
           trackLens={slug}
+          showTrackLens
           researchPointers={track.researchPointers}
+          boardNote={`${track.title} lens — registry companies, fab pins, and supply relationships scoped to this track.`}
           sourceCatalogCount={baselineSources.length}
           sourceRecords={baselineSources}
         />
       </Suspense>
+
+      <footer className="border-t border-white/10 pt-4">
+        <BoardDisclaimer />
+      </footer>
     </main>
   );
 }

@@ -369,7 +369,7 @@ export const SupplyMap = forwardRef<MapRef, {
               onChange={(e) => onEssay1OnlyChange(e.target.checked)}
               className="rounded border-white/20"
             />
-            Essay 1 pins
+            Essay 1 pins (12 companies + key fabs)
           </label>
           <label className="flex items-center gap-2 text-[var(--muted)]">
             <input
@@ -545,6 +545,7 @@ export const SupplyMap = forwardRef<MapRef, {
           initialViewState={initialView}
           style={{ width: "100%", height: "100%" }}
           mapStyle={MAP_STYLE}
+          canvasContextAttributes={{ preserveDrawingBuffer: true }}
           interactiveLayerIds={hitLayerIds.length > 0 ? hitLayerIds : undefined}
           onClick={onSelectEdge ? handleMapClick : undefined}
           onLoad={(e) => setZoom(e.target.getZoom())}

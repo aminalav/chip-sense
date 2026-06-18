@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { BoardDisclaimer } from "@/components/BoardDisclaimer";
 import { HomeDashboard } from "@/components/HomeDashboard";
 import { loadGraph } from "@/lib/graphQueries";
 import { COMPANY_RECORDS } from "@/lib/companyRecords";
@@ -39,10 +40,13 @@ export default function Home() {
         />
       </Suspense>
 
-      <footer className="border-t border-white/10 pt-4 text-xs text-[var(--muted)]">
-        Registry: {COMPANY_RECORDS.length} companies · Docs:{" "}
-        <code className="text-[var(--foreground)]">DATA_COVERAGE.md</code>,{" "}
-        <code className="text-[var(--foreground)]">SOURCES.md</code>
+      <footer className="space-y-2 border-t border-white/10 pt-4">
+        <BoardDisclaimer />
+        <p className="text-xs text-[var(--muted)]">
+          Registry: {COMPANY_RECORDS.length} companies · Docs:{" "}
+          <code className="text-[var(--foreground)]">DATA_COVERAGE.md</code>,{" "}
+          <code className="text-[var(--foreground)]">SOURCES.md</code>
+        </p>
       </footer>
     </main>
   );

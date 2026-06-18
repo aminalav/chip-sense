@@ -14,6 +14,7 @@ export function ExportMapButton({
     const map = mapRef.current?.getMap();
     if (!map) return;
     try {
+      map.triggerRepaint();
       const canvas = map.getCanvas();
       const link = document.createElement("a");
       link.download = filename;
@@ -28,9 +29,10 @@ export function ExportMapButton({
     <button
       type="button"
       onClick={exportPng}
+      title="Downloads basemap and connection arcs. Map pins are not included — use a browser screenshot for the full board."
       className="rounded-md border border-white/10 bg-[var(--card)] px-3 py-1.5 text-xs font-medium text-[var(--foreground)] transition hover:border-white/20"
     >
-      Export map PNG
+      Export arcs (PNG)
     </button>
   );
 }

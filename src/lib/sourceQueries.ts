@@ -15,5 +15,22 @@ export function sourceIdsFromEdges(edges: GraphEdge[]): string[] {
       }
     }
   }
-  return [...ids];
+  return [...ids].sort();
+}
+
+/** Source IDs cited by visible map edges and (optionally) active trade flows. */
+export function collectBoardSourceIds(
+  edges: GraphEdge[],
+  tradeFlows?: { source_ids?: string[] }[],
+  includeTrade = false,
+): string[] {
+  const ids = new Set(sourceIdsFromEdges(edges));
+  if (includeTrade && tradeFlows) {
+    for (const flow of tradeFlows) {
+      for (const sourceId of flow.source_ids ?? []) {
+        ids.add(sourceId);
+      }
+    }
+  }
+  return [...ids].sort();
 }

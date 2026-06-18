@@ -4,6 +4,21 @@ import path from "node:path";
 const root = process.cwd();
 const companiesPath = path.join(root, "src/data/companies.json");
 
+const ESSAY_1_COMPANY_IDS = [
+  "co-tsmc",
+  "co-samsung",
+  "co-sk-hynix",
+  "co-micron",
+  "co-intel",
+  "co-nvidia",
+  "co-amd",
+  "co-apple",
+  "co-asml",
+  "co-smic",
+  "co-umc",
+  "co-ase",
+];
+
 const PRIORITY_IDS = [
   "co-tsmc",
   "co-samsung",
@@ -70,8 +85,21 @@ for (const row of companies) {
 }
 
 const mustShow = companies.filter((c) => c.must_show_essay_1);
-if (mustShow.length < 10) {
-  errors.push(`Expected at least 10 must_show_essay_1 companies, found ${mustShow.length}`);
+if (mustShow.length !== ESSAY_1_COMPANY_IDS.length) {
+  errors.push(
+    `Expected exactly ${ESSAY_1_COMPANY_IDS.length} must_show_essay_1 companies, found ${mustShow.length}`,
+  );
+}
+for (const id of ESSAY_1_COMPANY_IDS) {
+  const row = companies.find((c) => c.id === id);
+  if (!row?.must_show_essay_1) {
+    errors.push(`[${id}] must be must_show_essay_1=true (essay-1 teaching view)`);
+  }
+}
+for (const row of mustShow) {
+  if (!ESSAY_1_COMPANY_IDS.includes(row.id)) {
+    errors.push(`[${row.id}] must_show_essay_1=true but not in essay-1 list — remove flag or update ESSAY_1_COMPANY_IDS`);
+  }
 }
 
 if (errors.length > 0) {

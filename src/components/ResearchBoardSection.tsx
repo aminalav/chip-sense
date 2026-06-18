@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import type { MapRef } from "react-map-gl/maplibre";
 import { BoardSelectionPanel } from "@/components/BoardSelectionPanel";
 import { EditorialTracksBar } from "@/components/EditorialTracksBar";
+import { BoardDisclaimer, ScenarioBanner } from "@/components/BoardDisclaimer";
 import { ExportMapButton } from "@/components/ExportMapButton";
 import { ScenarioImpactPanel } from "@/components/ScenarioImpactPanel";
 import { SourcesLinkedStrip } from "@/components/SourcesLinkedStrip";
@@ -16,7 +17,7 @@ import { useBoardUrlState } from "@/hooks/useBoardUrlState";
 import { boardPath } from "@/lib/boardUrlState";
 import { buildMapView } from "@/lib/mapView";
 import { computeScenarioEffects } from "@/lib/scenarioEffects";
-import { sourceIdsFromEdges } from "@/lib/sourceQueries";
+import { collectBoardSourceIds } from "@/lib/sourceQueries";
 import { loadTradeFlows, tradeFlowsForTrack, tradeFlowsToGeoJSON } from "@/lib/tradeFlows";
 
 const SupplyMap = dynamic(
@@ -98,10 +99,10 @@ export function ResearchBoardSection({
   );
 
   const trackSources = useMemo(() => {
-    return sourceIdsFromEdges(edges)
+    return collectBoardSourceIds(edges, tradeFlows, state.showTradeFlows)
       .map((id) => sourceLookup.get(id))
       .filter((s): s is SourceRecord => Boolean(s));
-  }, [edges, sourceLookup]);
+  }, [edges, tradeFlows, state.showTradeFlows, sourceLookup]);
 
   const nodeById = useMemo(() => new Map(graphNodes.map((n) => [n.id, n])), [graphNodes]);
   const countryName = useMemo(
@@ -160,6 +161,9 @@ export function ResearchBoardSection({
   return (
     <section className="flex flex-col gap-6">
       {showEditorialTracks ? <EditorialTracksBar /> : null}
+      {activeScenario && activeScenario.id !== "baseline" ? (
+        <ScenarioBanner scenarioLabel={activeScenario.label} />
+      ) : null}
       <div className="grid gap-6 lg:grid-cols-5 lg:gap-8">
         <div className="isolate space-y-3 lg:col-span-3">
         {showTrackLens ? <TrackLensBar active={trackLens} boardPathname="/" boardState={state} /> : null}
@@ -285,6 +289,7 @@ export function ResearchBoardSection({
         scopeLabel={scopeLabel}
         sourceCatalogCount={sourceCatalogCount}
       />
+      <BoardDisclaimer />
     </section>
   );
 }

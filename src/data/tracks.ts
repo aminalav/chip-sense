@@ -19,8 +19,9 @@ export const TRACKS: TrackDefinition[] = [
     cssVar: "var(--track-memory)",
     accentHex: "#a78bfa",
     researchPointers: [
-      "WSTS product category: Memory (verify year definitions)",
-      "UN Comtrade HS subheadings for memory ICs (verify codes per year)",
+      "Memory makers (Samsung, SK hynix, Micron) and HBM supply arcs",
+      "Packaging/OSAT pins in Taiwan, Korea, and the US",
+      "Toggle trade flows for KR↔CN and TW↔US memory-related flows",
     ],
   },
   {
@@ -30,8 +31,9 @@ export const TRACKS: TrackDefinition[] = [
     cssVar: "var(--track-cpus)",
     accentHex: "#34d399",
     researchPointers: [
-      "x86 / Arm revenue segments in 10-K geographic splits",
-      "Leading-edge fab operator disclosures",
+      "Logic vendors (Intel, AMD, Apple, Qualcomm) and foundry supply links",
+      "Export-controls scenario: equipment → SMIC and China domestic fabs",
+      "Mature-node foundries (UMC, GlobalFoundries, SMIC) on trailing processes",
     ],
   },
   {
@@ -41,8 +43,9 @@ export const TRACKS: TrackDefinition[] = [
     cssVar: "var(--track-gpus)",
     accentHex: "#f472b6",
     researchPointers: [
-      "Datacenter vs gaming segment reporting (NVIDIA, AMD)",
-      "CoWoS / advanced packaging news flow (cite dated articles)",
+      "Accelerators (NVIDIA, AMD) and TSMC foundry + CoWoS packaging arcs",
+      "HBM memory_supply layer — SK hynix, Samsung, Micron → NVIDIA/AMD",
+      "Constrained-packaging and HBM-shortage scenarios for AI supply stories",
     ],
   },
   {
@@ -52,8 +55,9 @@ export const TRACKS: TrackDefinition[] = [
     cssVar: "var(--track-data-centers)",
     accentHex: "#38bdf8",
     researchPointers: [
-      "Cloud capex calls (operator IR)",
-      "GPU / accelerator attach to cloud growth (your model)",
+      "Hyperscale supply chain: accelerators, networking ASICs, EMS assembly",
+      "Foxconn → NVIDIA server assembly; Broadcom networking silicon",
+      "Trade flows for equipment and finished chips into US data-center build-out",
     ],
   },
 ];

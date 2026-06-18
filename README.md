@@ -174,4 +174,12 @@ Chip Sense is an **educational visualization**. Scenario multipliers and styling
 
 ## License
 
-Source code is provided for learning and reference. Data citations point to third-party filings and publications; those materials remain under their respective publishers' terms.
+This project’s **source code** is released under the [MIT License](./LICENSE).
+
+That license covers the application code in this repository (TypeScript, React components, scripts, and the structure of the JSON datasets). It does **not** mean the author claims ownership of:
+
+- **Third-party materials** cited in `sources.json` (SEC filings, annual reports, trade statistics, and similar) — those remain under their publishers’ terms.
+- **Company names, product names, and trademarks** shown on the map — they belong to their respective owners; the map is for education, not endorsement.
+- **Facts about the semiconductor industry** — the board visualizes publicly reported relationships; the MIT license is not a claim of proprietary knowledge about the industry.
+
+Scenario styling and multipliers are illustrative only, not forecasts. See the disclaimer above and [SOURCES.md](./SOURCES.md) for how sourcing works in this repo.

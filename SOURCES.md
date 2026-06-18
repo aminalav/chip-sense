@@ -12,13 +12,16 @@ Chip Sense mixes **sourced registry data** (companies, fabs, supply links) with 
 | Supply relationships | `seed-graph.json` (`supplies` edges) | 10 | **Yes** | All cite `source_ids` (TSMC→fabless + Samsung→Qualcomm). |
 | Equipment links | `seed-graph.json` (`equips` edges) | 18 | **Yes** | ASML/AMAT/Lam → TSMC, Intel, Samsung (cited). |
 | Trade flows (Comtrade) | `trade-flows.json` | 8 | **Yes** | All flows have `value_usd_millions` (Comtrade preview + MOF/Census overrides for Taiwan). Re-fetch: `npm run fetch:trade`. |
+| Packaging links | `seed-graph.json` (`packages` edges) | 15 | **Yes** | ASE/Amkor OSAT + TSMC in-house CoWoS; all cite `source_ids`. |
+| Memory supply links | `seed-graph.json` (`memory_supply` edges) | 12 | **Yes** | HBM → NVIDIA/AMD; LPDDR → Qualcomm/Apple. |
+| Assembly links | `seed-graph.json` (`assembles` edges) | 6 | **Yes** | Foxconn EMS → fabless/system customers. |
 | Other graph edges | `seed-graph.json` + runtime geography | ~95+ | **Partial** | Role/category edges cited where added; many `hq_in` still uncited. |
 | Scenarios `affects` | `seed-graph.json` → `scenarios[].affects` | 8 | **Declarative** | Explicit node/edge IDs for map styling (illustrative scenarios). |
 | Country centroids | `src/data/countries.json` | 18 | Reference | Map pins; not tied to trade statistics. |
 | Scenarios | `seed-graph.json` → `scenarios` | 9 | **Illustrative** | Assumptions for UI stress-testing, not forecasts. |
 | Essay outline | `docs/essay-1.md` | — | Reference | Points at graph IDs; not primary research. |
 
-**Validator output (typical):** 25 companies sourced · 12 essay-1 must-show companies · 64 cited fact blocks in `seed-graph.json` · 33 fab `source_id` refs.
+**Validator output (typical):** 25 companies sourced · 12 essay-1 must-show companies · 80 cited fact blocks in `seed-graph.json` · 33 fab `source_id` refs.
 
 ---
 

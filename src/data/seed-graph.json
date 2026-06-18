@@ -31,7 +31,10 @@
           "e-tsmc-supplies-apple",
           "e-tsmc-supplies-qualcomm",
           "e-tsmc-supplies-mediatek",
-          "e-tsmc-supplies-broadcom"
+          "e-tsmc-supplies-broadcom",
+          "e-tsmc-packages-nvidia",
+          "e-tsmc-packages-amd",
+          "e-tsmc-packages-apple"
         ]
       }
     },
@@ -2248,6 +2251,230 @@
           "source_ids": ["foxconn-ir-2024", "amd-10k-2024"],
           "source_label": "Server / systems assembly (EMS)",
           "notes": "Foxconn assembles servers and systems using AMD CPUs/accelerators for data-center customers."
+        }
+      }
+    },
+    {
+      "id": "e-ase-packages-apple",
+      "kind": "packages",
+      "source": "co-ase",
+      "target": "co-apple",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["ase-20f-2024", "apple-10k-2024"],
+          "source_label": "OSAT / advanced packaging",
+          "notes": "Apple 10-K: outsourced assembly and test; ASE among Taiwan OSAT partners packaging A- and M-series silicon after TSMC wafer fab."
+        }
+      }
+    },
+    {
+      "id": "e-amkor-packages-amd",
+      "kind": "packages",
+      "source": "co-amkor",
+      "target": "co-amd",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["amkor-10k-2024", "amd-10k-2024"],
+          "source_label": "OSAT / advanced packaging",
+          "notes": "AMD 10-K: outsourced assembly and test for CPU and accelerator products; Amkor among packaging partners."
+        }
+      }
+    },
+    {
+      "id": "e-amkor-packages-broadcom",
+      "kind": "packages",
+      "source": "co-amkor",
+      "target": "co-broadcom",
+      "tracks": ["gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["amkor-10k-2024", "broadcom-10k-2024"],
+          "source_label": "OSAT / advanced packaging",
+          "notes": "Broadcom 10-K: outsourced manufacturing and packaging for networking ASICs and custom AI silicon."
+        }
+      }
+    },
+    {
+      "id": "e-amkor-packages-mediatek",
+      "kind": "packages",
+      "source": "co-amkor",
+      "target": "co-mediatek",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["amkor-10k-2024", "mediatek-annual-2024"],
+          "source_label": "OSAT / advanced packaging",
+          "notes": "MediaTek uses outsourced assembly and test; Amkor among global OSAT suppliers for mobile SoCs."
+        }
+      }
+    },
+    {
+      "id": "e-tsmc-packages-nvidia",
+      "kind": "packages",
+      "source": "co-tsmc",
+      "target": "co-nvidia",
+      "tracks": ["gpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["tsmc-20f-2024", "nvidia-10k-2024"],
+          "source_label": "In-house advanced packaging (CoWoS)",
+          "notes": "TSMC 20-F: CoWoS and other advanced packaging integrated with foundry; NVIDIA AI accelerators depend on TSMC CoWoS capacity, often the binding constraint downstream of wafer fab."
+        }
+      }
+    },
+    {
+      "id": "e-tsmc-packages-amd",
+      "kind": "packages",
+      "source": "co-tsmc",
+      "target": "co-amd",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["tsmc-20f-2024", "amd-10k-2024"],
+          "source_label": "In-house advanced packaging (CoWoS)",
+          "notes": "AMD Instinct and high-end CPU products use TSMC advanced packaging including chiplet integration at TSMC."
+        }
+      }
+    },
+    {
+      "id": "e-tsmc-packages-apple",
+      "kind": "packages",
+      "source": "co-tsmc",
+      "target": "co-apple",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["tsmc-20f-2024", "apple-10k-2024"],
+          "source_label": "In-house advanced packaging (CoWoS / InFO)",
+          "notes": "Apple is TSMC's largest customer; A- and M-series SoCs use TSMC in-house packaging (InFO, CoWoS-class) integrated with leading-edge wafer production."
+        }
+      }
+    },
+    {
+      "id": "e-samsung-memory-qualcomm",
+      "kind": "memory_supply",
+      "source": "co-samsung",
+      "target": "co-qualcomm",
+      "tracks": ["cpus", "memory"],
+      "facts": {
+        "note": {
+          "source_ids": ["samsung-ir-2024", "qualcomm-10k-2024"],
+          "source_label": "Mobile DRAM (LPDDR)",
+          "notes": "Qualcomm Snapdragon platforms ship in handsets that rely on Samsung LPDDR; Samsung also fabs some Snapdragon designs, linking memory and logic supply."
+        }
+      }
+    },
+    {
+      "id": "e-skhynix-memory-qualcomm",
+      "kind": "memory_supply",
+      "source": "co-sk-hynix",
+      "target": "co-qualcomm",
+      "tracks": ["cpus", "memory"],
+      "facts": {
+        "note": {
+          "source_ids": ["skhynix-annual-2024", "qualcomm-10k-2024"],
+          "source_label": "Mobile DRAM (LPDDR)",
+          "notes": "SK hynix supplies LPDDR used in Android handsets built around Qualcomm Snapdragon SoCs."
+        }
+      }
+    },
+    {
+      "id": "e-micron-memory-qualcomm",
+      "kind": "memory_supply",
+      "source": "co-micron",
+      "target": "co-qualcomm",
+      "tracks": ["cpus", "memory"],
+      "facts": {
+        "note": {
+          "source_ids": ["micron-10k-2024", "qualcomm-10k-2024"],
+          "source_label": "Mobile DRAM (LPDDR)",
+          "notes": "Micron 10-K: mobile LPDDR products; Qualcomm-based handset and automotive platforms use Micron memory among qualified suppliers."
+        }
+      }
+    },
+    {
+      "id": "e-samsung-memory-apple",
+      "kind": "memory_supply",
+      "source": "co-samsung",
+      "target": "co-apple",
+      "tracks": ["cpus", "memory"],
+      "facts": {
+        "note": {
+          "source_ids": ["samsung-ir-2024", "apple-10k-2024"],
+          "source_label": "Mobile DRAM and NAND",
+          "notes": "Apple 10-K: single-source and multi-source component risk; Samsung is a long-standing DRAM and NAND supplier for iPhone and Mac products."
+        }
+      }
+    },
+    {
+      "id": "e-skhynix-memory-apple",
+      "kind": "memory_supply",
+      "source": "co-sk-hynix",
+      "target": "co-apple",
+      "tracks": ["cpus", "memory"],
+      "facts": {
+        "note": {
+          "source_ids": ["skhynix-annual-2024", "apple-10k-2024"],
+          "source_label": "Mobile DRAM (LPDDR)",
+          "notes": "SK hynix is among Apple's qualified LPDDR suppliers for mobile and PC products."
+        }
+      }
+    },
+    {
+      "id": "e-micron-memory-apple",
+      "kind": "memory_supply",
+      "source": "co-micron",
+      "target": "co-apple",
+      "tracks": ["cpus", "memory"],
+      "facts": {
+        "note": {
+          "source_ids": ["micron-10k-2024", "apple-10k-2024"],
+          "source_label": "Mobile DRAM (LPDDR)",
+          "notes": "Micron supplies LPDDR to Apple among its largest mobile customers; the only US-headquartered DRAM option in Apple's supplier set."
+        }
+      }
+    },
+    {
+      "id": "e-foxconn-assembles-qualcomm",
+      "kind": "assembles",
+      "source": "co-foxconn",
+      "target": "co-qualcomm",
+      "tracks": ["cpus", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["foxconn-ir-2024", "qualcomm-10k-2024"],
+          "source_label": "Handset / module assembly (EMS)",
+          "notes": "Qualcomm 10-K: products manufactured by contract manufacturers; Foxconn is among the largest EMS firms building Snapdragon-based devices for global OEMs."
+        }
+      }
+    },
+    {
+      "id": "e-foxconn-assembles-intel",
+      "kind": "assembles",
+      "source": "co-foxconn",
+      "target": "co-intel",
+      "tracks": ["cpus", "data-centers"],
+      "facts": {
+        "note": {
+          "source_ids": ["foxconn-ir-2024", "intel-10k-2024"],
+          "source_label": "PC / server systems assembly (EMS)",
+          "notes": "Foxconn assembles PCs, servers and cloud infrastructure using Intel processors for major OEM and hyperscaler customers."
+        }
+      }
+    },
+    {
+      "id": "e-foxconn-assembles-broadcom",
+      "kind": "assembles",
+      "source": "co-foxconn",
+      "target": "co-broadcom",
+      "tracks": ["data-centers", "gpus"],
+      "facts": {
+        "note": {
+          "source_ids": ["foxconn-ir-2024", "broadcom-10k-2024"],
+          "source_label": "Networking / systems assembly (EMS)",
+          "notes": "Foxconn builds switches, routers and AI-networking systems incorporating Broadcom ASICs for cloud and telecom customers."
         }
       }
     }

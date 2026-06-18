@@ -2,6 +2,7 @@
   "name": "chip-sense",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev --turbopack",
     "validate:sources": "node scripts/validate-sources.mjs",

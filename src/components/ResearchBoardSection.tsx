@@ -104,6 +104,13 @@ export function ResearchBoardSection({
   }, [edges, sourceLookup]);
 
   const nodeById = useMemo(() => new Map(graphNodes.map((n) => [n.id, n])), [graphNodes]);
+  const countryName = useMemo(
+    () =>
+      new Map(
+        graphNodes.filter((n) => n.kind === "country").map((n) => [n.id, n.label]),
+    ),
+    [graphNodes],
+  );
   const edgeById = useMemo(() => new Map(graphEdges.map((e) => [e.id, e])), [graphEdges]);
 
   const selectedNode = state.selectedNodeId
@@ -116,13 +123,23 @@ export function ResearchBoardSection({
     ? (tradeFlows.find((f) => f.id === state.selectedEdgeId) ?? null)
     : null;
 
-  const edgeLabelsById = useMemo(() => {
-    return edges.map((e) => ({
-      id: e.id,
-      kind: e.kind,
-      label: `${nodeById.get(e.source)?.label ?? e.source} → ${nodeById.get(e.target)?.label ?? e.target}`,
-    }));
-  }, [edges, nodeById]);
+  const relationships = useMemo(() => {
+    const verbs: Partial<Record<GraphEdge["kind"], string>> = {
+      supplies: "supplies",
+      equips: "equips",
+      packages: "packages for",
+      memory_supply: "supplies memory to",
+      assembles: "assembles for",
+    };
+    return graphEdges
+      .filter((e) => e.kind in verbs && (!trackLens || e.tracks.includes(trackLens)))
+      .map((e) => ({
+        id: e.id,
+        from: nodeById.get(e.source)?.label ?? e.source,
+        verb: verbs[e.kind]!,
+        to: nodeById.get(e.target)?.label ?? e.target,
+      }));
+  }, [graphEdges, nodeById, trackLens]);
 
   const scopeLabel = trackLens
     ? (TRACKS.find((t) => t.slug === trackLens)?.title ?? trackLens)
@@ -209,7 +226,13 @@ export function ResearchBoardSection({
           onClear={clearSelection}
         />
         <ScenarioImpactPanel scenario={activeScenario} effects={effects} />
-        <TradeFlowsPanel flows={tradeFlows} sourceLookup={sourceLookup} />
+        {state.showTradeFlows ? (
+          <TradeFlowsPanel
+            flows={tradeFlows}
+            sourceLookup={sourceLookup}
+            countryName={countryName}
+          />
+        ) : null}
         {researchPointers && researchPointers.length > 0 ? (
           <div>
             <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">
@@ -224,25 +247,36 @@ export function ResearchBoardSection({
         ) : null}
         <div>
           <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">
-            Graph edges ({scopeLabel})
+            Supply relationships ({scopeLabel})
           </h2>
-          <ul className="mt-2 max-h-64 space-y-2 overflow-y-auto text-xs text-[var(--muted)]">
-            {edgeLabelsById.map((e) => (
-              <li key={e.id}>
-                <button
-                  type="button"
-                  onClick={() => selectEdge(e.id)}
-                  className={`w-full rounded-md border px-2 py-1.5 text-left font-mono text-[11px] transition ${
-                    state.selectedEdgeId === e.id
-                      ? "border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--foreground)]"
-                      : "border-white/5 bg-[var(--card)] text-[var(--foreground)]/85 hover:border-white/15"
-                  }`}
-                >
-                  <span className="text-[var(--muted)]">{e.kind}</span> · {e.label}
-                </button>
-              </li>
-            ))}
-          </ul>
+          <p className="mt-1 text-xs text-[var(--muted)]">
+            Who supplies whom across the chain. Select one to see its citations.
+          </p>
+          {relationships.length === 0 ? (
+            <p className="mt-2 text-xs text-[var(--muted)]">
+              No supply relationships in this view.
+            </p>
+          ) : (
+            <ul className="mt-2 max-h-64 space-y-2 overflow-y-auto text-xs">
+              {relationships.map((e) => (
+                <li key={e.id}>
+                  <button
+                    type="button"
+                    onClick={() => selectEdge(e.id)}
+                    className={`w-full rounded-md border px-2 py-1.5 text-left text-[12px] leading-snug transition ${
+                      state.selectedEdgeId === e.id
+                        ? "border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--foreground)]"
+                        : "border-white/5 bg-[var(--card)] text-[var(--foreground)]/85 hover:border-white/15"
+                    }`}
+                  >
+                    <span className="font-medium">{e.from}</span>{" "}
+                    <span className="text-[var(--muted)]">{e.verb}</span>{" "}
+                    <span className="font-medium">{e.to}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
         </aside>
       </div>

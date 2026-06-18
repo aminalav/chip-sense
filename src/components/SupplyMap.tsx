@@ -81,6 +81,33 @@ function markerTag(kind: GraphNode["kind"]): string {
   }
 }
 
+/**
+ * Persistent marker labels are gated by zoom so the world view stays a clean
+ * field of color-coded dots (the hover card carries the detail). Names reveal
+ * progressively on zoom-in, most-important entities first. Selected/hovered
+ * pins are always labeled.
+ */
+function showMarkerLabel(
+  node: GraphNode,
+  zoom: number,
+  isSelected: boolean,
+  isHovered: boolean,
+): boolean {
+  if (isSelected || isHovered) return true;
+  switch (node.kind) {
+    case "company":
+      return zoom >= 2.6;
+    case "fab":
+      return zoom >= 4;
+    case "presence":
+      return zoom >= 4.5;
+    case "country":
+      return false;
+    default:
+      return zoom >= 4;
+  }
+}
+
 function NodeHoverCard({ node }: { node: GraphNode }) {
   const rawSegment = node.meta?.segment;
   const segment = isCompanySegment(rawSegment) ? rawSegment : undefined;
@@ -197,6 +224,7 @@ export const SupplyMap = forwardRef<MapRef, {
   ref,
 ) {
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
+  const [zoom, setZoom] = useState<number | null>(null);
 
   const nodeById = useMemo(
     () => new globalThis.Map(nodes.map((n) => [n.id, n] as const)),
@@ -519,6 +547,8 @@ export const SupplyMap = forwardRef<MapRef, {
           mapStyle={MAP_STYLE}
           interactiveLayerIds={hitLayerIds.length > 0 ? hitLayerIds : undefined}
           onClick={onSelectEdge ? handleMapClick : undefined}
+          onLoad={(e) => setZoom(e.target.getZoom())}
+          onZoomEnd={(e) => setZoom(e.viewState.zoom)}
         >
           <NavigationControl position="top-right" />
           {showSupplyLines && supplyLineCount > 0 && (
@@ -792,6 +822,12 @@ export const SupplyMap = forwardRef<MapRef, {
                     ? "h-3.5 w-3.5"
                     : "h-3 w-3";
             const isSelected = selectedNodeId === node.id;
+            const labeled = showMarkerLabel(
+              node,
+              zoom ?? initialView.zoom,
+              isSelected,
+              hoveredNodeId === node.id,
+            );
             return (
               <Marker key={node.id} longitude={lng} latitude={lat} anchor="bottom">
                 <button
@@ -826,17 +862,19 @@ export const SupplyMap = forwardRef<MapRef, {
                         : {}),
                     }}
                   />
-                  {markerTag(node.kind) && (
+                  {labeled && markerTag(node.kind) && (
                     <span className="rounded bg-black/75 px-1 text-[9px] font-medium text-white/90">
                       {markerTag(node.kind)}
                     </span>
                   )}
-                  <span
-                    title={node.label}
-                    className="rounded bg-black/75 px-1.5 py-0.5 text-center text-[10px] font-medium leading-tight text-white/95 shadow-sm"
-                  >
-                    {mapMarkerLabel(node)}
-                  </span>
+                  {labeled && (
+                    <span
+                      title={node.label}
+                      className="rounded bg-black/75 px-1.5 py-0.5 text-center text-[10px] font-medium leading-tight text-white/95 shadow-sm"
+                    >
+                      {mapMarkerLabel(node)}
+                    </span>
+                  )}
                 </button>
               </Marker>
             );

@@ -128,6 +128,6 @@ Score the CHIPS Act honestly: logic and packaging gain some US geography, but th
 
 1. Open the board URL; confirm scenario styling and sidebar copy.
 2. Click each highlight node/edge; copy citation lines into your draft.
-3. Screenshot: **Export arcs (PNG)** for line art, or browser screenshot for pins.
+3. Screenshot: **Export map (PNG)** — includes pins and arcs; turn on **Core supply chain view** for labeled teaching pins.
 4. Paste the board URL as an interactive figure link in your post.
 5. Run `npm run check:data` before citing new numbers from the repo.

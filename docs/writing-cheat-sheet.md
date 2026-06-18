@@ -2,7 +2,7 @@
 
 One-page reference for drafting from the board. Production base URL: **https://chip-sense-ten.vercel.app** (local dev: `http://127.0.0.1:3002`).
 
-**Before publishing:** run `npm run check:data`. Export a map PNG from the board header (**Export map PNG**) for each piece. All scenario multipliers remain illustrative — cite `sources.json` for factual claims.
+**Before publishing:** run `npm run check:data`. Export a map PNG from the board header (**Export map (PNG)**) for each piece. All scenario multipliers remain illustrative — cite `sources.json` for factual claims.
 
 ---
 
@@ -103,6 +103,6 @@ One-page reference for drafting from the board. Production base URL: **https://c
 1. Open the **Board URL** for the piece; confirm scenario styling and sidebar narrative.
 2. Click each **highlight node/edge** — copy citation text from the selection panel into your draft.
 3. Toggle **trade flows** per the table above.
-4. **Screenshot the map:** **Export arcs (PNG)** captures basemap + connection lines only (pins omitted). For posts that need pins visible, use a browser screenshot of the framed board URL; save with the suggested filename.
+4. **Screenshot the map:** **Export map (PNG)** captures the basemap, connection arcs, and pin markers. With **Core supply chain view** on, every pin is labeled in the PNG. Save with the suggested filename.
 5. Paste the board URL into your post as an interactive figure link.
 6. Cross-check numbers against `sources.json` before publishing — never treat scenario multipliers as forecasts.

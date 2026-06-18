@@ -1,88 +1,177 @@
 # Chip Sense
 
-A **Next.js 15 research board** for visualizing the semiconductor supply chain — companies, fabs, relationship arcs, trade flows, and illustrative stress scenarios on an interactive [MapLibre](https://maplibre.org/) world map.
+**An interactive research board for the semiconductor supply chain** — companies, fabs, typed relationship arcs, trade flows, and illustrative stress scenarios on a world map.
 
-Data is **file-based** (JSON in `src/data/`): no database, no API backend, no auth. The graph is assembled at runtime and rendered fully client-side. The production build is static.
+**Live demo:** [chip-sense-ten.vercel.app](https://chip-sense-ten.vercel.app)
+
+Chip Sense is a static [Next.js](https://nextjs.org/) app with **no backend, database, or auth**. All graph data lives in JSON files, is merged at build/request time, and renders entirely in the browser with [MapLibre GL](https://maplibre.org/) via [react-map-gl](https://visgl.github.io/react-map-gl/).
+
+Use it to explore how equipment vendors, foundries, memory makers, packaging houses, and assemblers connect across geography — and how different *illustrative* scenarios restyle those connections for teaching and writing.
+
+---
+
+## What it does
+
+| Feature | Description |
+| --- | --- |
+| **Supply chain map** | HQ pins, fab site pins, and colored arcs for foundry supply, equipment, packaging, memory, and assembly |
+| **Cited facts** | Click a relationship to see disclosure-backed citations from a curated source catalog |
+| **Trade flows** | Optional country-to-country chip trade arcs (UN Comtrade–based values) |
+| **Scenarios** | Nine stress-test views (Taiwan disruption, HBM shortage, export controls, …) that change pin/arc styling — not forecasts |
+| **Editorial tracks** | Lens pages for memory, CPUs, GPUs, and data centers |
+| **Shareable URLs** | Every filter, scenario, and selection syncs to the query string |
+
+**Core supply chain view** (`?essay1=1`) focuses the map on twelve anchor companies and key fabs for teaching and screenshots.
+
+---
+
+## Why it exists
+
+Semiconductor supply chains are discussed constantly in policy and tech journalism, but they are hard to *see*: the same company can be a foundry, a packaging bottleneck, and a trade-flow endpoint at once.
+
+Chip Sense is a **visual reasoning tool**:
+
+1. **Separate structure from stress-testing** — registry facts and graph edges are distinct from scenario styling.
+2. **Make relationships typed** — a purple equipment arc and a blue foundry arc mean different things.
+3. **Keep citations one click away** — sourced edges link to filings and annual reports, not hand-wavy arrows.
+4. **Stay honest about limits** — scenarios restyle the map; they do not simulate fab capacity or lead times numerically.
+
+---
+
+## Architecture (high level)
+
+```mermaid
+flowchart TB
+  subgraph data [JSON data files]
+    seed[seed-graph.json]
+    companies[companies.json]
+    fabs[fab-sites.json]
+    trade[trade-flows.json]
+    sources[sources.json]
+  end
+
+  subgraph merge [Runtime merge — loadGraph]
+    CR[companyRecords.ts]
+    GEO[geography.ts]
+    seed --> CR --> GEO
+    companies --> CR
+    fabs --> GEO
+  end
+
+  subgraph ui [Client UI]
+    RBS[ResearchBoardSection]
+    SM[SupplyMap + MapLibre]
+    URL[useBoardUrlState]
+    RBS --> SM
+    RBS --> URL
+  end
+
+  subgraph view [View layer]
+    MV[mapView.ts]
+    SE[scenarioEffects.ts]
+    TF[tradeFlows.ts]
+  end
+
+  data --> merge
+  merge --> view
+  view --> ui
+```
+
+### Request path
+
+1. **Server pages** call `loadGraph()` and `loadSources()` from JSON in `src/data/`.
+2. **`loadGraph()`** merges the seed graph → company registry → geography (fab pins, countries, presence edges).
+3. **`ResearchBoardSection`** (client) filters the view with `buildMapView()`, computes scenario styling, and syncs state to the URL.
+4. **`SupplyMap`** renders MapLibre markers, relationship arcs, and trade lines. It is dynamically imported with `ssr: false` so MapLibre stays out of the server bundle.
+
+### Three data layers
+
+| Layer | Role |
+| --- | --- |
+| **Registry** | Sourced company HQ, fab sites, and citation catalog (`companies.json`, `fab-sites.json`, `sources.json`) |
+| **Graph** | Nodes, typed edges, and scenario definitions (`seed-graph.json` + runtime merge) |
+| **Illustrative** | Scenario assumptions and `affects` styling — map emphasis only, not predictive models |
+
+See **[ARCHITECTURE.md](./ARCHITECTURE.md)** for the full component map, merge order, and extension points.
+
+---
+
+## Tech stack
+
+| Layer | Choice |
+| --- | --- |
+| Framework | Next.js 15 (App Router, static export-friendly build) |
+| UI | React 19, Tailwind CSS 4 |
+| Map | MapLibre GL 5, react-map-gl 8, OpenStreetMap raster tiles |
+| Data | JSON on disk; Node validation scripts in `scripts/` |
+| CI | GitHub Actions — lint, `check:data`, build |
+
+---
 
 ## Quick start
 
 ```bash
+git clone https://github.com/aminalav/chip-sense.git
+cd chip-sense
 npm install
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
 
-If file watching is flaky on your setup:
+Before changing data:
 
 ```bash
-WATCHPACK_POLLING=true npm run dev -- --hostname 127.0.0.1 --port 3002
+npm run check:data   # validates sources, companies, trade flows, scenarios
+npm run build
 ```
 
-**Requirements:** Node.js 20+.
+---
 
-## Scripts
-
-| Command | Role |
-| --- | --- |
-| `npm run dev` | Local dev server (Turbopack) |
-| `npm run build` | Production build (static) |
-| `npm run start` | Serve the production build |
-| `npm run lint` | ESLint |
-| `npm run check:data` | Run all JSON data validators |
-| `npm run data:coverage` | Regenerate `DATA_COVERAGE.md` |
-| `npm run fetch:trade` | Refresh Comtrade trade values |
-
-Run **`npm run check:data`** before committing data changes.
-
-## How it works
-
-1. Server pages call `loadGraph()` and `loadSources()`.
-2. `loadGraph()` merges the seed graph → company registry → geography (fabs, countries, presence pins).
-3. `ResearchBoardSection` (client) filters the view, computes scenario styling, and syncs filters to the URL.
-4. `SupplyMap` renders MapLibre markers, arcs, and trade lines. It's dynamically imported with `ssr: false`, so MapLibre stays out of the initial bundle.
-
-Shareable URLs: `/?scenario=taiwan-crisis`, `/?track=gpus&trade=1`, `/?node=co-tsmc`, `/?essay1=1`.
-
-## Deploy
-
-Production site: **[chip-sense-ten.vercel.app](https://chip-sense-ten.vercel.app)** (auto-deploys from `main` on GitHub).
-
-```bash
-npm run check:data && npm run build   # gate before shipping data or UI changes
-```
-
-Connect the repo to [Vercel](https://vercel.com); no env vars required for the static board. See [ARCHITECTURE.md](./ARCHITECTURE.md) for the full stack and data flow.
-
-## Project layout
+## Repository layout
 
 ```
 src/
-├── app/         # Next.js App Router pages
-├── components/  # React UI (map, panels, board shell)
-├── data/        # JSON data + TypeScript types
-├── hooks/       # Client hooks (URL state)
-└── lib/         # Graph merge, map filters, scenario logic
-scripts/         # Data validators + Comtrade fetch
-docs/            # Essay outlines + writing cheat sheet
+├── app/              # Routes: / and /track/[slug]
+├── components/       # Map, sidebar panels, board shell
+├── data/             # JSON datasets + TypeScript types
+├── hooks/            # URL state sync
+└── lib/              # Graph merge, scenarios, map filters, export
+scripts/              # Validators and Comtrade fetch helper
+docs/                 # Essay outlines (research writing, not app docs)
 ```
+
+---
 
 ## Documentation
 
-| Doc | Contents |
+| Doc | For |
 | --- | --- |
-| [ARCHITECTURE.md](./ARCHITECTURE.md) | Full architecture, data layers, merge order |
-| [MAP.md](./MAP.md) | Map visibility rules, URL params, pin colors |
-| [SOURCES.md](./SOURCES.md) | What counts as sourced vs. illustrative |
-| [SCENARIOS.md](./SCENARIOS.md) | Scenario list and writing prompts |
-| [docs/essay-1.md](./docs/essay-1.md) | Taiwan / US–China essay with board links |
-| [docs/essay-scenarios.md](./docs/essay-scenarios.md) | Scenario-series posts (HBM, packaging, export controls, …) |
-| [docs/writing-cheat-sheet.md](./docs/writing-cheat-sheet.md) | Piece briefs, URLs, screenshot names |
-| [COMPANIES.md](./COMPANIES.md) | Company registry table |
-| [DATA_COVERAGE.md](./DATA_COVERAGE.md) | Coverage metrics (regenerate with `data:coverage`) |
+| [ARCHITECTURE.md](./ARCHITECTURE.md) | Deep dive: data flow, components, merge order |
+| [MAP.md](./MAP.md) | Pin colors, layer toggles, URL parameters |
+| [SOURCES.md](./SOURCES.md) | Sourcing rules and citation coverage |
+| [SCENARIOS.md](./SCENARIOS.md) | Scenario list and assumptions |
+| [MAINTAINER.md](./MAINTAINER.md) | Deploy workflow and writing docs (maintainers) |
 
-## Not in scope
+---
 
-- No database, auth, or user accounts
-- No quantitative simulation — scenarios *restyle* the graph; they do not model shortages from capacity tables
-- No automated test suite; the data validators are the main gate
+## Example URLs
+
+| View | URL |
+| --- | --- |
+| Core teaching map | [/?essay1=1&trade=1](https://chip-sense-ten.vercel.app/?essay1=1&trade=1) |
+| Taiwan crisis scenario | [/?scenario=taiwan-crisis&node=co-tsmc](https://chip-sense-ten.vercel.app/?scenario=taiwan-crisis&node=co-tsmc) |
+| GPU track lens | [/track/gpus](https://chip-sense-ten.vercel.app/track/gpus) |
+| HBM shortage (memory layer story) | [/?scenario=hbm-shortage&node=co-sk-hynix](https://chip-sense-ten.vercel.app/?scenario=hbm-shortage&node=co-sk-hynix) |
+
+---
+
+## Disclaimer
+
+Chip Sense is an **educational visualization**. Scenario multipliers and styling are illustrative stress tests, not forecasts. Factual claims on the map should be traced through `sources.json` and the selection panel citations. See the in-app disclaimer on every board view.
+
+---
+
+## License
+
+Source code is provided for learning and reference. Data citations point to third-party filings and publications; those materials remain under their respective publishers' terms.

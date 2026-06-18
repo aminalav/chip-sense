@@ -362,14 +362,17 @@ export const SupplyMap = forwardRef<MapRef, {
           {assemblyLineCount} asm · {tradeLineCount} trade
         </div>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-          <label className="flex items-center gap-2 text-[var(--muted)]">
+          <label
+            className="flex items-center gap-2 text-[var(--muted)]"
+            title="Focus on twelve anchor companies and key fabs for teaching and essay screenshots"
+          >
             <input
               type="checkbox"
               checked={essay1Only}
               onChange={(e) => onEssay1OnlyChange(e.target.checked)}
               className="rounded border-white/20"
             />
-            Essay 1 pins (12 companies + key fabs)
+            Core supply chain view
           </label>
           <label className="flex items-center gap-2 text-[var(--muted)]">
             <input
@@ -444,8 +447,8 @@ export const SupplyMap = forwardRef<MapRef, {
           <div className="space-y-1 text-xs text-[var(--muted)]">
             {essay1Only ? (
               <p>
-                Showing nodes flagged <code className="text-[10px]">must_show_essay_1</code> in the
-                registry and fab list (amber ring).
+                Twelve anchor companies and key fabs — a cleaner map for teaching, essays, and
+                screenshots. Amber rings mark the core set.
               </p>
             ) : null}
             {effects ? (

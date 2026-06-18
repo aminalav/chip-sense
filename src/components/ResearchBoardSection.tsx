@@ -188,7 +188,15 @@ export function ResearchBoardSection({
             />
             Show ops pins (country-level presence without a fab site)
           </label>
-          <ExportMapButton mapRef={mapRef} />
+          <ExportMapButton
+            mapRef={mapRef}
+            nodes={mapNodes}
+            edges={edges}
+            effects={effects}
+            selectedNodeId={state.selectedNodeId}
+            accentHex={accentHex}
+            labelAllPins={state.essay1Only}
+          />
         </div>
         <SupplyMap
           ref={mapRef}

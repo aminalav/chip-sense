@@ -66,7 +66,7 @@ Example: `/?scenario=hbm-shortage&node=co-sk-hynix`
 
 ## Map toggles (UI)
 
-- **Essay 1 pins** — `must_show_essay_1` on company, fab, or country (essay countries TW/CN/US/KR via `companyRecords.ts`).
+- **Core supply chain view** — teaching filter (`essay1=1`): twelve anchor companies, key fabs, and essay countries (TW/CN/US/KR via `companyRecords.ts`). Amber ring on core pins.
 - **Supply links** — `supplies` edges between company HQs (cited edges use track/global accent).
 - **Scenario** — Non-baseline scenarios restyle pins and supply arcs (`scenarioEffects.ts`); assumptions live in `seed-graph.json` → `scenarios`.
 - **Track lens** — Filters nodes and edges whose `tracks` array includes that slug.

@@ -240,7 +240,7 @@ function computeTaiwanCrisis(
       title: "Taiwan Strait disruption — map interpretation",
       bullets: [
         `Taiwan wafer output modeled at ~${Math.round(waferMult * 100)}% of baseline; packaging at ~${Math.round(pkgMult * 100)}%.`,
-        `Cited TSMC → US fabless supply links shown as disrupted (HQ arcs).`,
+        `Cited TSMC → US fabless supply links shown as disrupted (connection arcs).`,
         `CHIPS / allied fab pins (Arizona, Kumamoto, Taylor, etc.) marked as partial relief—not full Taiwan replacement.`,
         `China domestic memory/foundry pins absorb up to ~${Math.round(subRate * 100)}% substitution in this illustrative model.`,
         `US fabless leading-edge recovery horizon: ~${fablessDelay} months in assumptions (not computed from fab data).`,

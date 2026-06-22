@@ -24,7 +24,7 @@ Company, fab, and ops pins are colored by **segment** (`segment` field in `compa
 | 🟠 Amber | OSAT / packaging | osat |
 | 🟣 Purple | EMS / assembly | ems |
 
-Shape cues are unchanged: HQ pins are ringed, fab pins solid, ops pins smaller, essay-1 pins get an amber ring, active countries get a sky ring, and scenario styling adds chokepoint/stress rings on top.
+Shape cues are unchanged: HQ pins are ringed, fab pins solid, ops pins smaller, core supply chain view pins get an amber ring (`?essay1=1`), active countries get a sky ring, and scenario styling adds chokepoint/stress rings on top.
 
 ## Interaction
 
@@ -49,9 +49,9 @@ See `SCENARIOS.md` for the relationship list and writing prompts.
 
 | Param | Example | Meaning |
 | --- | --- | --- |
-| `track` | `gpus` | Home board only — editorial lens |
+| `track` | `gpus` | Home board only — editorial lens (track pages use `/track/gpus`) |
 | `scenario` | `taiwan-crisis` | Non-baseline scenario (`hbm-shortage`, `export-controls`, `korea-memory-shock`, `constrained-packaging`) |
-| `essay1` | `1` | Essay must-show filter |
+| `essay1` | `1` | Core supply chain view (teaching filter) |
 | `ops` | `1` | Show country-level ops pins |
 | `supply` | `0` | Hide foundry supply arcs |
 | `equips` | `0` | Hide equipment arcs |

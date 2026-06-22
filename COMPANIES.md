@@ -12,17 +12,19 @@
 | Specialization in plain English | **Done** |
 | HQ country + ≥1 operating country | **Done** |
 | Priority 10 sourced (not rough) | **Done** |
-| Must-show on essay 1 map marked | **Done** — 12 companies + TW/CN/US/KR + 14 cited fab pins |
+| Must-show on core supply chain view marked | **Done** — 12 companies + TW/CN/US/KR + 17 cited fab pins |
 | All 25 companies sourced | **Done** — each row has IR/SEC/annual-report link |
 
 **Geography model (comprehensive):**
 
 | Layer | Data | Map |
 | --- | --- | --- |
-| HQ | `companies.json` → `hq_country` + company `coordinates` | Green **HQ** pin |
+| HQ | `companies.json` → `hq_country` + company `coordinates` | **HQ** pin colored by company segment |
 | Operating countries | `operating_countries[]` + `operates_in` edges | Highlights country pin (sky ring) |
-| Fab / site | `src/data/fab-sites.json` + `operates` / `located_in` | Yellow **Fab** pin |
-| Other ops (no fab yet) | Auto `presence` nodes | Blue **Ops** pin near country centroid |
+| Fab / site | `src/data/fab-sites.json` + `operates` / `located_in` | **Fab** pin colored by operator segment |
+| Other ops (no fab yet) | Auto `presence` nodes | Smaller **Ops** pin near country centroid |
+
+Pin colors follow **segment groups** (manufacturer red, fabless blue, equipment green, OSAT amber, EMS purple) — see `MAP.md`.
 
 Canonical site list: `src/data/fab-sites.json`. Runtime merge: `src/lib/geography.ts`.
 
@@ -58,13 +60,13 @@ Canonical site list: `src/data/fab-sites.json`. Runtime merge: `src/lib/geograph
 | CXMT | DRAM (China) | China | China | Y | N | [Corporate / IPO](https://www.cxmt.com/) |
 | Huawei | Telecom / mobile SoC | China | China | Y | N | [Annual report 2024](https://www.huawei.com/en/annual-report/2024) |
 
-### Essay 1 map (must-show)
+### Core supply chain view (`?essay1=1`)
 
 **Companies:** TSMC, Samsung, SK Hynix, Micron, Intel, NVIDIA, AMD, Apple, ASML, SMIC, UMC, ASE.
 
 **Countries:** Taiwan, China, United States, South Korea.
 
-**Fab pins (amber ring):** TSMC (Tainan, Arizona, Kumamoto), Samsung (Hwaseong, Taylor, Xi'an), SK Hynix (Icheon, Wuxi), Micron (Taichung, Hiroshima), Intel (Oregon, Leixlip, Kiryat Gat), UMC Singapore, GF Dresden, SMIC Shanghai.
+**Fab pins (amber ring, 17):** TSMC (Tainan, Arizona, Kumamoto), Samsung (Hwaseong, Taylor, Xi'an), SK Hynix (Icheon, Wuxi), Micron (Taichung, Hiroshima), Intel (Oregon, Leixlip, Kiryat Gat), UMC Singapore, GF Dresden, SMIC Shanghai, ASE Kaohsiung.
 
 ---
 

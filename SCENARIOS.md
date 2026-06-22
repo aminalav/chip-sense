@@ -10,7 +10,7 @@ This doc bridges the **map** (scenarios + connections in `src/data/seed-graph.js
 
 ## Connection types on the map
 
-The map now draws four company-to-company (HQ → HQ) relationship layers, each toggleable:
+The map now draws **five** company-to-company (HQ → HQ) relationship layers, each toggleable:
 
 | Layer | Edge `kind` | Color | What it shows |
 | --- | --- | --- | --- |
@@ -29,7 +29,7 @@ Together these trace the full chain: **equipment → wafer (foundry) → memory 
 ## Active map scenarios (in `seed-graph.json`)
 
 ### 1. Baseline
-Sourced registry + cited fab pins. The "normal" map. Use it to introduce the four chokepoints (fab, equipment, packaging, memory) before stressing any of them.
+Sourced registry + cited fab pins. The "normal" map. Use it to introduce the five relationship layers (equipment, foundry, memory, packaging, assembly) before stressing any of them.
 
 ### 2. Constrained advanced packaging
 **Map:** ASE / Amkor + Taiwan OSAT as chokepoints; TSMC → fabless arcs stressed.
@@ -67,11 +67,11 @@ Sourced registry + cited fab pins. The "normal" map. Use it to introduce the fou
 
 ## Writer URLs (bookmarkable views)
 
-Paste these straight into a draft. Base URL: `https://chip-sense-ten.vercel.app`. All work as relative paths in local dev too. Layer flags: `supply` / `equips` / `pkg` / `mem` / `asm` (set `=0` to hide), `trade=1` for country arcs, `node=` to preselect, `essay1=1` for the clean teaching pins.
+Paste these straight into a draft. Base URL: `https://chip-sense-ten.vercel.app`. All work as relative paths in local dev too. Layer flags: `supply` / `equips` / `pkg` / `mem` / `asm` (set `=0` to hide), `trade=1` for country arcs, `node=` to preselect, `essay1=1` for core supply chain view.
 
 | Scenario | View | URL |
 | --- | --- | --- |
-| Baseline | Clean teaching pins | `/?essay1=1` |
+| Baseline | Core supply chain view | `/?essay1=1` |
 | Baseline | Full board | `/` |
 | Constrained packaging | ASE as chokepoint | `/?scenario=constrained-packaging&node=co-ase` |
 | Constrained packaging | Packaging layer only | `/?scenario=constrained-packaging&supply=0&equips=0&mem=0&asm=0` |

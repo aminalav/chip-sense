@@ -1,8 +1,8 @@
 # Sources (Chip Sense)
 
-Chip Sense mixes **sourced registry data** (companies, fabs, supply links) with **editorial graph structure** (tracks, categories, scenarios). Run `npm run check:data` before publishing; it runs `validate:sources` and `validate:companies`.
+Chip Sense mixes **sourced registry data** (companies, fabs, supply links) with **editorial graph structure** (tracks, categories, scenarios). Run `npm run check:data` before publishing; it runs all validators (`validate:sources`, `validate:companies`, `validate:trade`, `validate:scenarios`).
 
-## Current sourcing status (2026-05)
+## Current sourcing status (2026-06)
 
 | Dataset | File(s) | Records | Sourced? | Notes |
 | --- | --- | ---: | --- | --- |
@@ -104,7 +104,7 @@ Reference / future research (in catalog; not required on every edge):
 - **UN Comtrade Plus** — HS-level trade by country (`un-comtrade-plus` in catalog)  
   `https://comtradeplus.un.org/`
 - **WSTS / SIA** — product-category revenue (for track narratives)
-- **Equipment supply edges** — ASML / AMAT / Lam → fabs (companies exist; edges not graphed)
+- **Equipment supply edges** — 18 cited `equips` arcs on the map (ASML / AMAT / Lam → fabs)
 - **Per-site capacity / node** — only where operator disclosures support it
 - **Quantitative scenario impacts** — replace illustrative multipliers with cited ranges
 

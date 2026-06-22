@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import type { MapRef } from "react-map-gl/maplibre";
 import { BoardSelectionPanel } from "@/components/BoardSelectionPanel";
 import { EditorialTracksBar } from "@/components/EditorialTracksBar";
-import { BoardDisclaimer, ScenarioBanner } from "@/components/BoardDisclaimer";
+import { ScenarioBanner } from "@/components/BoardDisclaimer";
 import { ExportMapButton } from "@/components/ExportMapButton";
 import { ScenarioImpactPanel } from "@/components/ScenarioImpactPanel";
 import { SourcesLinkedStrip } from "@/components/SourcesLinkedStrip";
@@ -322,7 +322,6 @@ export function ResearchBoardSection({
         scopeLabel={scopeLabel}
         sourceCatalogCount={sourceCatalogCount}
       />
-      <BoardDisclaimer />
     </section>
   );
 }

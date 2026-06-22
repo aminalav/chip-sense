@@ -25,8 +25,8 @@ export function ScenarioImpactPanel({
         {scenario?.id === "baseline" ? (
           <>
             <span className="text-[var(--foreground)]/90">Baseline</span> — sourced registry and
-            cited fab pins. Select an illustrative scenario below the map to see stress-test styling
-            and assumptions.
+            cited fab pins. Select an illustrative scenario in the map toolbar to see
+            stress-test styling and assumptions.
           </>
         ) : (
           <>Select a non-baseline scenario to see illustrative assumptions and how pins and supply links are styled on the map.</>

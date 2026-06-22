@@ -13,7 +13,6 @@ export function ExportMapButton({
   edges,
   effects = null,
   selectedNodeId = null,
-  accentHex = "#38bdf8",
   labelAllPins,
   filename = "chip-sense-map.png",
 }: {
@@ -22,7 +21,6 @@ export function ExportMapButton({
   edges?: GraphEdge[];
   effects?: ScenarioEffects | null;
   selectedNodeId?: string | null;
-  accentHex?: string;
   /** When true, every visible pin gets a name label in the PNG. */
   labelAllPins?: boolean;
   filename?: string;
@@ -49,7 +47,6 @@ export function ExportMapButton({
         edges,
         effects,
         selectedNodeId,
-        accentHex,
         labelAllPins,
       },
       (dataUrl) => {

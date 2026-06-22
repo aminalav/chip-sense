@@ -11,7 +11,6 @@ const EDGE_KIND_LABEL: Partial<Record<GraphEdge["kind"], string>> = {
   hq_in: "Headquarters",
   located_in: "Located in",
   exposed_to_category: "Category exposure",
-  trade: "Trade flow",
 };
 
 export function edgeKindLabel(kind: GraphEdge["kind"]): string {

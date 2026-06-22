@@ -181,7 +181,6 @@ export interface ExportMapOptions {
   edges?: GraphEdge[];
   effects?: ScenarioEffects | null;
   selectedNodeId?: string | null;
-  accentHex?: string;
   /** Label every non-country pin (good for teaching / small views). */
   labelAllPins?: boolean;
 }
@@ -193,7 +192,6 @@ export function exportMapWithPins({
   edges,
   effects = null,
   selectedNodeId = null,
-  accentHex = "#38bdf8",
   labelAllPins,
 }: ExportMapOptions): string {
   map.triggerRepaint();

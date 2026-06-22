@@ -215,7 +215,6 @@ export function ResearchBoardSection({
             edges={edges}
             effects={effects}
             selectedNodeId={state.selectedNodeId}
-            accentHex={accentHex}
             labelAllPins={state.essay1Only}
           />
         </div>

@@ -9,6 +9,7 @@ import {
   parentCompanyIdForPresence,
   sourceLinks,
 } from "@/lib/nodeProfile";
+import { dedupeRelatedEdges } from "@/lib/edgeLabels";
 import { SEGMENT_LABEL, isCompanySegment } from "@/lib/segments";
 
 export function BoardSelectionPanel({
@@ -124,7 +125,9 @@ function NodeCard({
   sourceLookup: Map<string, SourceRecord>;
 }) {
   const registry = COMPANY_RECORDS.find((c) => c.id === node.id);
-  const related = edges.filter((e) => e.source === node.id || e.target === node.id).slice(0, 8);
+  const related = dedupeRelatedEdges(
+    edges.filter((e) => e.source === node.id || e.target === node.id),
+  ).slice(0, 8);
   const rawSegment = registry?.segment ?? node.meta?.segment;
   const segment = isCompanySegment(rawSegment) ? rawSegment : undefined;
 

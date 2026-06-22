@@ -295,6 +295,38 @@ function addOperatingFootprint(
   return { nodes: [...nodeById.values()], edges: [...edgeById.values()] };
 }
 
+const STRUCTURAL_EDGE_KINDS = new Set<GraphEdge["kind"]>([
+  "hq_in",
+  "operates",
+  "located_in",
+  "operates_in",
+]);
+
+function edgeHasFacts(edge: GraphEdge): boolean {
+  return Boolean(edge.facts && Object.keys(edge.facts).length > 0);
+}
+
+/** Keep one edge per (kind, source, target); prefer cited geography edges over seed duplicates. */
+export function dedupeStructuralEdges(edges: GraphEdge[]): GraphEdge[] {
+  const byKey = new Map<string, GraphEdge>();
+  for (const edge of edges) {
+    if (!STRUCTURAL_EDGE_KINDS.has(edge.kind)) {
+      byKey.set(`unique:${edge.id}`, edge);
+      continue;
+    }
+    const key = `${edge.kind}:${edge.source}:${edge.target}`;
+    const existing = byKey.get(key);
+    if (!existing) {
+      byKey.set(key, edge);
+      continue;
+    }
+    if (edgeHasFacts(edge) && !edgeHasFacts(existing)) {
+      byKey.set(key, edge);
+    }
+  }
+  return [...byKey.values()];
+}
+
 /** Full geography: countries, fab sites, operating-country links, presence pins. */
 export function applyGeography(graph: SupplyGraph): SupplyGraph {
   let nodes = mergeCountryNodes(graph.nodes);
@@ -313,6 +345,6 @@ export function applyGeography(graph: SupplyGraph): SupplyGraph {
   return {
     ...graph,
     nodes: footprint.nodes,
-    edges: footprint.edges,
+    edges: dedupeStructuralEdges(footprint.edges),
   };
 }

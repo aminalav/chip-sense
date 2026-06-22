@@ -8,6 +8,7 @@ import {
 import { isCompanySegment, segmentColor } from "@/lib/segments";
 
 const MAP_BACKGROUND = "#0a0a0f";
+const ESSAY_RING_COLOR = "#fbbf24";
 
 const kindColors: Record<GraphNode["kind"], string> = {
   company: "#34d399",
@@ -254,7 +255,7 @@ export function exportMapWithPins({
       opacity,
       essayRing:
         essayMustShow && !scenarioRing && selectedNodeId !== node.id
-          ? accentHex
+          ? ESSAY_RING_COLOR
           : undefined,
       scenarioRing: scenarioRing && selectedNodeId !== node.id ? scenarioRing : undefined,
       selected: selectedNodeId === node.id,

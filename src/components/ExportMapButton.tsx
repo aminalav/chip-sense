@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { MapRef } from "react-map-gl/maplibre";
 import type { RefObject } from "react";
 import type { GraphEdge, GraphNode } from "@/data/graph";
@@ -26,9 +27,20 @@ export function ExportMapButton({
   labelAllPins?: boolean;
   filename?: string;
 }) {
+  const [exporting, setExporting] = useState(false);
+  const [message, setMessage] = useState<{ tone: "error" | "success"; text: string } | null>(
+    null,
+  );
+
   const exportPng = () => {
     const map = mapRef.current?.getMap();
-    if (!map) return;
+    if (!map) {
+      setMessage({ tone: "error", text: "Map is still loading — try again in a moment." });
+      return;
+    }
+
+    setExporting(true);
+    setMessage(null);
 
     exportMapWhenReady(
       {
@@ -45,21 +57,37 @@ export function ExportMapButton({
         link.download = filename;
         link.href = dataUrl;
         link.click();
+        setExporting(false);
+        setMessage({ tone: "success", text: "Map PNG downloaded." });
       },
-      (err) => {
-        console.error("Map export failed", err);
+      () => {
+        setExporting(false);
+        setMessage({ tone: "error", text: "Export failed — try again or use a browser screenshot." });
       },
     );
   };
 
   return (
-    <button
-      type="button"
-      onClick={exportPng}
-      title="Downloads the visible map with connection arcs and pin markers."
-      className="rounded-md border border-white/10 bg-[var(--card)] px-3 py-1.5 text-xs font-medium text-[var(--foreground)] transition hover:border-white/20"
-    >
-      Export map (PNG)
-    </button>
+    <div className="flex flex-wrap items-center gap-2">
+      <button
+        type="button"
+        onClick={exportPng}
+        disabled={exporting}
+        title="Downloads the visible map with connection arcs and pin markers."
+        className="rounded-md border border-white/10 bg-[var(--card)] px-3 py-1.5 text-xs font-medium text-[var(--foreground)] transition hover:border-white/20 disabled:cursor-wait disabled:opacity-60"
+      >
+        {exporting ? "Exporting…" : "Export map (PNG)"}
+      </button>
+      {message ? (
+        <p
+          role="status"
+          className={`text-xs ${
+            message.tone === "error" ? "text-red-300" : "text-emerald-300"
+          }`}
+        >
+          {message.text}
+        </p>
+      ) : null}
+    </div>
   );
 }

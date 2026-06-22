@@ -19,6 +19,7 @@ export function BoardSelectionPanel({
   graphNodes,
   graphEdges,
   sourceLookup,
+  hiddenFromMap = false,
   onClear,
 }: {
   selectedNode: GraphNode | null;
@@ -27,6 +28,7 @@ export function BoardSelectionPanel({
   graphNodes: GraphNode[];
   graphEdges: GraphEdge[];
   sourceLookup: Map<string, SourceRecord>;
+  hiddenFromMap?: boolean;
   onClear: () => void;
 }) {
   if (!selectedNode && !selectedEdge && !selectedTradeFlow) {
@@ -55,6 +57,12 @@ export function BoardSelectionPanel({
         </button>
       </div>
 
+      {hiddenFromMap && selectedNode ? (
+        <p className="rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-100/90">
+          This pin is hidden by the current map filters (track lens, core supply chain view, or ops
+          pins). Widen the view to see it on the map.
+        </p>
+      ) : null}
       {selectedNode ? (
         <NodeCard
           node={selectedNode}

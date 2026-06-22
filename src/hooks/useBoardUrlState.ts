@@ -95,5 +95,5 @@ export function useBoardUrlState(
     setState((prev) => ({ ...prev, ...patch }));
   }, []);
 
-  return { state, update };
+  return { state, update, urlWarnings: parsed.urlWarnings };
 }

@@ -19,9 +19,13 @@ export function parseBoardSearchParams(
   params: URLSearchParams,
   scenarios: Scenario[],
   options?: { defaultIncludePresence?: boolean },
-): BoardUrlState & { track: TrackSlug | null } {
+): BoardUrlState & { track: TrackSlug | null; urlWarnings: string[] } {
+  const urlWarnings: string[] = [];
   const scenarioParam = params.get("scenario");
   const knownScenario = scenarios.some((s) => s.id === scenarioParam);
+  if (scenarioParam && !knownScenario) {
+    urlWarnings.push(`Unknown scenario “${scenarioParam}” — showing baseline instead.`);
+  }
   const scenarioId = knownScenario && scenarioParam ? scenarioParam : "baseline";
 
   const trackParam = params.get("track");
@@ -41,6 +45,7 @@ export function parseBoardSearchParams(
       params.get("ops") === "1" || (params.get("ops") !== "0" && Boolean(options?.defaultIncludePresence)),
     selectedNodeId: params.get("node"),
     selectedEdgeId: params.get("edge"),
+    urlWarnings,
   };
 }
 

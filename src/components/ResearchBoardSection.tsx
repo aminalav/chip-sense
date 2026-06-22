@@ -58,7 +58,7 @@ export function ResearchBoardSection({
   sourceRecords: SourceRecord[];
 }) {
   const mapRef = useRef<MapRef>(null);
-  const { state, update } = useBoardUrlState(scenarios, {
+  const { state, update, urlWarnings } = useBoardUrlState(scenarios, {
     trackLens,
     defaultIncludePresence: Boolean(trackLens),
   });
@@ -119,6 +119,11 @@ export function ResearchBoardSection({
       nodeById.get(state.selectedNodeId) ??
       null)
     : null;
+  const selectedNodeHiddenFromMap = Boolean(
+    state.selectedNodeId &&
+      selectedNode &&
+      !mapNodes.some((n) => n.id === state.selectedNodeId),
+  );
   const selectedEdge = state.selectedEdgeId ? (edgeById.get(state.selectedEdgeId) ?? null) : null;
   const selectedTradeFlow = state.selectedEdgeId
     ? (tradeFlows.find((f) => f.id === state.selectedEdgeId) ?? null)
@@ -163,6 +168,16 @@ export function ResearchBoardSection({
       {showEditorialTracks ? <EditorialTracksBar /> : null}
       {activeScenario && activeScenario.id !== "baseline" ? (
         <ScenarioBanner scenarioLabel={activeScenario.label} />
+      ) : null}
+      {urlWarnings.length > 0 ? (
+        <div
+          className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-xs text-amber-100/90"
+          role="status"
+        >
+          {urlWarnings.map((warning) => (
+            <p key={warning}>{warning}</p>
+          ))}
+        </div>
       ) : null}
       <div className="grid gap-6 lg:grid-cols-5 lg:gap-8">
         <div className="isolate space-y-3 lg:col-span-3">
@@ -241,6 +256,7 @@ export function ResearchBoardSection({
           graphNodes={graphNodes}
           graphEdges={graphEdges}
           sourceLookup={sourceLookup}
+          hiddenFromMap={selectedNodeHiddenFromMap}
           onClear={clearSelection}
         />
         <ScenarioImpactPanel scenario={activeScenario} effects={effects} />

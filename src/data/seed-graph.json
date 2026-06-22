@@ -267,7 +267,7 @@
     {
       "id": "us-chips-buildout",
       "label": "US CHIPS buildout matures (illustrative)",
-      "description": "Illustrative resilience scenario: US-based capacity (TSMC Arizona, Samsung Taylor, Intel, SK hynix packaging, Amkor Arizona) reaches scale and provides a partial domestic buffer for leading-edge logic, memory and packaging. It reduces — but does not remove — concentration risk in Taiwan and Korea. Not a forecast — assumptions for essay stress-testing only.",
+      "description": "Illustrative resilience scenario: US-based capacity (TSMC Arizona, Samsung Taylor, Intel, SK hynix Indiana packaging) reaches scale and provides a partial domestic buffer for leading-edge logic and memory. Amkor remains an OSAT buffer via its cited Korea and Philippines sites — not a US fab pin in this dataset. It reduces — but does not remove — concentration risk in Taiwan and Korea. Not a forecast — assumptions for essay stress-testing only.",
       "assumptions": {
         "us_leading_edge_self_sufficiency": 0.35,
         "notes": "A relief scenario: buffered supply arcs indicate partial domestic substitution rather than disruption."
@@ -280,7 +280,7 @@
           "fab-sk-hynix-indiana",
           "co-micron"
         ],
-        "substitution_buffer_node_ids": ["co-amkor", "fab-amkor-philippines"],
+        "substitution_buffer_node_ids": ["co-amkor", "fab-amkor-korea", "fab-amkor-philippines"],
         "buffered_edge_ids": [
           "e-tsmc-supplies-nvidia",
           "e-tsmc-supplies-amd",
@@ -290,7 +290,8 @@
       "narrative": {
         "title": "US CHIPS buildout matures — how to read the map",
         "bullets": [
-          "A resilience case, not a shock: TSMC Arizona, Samsung Taylor, Intel, SK hynix's Indiana packaging and Amkor Arizona reach scale and give the US a partial domestic buffer in logic, memory and packaging.",
+          "A resilience case, not a shock: TSMC Arizona, Samsung Taylor, Intel, and SK hynix's Indiana packaging reach scale and give the US a partial domestic buffer in logic and memory.",
+          "Amkor appears as a substitution buffer through its Korea and Philippines OSAT pins — packaging onshoring is slower than fab announcements and is not modeled as a US site here.",
           "It reduces but does not remove concentration — leading-edge capacity still centers on Taiwan and Korea (TSMC, Samsung, Intel, Micron, Amkor filings).",
           "Map: US fab pins are partial relief, Amkor is a substitution buffer, and key TSMC → fabless arcs are buffered rather than disrupted.",
           "Illustrative knob: US leading-edge self-sufficiency at ~35%."

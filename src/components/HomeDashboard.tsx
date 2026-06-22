@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { ResearchBoardSection } from "@/components/ResearchBoardSection";
 import type { GraphEdge, GraphNode, Scenario, SourceRecord } from "@/data/graph";
-import { isTrackSlug } from "@/data/tracks";
+import { isTrackSlug, TRACKS } from "@/data/tracks";
 import { COMPANY_RECORDS } from "@/lib/companyRecords";
 
 export function HomeDashboard({
@@ -22,13 +22,15 @@ export function HomeDashboard({
   const searchParams = useSearchParams();
   const trackParam = searchParams.get("track");
   const trackLens = trackParam && isTrackSlug(trackParam) ? trackParam : null;
+  const trackAccent =
+    trackLens ? (TRACKS.find((t) => t.slug === trackLens)?.accentHex ?? "#3b82f6") : "#3b82f6";
 
   return (
     <ResearchBoardSection
       graphNodes={graphNodes}
       graphEdges={graphEdges}
       scenarios={scenarios}
-      accentHex="#3b82f6"
+      accentHex={trackAccent}
       trackLens={trackLens}
       showTrackLens
       showEditorialTracks

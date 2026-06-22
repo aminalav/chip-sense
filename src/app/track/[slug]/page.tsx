@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { BoardDisclaimer } from "@/components/BoardDisclaimer";
@@ -9,6 +10,20 @@ import { loadSources } from "@/lib/sourceQueries";
 
 export function generateStaticParams() {
   return TRACKS.map((t) => ({ slug: t.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  if (!isTrackSlug(slug)) return { title: "Track not found · Chip Sense" };
+  const track = getTrack(slug)!;
+  return {
+    title: `${track.title} · Chip Sense`,
+    description: track.short,
+  };
 }
 
 export default async function TrackPage({ params }: { params: Promise<{ slug: string }> }) {

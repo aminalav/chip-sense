@@ -16,7 +16,7 @@ export function SourcesLinkedStrip({
           Sources linked ({scopeLabel})
         </h2>
         <p className="text-[11px] text-[var(--muted)]">
-          Catalog: <code>src/data/sources.json</code> ({sourceCatalogCount} entries)
+          {sourceCatalogCount} catalog entries · {sources.length} cited in this view
         </p>
       </div>
       {sources.length > 0 ? (

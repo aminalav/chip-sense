@@ -265,6 +265,8 @@ export function ResearchBoardSection({
             flows={tradeFlows}
             sourceLookup={sourceLookup}
             countryName={countryName}
+            selectedFlowId={selectedTradeFlow?.id ?? null}
+            onSelectFlow={selectEdge}
           />
         ) : null}
         {researchPointers && researchPointers.length > 0 ? (

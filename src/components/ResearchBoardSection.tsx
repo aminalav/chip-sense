@@ -166,12 +166,18 @@ export function ResearchBoardSection({
       ) : null}
       <div className="grid gap-6 lg:grid-cols-5 lg:gap-8">
         <div className="isolate space-y-3 lg:col-span-3">
-        {showTrackLens ? <TrackLensBar active={trackLens} boardPathname="/" boardState={state} /> : null}
+        {showTrackLens ? (
+          <TrackLensBar
+            active={trackLens}
+            boardState={state}
+            useTrackRoutes
+          />
+        ) : null}
         {boardNote ? <p className="text-sm text-[var(--muted)]">{boardNote}</p> : null}
         {trackLens ? (
           <p className="text-xs text-[var(--muted)]">
             <Link
-              href={boardPath("/", state, { track: trackLens })}
+              href={boardPath("/", state, { includeTrackParam: false })}
               className="text-[var(--accent)] underline-offset-4 hover:underline"
             >
               Same filters on global board
@@ -307,27 +313,32 @@ export function ResearchBoardSection({
 
 function TrackLensBar({
   active,
-  boardPathname,
   boardState,
+  useTrackRoutes,
 }: {
   active: TrackSlug | null;
-  boardPathname: string;
   boardState: import("@/lib/boardUrlState").BoardUrlState;
+  /** Link to /track/slug instead of /?track=slug */
+  useTrackRoutes: boolean;
 }) {
+  const allHref = useTrackRoutes
+    ? boardPath("/", boardState, { includeTrackParam: false })
+    : boardPath("/", boardState, { track: null });
+
   return (
     <div className="flex flex-wrap items-center gap-2">
       <span className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
         Track lens
       </span>
-      <LensChip
-        href={boardPath(boardPathname, boardState, { track: null })}
-        label="All"
-        isActive={active === null}
-      />
+      <LensChip href={allHref} label="All" isActive={active === null} />
       {TRACKS.map((t) => (
         <LensChip
           key={t.slug}
-          href={boardPath(boardPathname, boardState, { track: t.slug })}
+          href={
+            useTrackRoutes
+              ? boardPath(`/track/${t.slug}`, boardState, { includeTrackParam: false })
+              : boardPath("/", boardState, { track: t.slug })
+          }
           label={t.title}
           isActive={active === t.slug}
           track={t}

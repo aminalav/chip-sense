@@ -46,10 +46,12 @@ export function parseBoardSearchParams(
 
 export function buildBoardQueryString(
   state: BoardUrlState,
-  options?: { track?: TrackSlug | null },
+  options?: { track?: TrackSlug | null; includeTrackParam?: boolean },
 ): string {
   const params = new URLSearchParams();
-  if (options?.track) params.set("track", options.track);
+  if (options?.includeTrackParam !== false && options?.track) {
+    params.set("track", options.track);
+  }
   if (state.scenarioId !== "baseline") params.set("scenario", state.scenarioId);
   if (state.essay1Only) params.set("essay1", "1");
   if (!state.showSupplyLines) params.set("supply", "0");
@@ -68,7 +70,7 @@ export function buildBoardQueryString(
 export function boardPath(
   pathname: string,
   state: BoardUrlState,
-  options?: { track?: TrackSlug | null },
+  options?: { track?: TrackSlug | null; includeTrackParam?: boolean },
 ): string {
   return `${pathname}${buildBoardQueryString(state, options)}`;
 }

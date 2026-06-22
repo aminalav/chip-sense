@@ -62,7 +62,11 @@ export function useBoardUrlState(
 
   const syncUrl = useCallback(
     (next: BoardUrlState) => {
-      const qs = buildBoardQueryString(next, { track: options.trackLens ?? parsed.track ?? null });
+      const onTrackPage = pathname.startsWith("/track/");
+      const qs = buildBoardQueryString(next, {
+        track: onTrackPage ? null : (options.trackLens ?? parsed.track ?? null),
+        includeTrackParam: !onTrackPage,
+      });
       const nextUrl = `${pathname}${qs}`;
       const currentQs = searchParams.toString();
       const currentUrl = `${pathname}${currentQs ? `?${currentQs}` : ""}`;

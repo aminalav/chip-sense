@@ -36,6 +36,7 @@ export function useBoardUrlState(
     showAssembly: parsed.showAssembly,
     showTradeFlows: parsed.showTradeFlows,
     includePresence: parsed.includePresence,
+    focusConnections: parsed.focusConnections,
     selectedNodeId: parsed.selectedNodeId,
     selectedEdgeId: parsed.selectedEdgeId,
   }));
@@ -55,6 +56,7 @@ export function useBoardUrlState(
       showAssembly: parsed.showAssembly,
       showTradeFlows: parsed.showTradeFlows,
       includePresence: parsed.includePresence,
+      focusConnections: parsed.focusConnections,
       selectedNodeId: parsed.selectedNodeId,
       selectedEdgeId: parsed.selectedEdgeId,
     });

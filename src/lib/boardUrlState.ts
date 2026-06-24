@@ -11,6 +11,7 @@ export interface BoardUrlState {
   showAssembly: boolean;
   showTradeFlows: boolean;
   includePresence: boolean;
+  focusConnections: boolean;
   selectedNodeId: string | null;
   selectedEdgeId: string | null;
 }
@@ -43,6 +44,7 @@ export function parseBoardSearchParams(
     showTradeFlows: params.get("trade") === "1",
     includePresence:
       params.get("ops") === "1" || (params.get("ops") !== "0" && Boolean(options?.defaultIncludePresence)),
+    focusConnections: params.get("focus") === "1",
     selectedNodeId: params.get("node"),
     selectedEdgeId: params.get("edge"),
     urlWarnings,
@@ -66,6 +68,7 @@ export function buildBoardQueryString(
   if (!state.showAssembly) params.set("asm", "0");
   if (state.showTradeFlows) params.set("trade", "1");
   if (state.includePresence) params.set("ops", "1");
+  if (state.focusConnections) params.set("focus", "1");
   if (state.selectedNodeId) params.set("node", state.selectedNodeId);
   if (state.selectedEdgeId) params.set("edge", state.selectedEdgeId);
   const qs = params.toString();

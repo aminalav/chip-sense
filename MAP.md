@@ -59,6 +59,7 @@ See `SCENARIOS.md` for the relationship list and writing prompts.
 | `mem` | `0` | Hide HBM / memory arcs |
 | `asm` | `0` | Hide assembly / EMS arcs |
 | `trade` | `1` | Show Comtrade country trade arcs |
+| `focus` | `1` | Dim pins not connected to visible arcs (see How to read this map) |
 | `node` | `co-tsmc` | Selected pin (sidebar detail) |
 | `edge` | `e-tsmc-supplies-nvidia` | Selected edge (sidebar detail) |
 
@@ -67,6 +68,7 @@ Example: `/?scenario=hbm-shortage&node=co-sk-hynix`
 ## Map toggles (UI)
 
 - **Core supply chain view** — teaching filter (`essay1=1`): twelve anchor companies, key fabs, and essay countries (TW/CN/US/KR via `companyRecords.ts`). Amber ring on core pins.
+- **Focus on visible connections** — (`focus=1`) dims pins that are not endpoints of visible arcs, fab sites for those companies, or trade-flow countries.
 - **Supply links** — `supplies` edges between company HQs (cited edges use track/global accent).
 - **Scenario** — Non-baseline scenarios restyle pins and supply arcs (`scenarioEffects.ts`); assumptions live in `seed-graph.json` → `scenarios`.
 - **Track lens** — Filters nodes and edges whose `tracks` array includes that slug.

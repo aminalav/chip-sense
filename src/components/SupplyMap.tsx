@@ -36,13 +36,11 @@ function ArcCasingLayer({
   id,
   sourceId,
   lineWidth,
-  dasharray,
   filter,
 }: {
   id: string;
   sourceId: string;
   lineWidth: number;
-  dasharray?: number[];
   filter?: FilterSpecification;
 }) {
   return (
@@ -50,12 +48,11 @@ function ArcCasingLayer({
       id={id}
       source={sourceId}
       type="line"
-      filter={filter}
+      {...(filter ? { filter } : {})}
       paint={{
         "line-color": MAP_ARC_CASING.color,
         "line-width": lineWidth + MAP_ARC_CASING.widthExtra,
         "line-opacity": MAP_ARC_CASING.opacity,
-        ...(dasharray ? { "line-dasharray": dasharray } : {}),
       }}
     />
   );
@@ -706,50 +703,48 @@ export const SupplyMap = forwardRef<MapRef, {
           {showSupplyLines && supplyLineCount > 0 && (
             <Source id={SUPPLY_LINES_SOURCE_ID} type="geojson" data={supplyLines}>
               {!effects ? (
-                <>
-                  <ArcCasingLayer
-                    id="supply-lines-uncited-casing"
-                    sourceId={SUPPLY_LINES_SOURCE_ID}
-                    lineWidth={1.5}
-                    dasharray={[2, 2]}
-                    filter={["==", ["get", "cited"], false]}
-                  />
-                  <Layer
-                    id="supply-lines-uncited"
-                    source={SUPPLY_LINES_SOURCE_ID}
-                    type="line"
-                    filter={["==", ["get", "cited"], false]}
-                    paint={{
-                      "line-color": "#94a3b8",
-                      "line-width": 1.75,
-                      "line-opacity": 0.5 * arcOpacityScale,
-                      "line-dasharray": [2, 2],
-                    }}
-                  />
-                </>
+                <ArcCasingLayer
+                  id="supply-lines-uncited-casing"
+                  sourceId={SUPPLY_LINES_SOURCE_ID}
+                  lineWidth={1.5}
+                  filter={["==", ["get", "cited"], false]}
+                />
               ) : null}
               {!effects ? (
-                <>
-                  <ArcCasingLayer
-                    id="supply-lines-cited-casing"
-                    sourceId={SUPPLY_LINES_SOURCE_ID}
-                    lineWidth={2.75}
-                    dasharray={[2, 1.5]}
-                    filter={["==", ["get", "cited"], true]}
-                  />
-                  <Layer
-                    id="supply-lines-cited"
-                    source={SUPPLY_LINES_SOURCE_ID}
-                    type="line"
-                    filter={["==", ["get", "cited"], true]}
-                    paint={{
-                      "line-color": accentHex,
-                      "line-width": 2.75,
-                      "line-opacity": 0.82 * arcOpacityScale,
-                      "line-dasharray": [2, 1.5],
-                    }}
-                  />
-                </>
+                <Layer
+                  id="supply-lines-uncited"
+                  source={SUPPLY_LINES_SOURCE_ID}
+                  type="line"
+                  filter={["==", ["get", "cited"], false]}
+                  paint={{
+                    "line-color": "#94a3b8",
+                    "line-width": 1.75,
+                    "line-opacity": 0.5 * arcOpacityScale,
+                    "line-dasharray": [2, 2],
+                  }}
+                />
+              ) : null}
+              {!effects ? (
+                <ArcCasingLayer
+                  id="supply-lines-cited-casing"
+                  sourceId={SUPPLY_LINES_SOURCE_ID}
+                  lineWidth={2.75}
+                  filter={["==", ["get", "cited"], true]}
+                />
+              ) : null}
+              {!effects ? (
+                <Layer
+                  id="supply-lines-cited"
+                  source={SUPPLY_LINES_SOURCE_ID}
+                  type="line"
+                  filter={["==", ["get", "cited"], true]}
+                  paint={{
+                    "line-color": accentHex,
+                    "line-width": 2.75,
+                    "line-opacity": 0.82 * arcOpacityScale,
+                    "line-dasharray": [2, 1.5],
+                  }}
+                />
               ) : null}
               {effects ? (
                 <Layer
@@ -827,7 +822,6 @@ export const SupplyMap = forwardRef<MapRef, {
                 id="equips-lines-casing"
                 sourceId={EQUIPS_LINES_SOURCE_ID}
                 lineWidth={2.25}
-                dasharray={[3, 2]}
               />
               <Layer
                 id="equips-lines-main"
@@ -860,7 +854,6 @@ export const SupplyMap = forwardRef<MapRef, {
                 id="packaging-lines-casing"
                 sourceId={PACKAGING_LINES_SOURCE_ID}
                 lineWidth={2.25}
-                dasharray={[1, 1.5]}
               />
               <Layer
                 id="packaging-lines-main"
@@ -893,7 +886,6 @@ export const SupplyMap = forwardRef<MapRef, {
                 id="memory-lines-casing"
                 sourceId={MEMORY_LINES_SOURCE_ID}
                 lineWidth={2.5}
-                dasharray={[4, 2]}
               />
               <Layer
                 id="memory-lines-main"
@@ -926,7 +918,6 @@ export const SupplyMap = forwardRef<MapRef, {
                 id="assembly-lines-casing"
                 sourceId={ASSEMBLY_LINES_SOURCE_ID}
                 lineWidth={2}
-                dasharray={[2, 2.5]}
               />
               <Layer
                 id="assembly-lines-main"
@@ -961,7 +952,7 @@ export const SupplyMap = forwardRef<MapRef, {
                 type="line"
                 paint={{
                   "line-color": MAP_ARC_CASING.color,
-                  "line-width": ["+", ["get", "width"], 2.5],
+                  "line-width": ["+", ["get", "width"], MAP_ARC_CASING.widthExtra],
                   "line-opacity": 0.88,
                 }}
               />

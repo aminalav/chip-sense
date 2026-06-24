@@ -22,6 +22,7 @@ import {
 import {
   MAP_ARC_CASING,
   MAP_DIMMED_PIN_OPACITY,
+  MAP_FRAME_CLASS,
   MARKER_LABEL_CLASS,
   MARKER_TAG_CLASS,
   arcLayerOpacityScale,
@@ -687,7 +688,7 @@ export const SupplyMap = forwardRef<MapRef, {
         ) : null}
         </div>
       </details>
-      <div className="chip-sense-map-frame relative z-0 aspect-[2/1] w-full min-h-[320px] max-h-[min(62vh,560px)] overflow-hidden rounded-xl border border-white/10 bg-[var(--card)]">
+      <div className={MAP_FRAME_CLASS}>
         <MapGL
           ref={ref}
           initialViewState={initialView}

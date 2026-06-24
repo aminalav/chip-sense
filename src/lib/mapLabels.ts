@@ -61,6 +61,10 @@ export const MAP_ARC_CASING = {
   opacity: 0.92,
 } as const;
 
+/** Shared map canvas sizing — keep SupplyMap and loading placeholder in sync. */
+export const MAP_FRAME_CLASS =
+  "chip-sense-map-frame relative z-0 w-full h-[min(85vh,920px)] min-h-[520px] overflow-hidden rounded-xl border border-white/10 bg-[var(--card)]";
+
 export const MAP_DIMMED_PIN_OPACITY = 0.22;
 
 export const MARKER_LABEL_CLASS =

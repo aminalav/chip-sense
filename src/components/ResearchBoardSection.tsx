@@ -176,78 +176,78 @@ export function ResearchBoardSection({
           ))}
         </div>
       ) : null}
-      <div className="grid gap-6 lg:grid-cols-5 lg:gap-8">
-        <div className="isolate space-y-3 lg:col-span-3">
-        {showTrackLens ? (
-          <TrackLensBar
-            active={trackLens}
-            boardState={state}
-            useTrackRoutes
-          />
-        ) : null}
-        {boardNote ? <p className="text-sm text-[var(--muted)]">{boardNote}</p> : null}
-        {trackLens ? (
-          <p className="text-xs text-[var(--muted)]">
-            <Link
-              href={boardPath("/", state, { includeTrackParam: false })}
-              className="text-[var(--accent)] underline-offset-4 hover:underline"
-            >
-              Same filters on global board
-            </Link>
-          </p>
-        ) : null}
-        <div className="flex flex-wrap items-center gap-3">
-          <label className="flex items-center gap-2 text-xs text-[var(--muted)]">
-            <input
-              type="checkbox"
-              checked={state.includePresence}
-              onChange={(e) => update({ includePresence: e.target.checked })}
-              className="rounded border-white/20"
+      <div className="flex flex-col gap-6">
+        <div className="isolate space-y-3">
+          {showTrackLens ? (
+            <TrackLensBar
+              active={trackLens}
+              boardState={state}
+              useTrackRoutes
             />
-            Show ops pins (country-level presence without a fab site)
-          </label>
-          <ExportMapButton
-            mapRef={mapRef}
+          ) : null}
+          {boardNote ? <p className="text-sm text-[var(--muted)]">{boardNote}</p> : null}
+          {trackLens ? (
+            <p className="text-xs text-[var(--muted)]">
+              <Link
+                href={boardPath("/", state, { includeTrackParam: false })}
+                className="text-[var(--accent)] underline-offset-4 hover:underline"
+              >
+                Same filters on global board
+              </Link>
+            </p>
+          ) : null}
+          <div className="flex flex-wrap items-center gap-3">
+            <label className="flex items-center gap-2 text-xs text-[var(--muted)]">
+              <input
+                type="checkbox"
+                checked={state.includePresence}
+                onChange={(e) => update({ includePresence: e.target.checked })}
+                className="rounded border-white/20"
+              />
+              Show ops pins (country-level presence without a fab site)
+            </label>
+            <ExportMapButton
+              mapRef={mapRef}
+              nodes={mapNodes}
+              edges={edges}
+              effects={effects}
+              selectedNodeId={state.selectedNodeId}
+              labelAllPins={state.essay1Only}
+            />
+          </div>
+          <SupplyMap
+            ref={mapRef}
             nodes={mapNodes}
             edges={edges}
+            scenarios={scenarios}
+            accentHex={accentHex}
+            scenarioId={state.scenarioId}
+            onScenarioIdChange={(id) => update({ scenarioId: id })}
             effects={effects}
+            essay1Only={state.essay1Only}
+            onEssay1OnlyChange={(v) => update({ essay1Only: v })}
+            showSupplyLines={state.showSupplyLines}
+            onShowSupplyLinesChange={(v) => update({ showSupplyLines: v })}
+            showEquips={state.showEquips}
+            onShowEquipsChange={(v) => update({ showEquips: v })}
+            showPackaging={state.showPackaging}
+            onShowPackagingChange={(v) => update({ showPackaging: v })}
+            showMemory={state.showMemory}
+            onShowMemoryChange={(v) => update({ showMemory: v })}
+            showAssembly={state.showAssembly}
+            onShowAssemblyChange={(v) => update({ showAssembly: v })}
+            showTradeFlows={state.showTradeFlows}
+            onShowTradeFlowsChange={(v) => update({ showTradeFlows: v })}
+            focusConnections={state.focusConnections}
+            onFocusConnectionsChange={(v) => update({ focusConnections: v })}
+            tradeFlows={tradeFlows}
+            tradeLines={tradeLinesGeo}
             selectedNodeId={state.selectedNodeId}
-            labelAllPins={state.essay1Only}
+            onSelectNode={selectNode}
+            onSelectEdge={selectEdge}
           />
         </div>
-        <SupplyMap
-          ref={mapRef}
-          nodes={mapNodes}
-          edges={edges}
-          scenarios={scenarios}
-          accentHex={accentHex}
-          scenarioId={state.scenarioId}
-          onScenarioIdChange={(id) => update({ scenarioId: id })}
-          effects={effects}
-          essay1Only={state.essay1Only}
-          onEssay1OnlyChange={(v) => update({ essay1Only: v })}
-          showSupplyLines={state.showSupplyLines}
-          onShowSupplyLinesChange={(v) => update({ showSupplyLines: v })}
-          showEquips={state.showEquips}
-          onShowEquipsChange={(v) => update({ showEquips: v })}
-          showPackaging={state.showPackaging}
-          onShowPackagingChange={(v) => update({ showPackaging: v })}
-          showMemory={state.showMemory}
-          onShowMemoryChange={(v) => update({ showMemory: v })}
-          showAssembly={state.showAssembly}
-          onShowAssemblyChange={(v) => update({ showAssembly: v })}
-          showTradeFlows={state.showTradeFlows}
-          onShowTradeFlowsChange={(v) => update({ showTradeFlows: v })}
-          focusConnections={state.focusConnections}
-          onFocusConnectionsChange={(v) => update({ focusConnections: v })}
-          tradeFlows={tradeFlows}
-          tradeLines={tradeLinesGeo}
-          selectedNodeId={state.selectedNodeId}
-          onSelectNode={selectNode}
-          onSelectEdge={selectEdge}
-        />
-        </div>
-        <aside className="space-y-5 lg:col-span-2">
+        <aside className="grid gap-5 lg:grid-cols-2">
         <BoardSelectionPanel
           selectedNode={selectedNode}
           selectedEdge={selectedEdge}
@@ -280,7 +280,7 @@ export function ResearchBoardSection({
             </ul>
           </div>
         ) : null}
-        <details className="rounded-xl border border-white/10 bg-[var(--card)] px-4 py-3">
+        <details className="rounded-xl border border-white/10 bg-[var(--card)] px-4 py-3 lg:col-span-2">
           <summary className="cursor-pointer select-none text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">
             Supply relationships ({scopeLabel})
             <span className="ml-1 font-normal normal-case text-[var(--foreground)]/70">

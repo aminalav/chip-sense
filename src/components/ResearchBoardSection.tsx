@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useRef } from "react";
 import dynamic from "next/dynamic";
 import type { MapRef } from "react-map-gl/maplibre";
+import { BoardLoadingPlaceholder } from "@/components/BoardLoadingPlaceholder";
 import { BoardSelectionPanel } from "@/components/BoardSelectionPanel";
 import { EditorialTracksBar } from "@/components/EditorialTracksBar";
 import { ScenarioBanner } from "@/components/BoardDisclaimer";
@@ -24,11 +25,7 @@ const SupplyMap = dynamic(
   () => import("./SupplyMap").then((m) => m.SupplyMap),
   {
     ssr: false,
-    loading: () => (
-      <div className="flex aspect-[2/1] min-h-[320px] max-h-[min(62vh,560px)] w-full items-center justify-center rounded-xl border border-white/10 bg-[var(--card)] text-sm text-[var(--muted)]">
-        Loading map…
-      </div>
-    ),
+    loading: () => <BoardLoadingPlaceholder />,
   },
 );
 

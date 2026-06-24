@@ -1,9 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { BoardDisclaimer } from "@/components/BoardDisclaimer";
-import { ResearchBoardSection } from "@/components/ResearchBoardSection";
+import { ClientResearchBoardSection } from "@/components/ClientBoardSections";
 import { getTrack, TRACKS, isTrackSlug } from "@/data/tracks";
 import { loadGraph } from "@/lib/graphQueries";
 import { loadSources } from "@/lib/sourceQueries";
@@ -60,26 +59,18 @@ export default async function TrackPage({ params }: { params: Promise<{ slug: st
         </Link>
       </div>
 
-      <Suspense
-        fallback={
-          <div className="flex aspect-[2/1] max-h-[min(50vh,480px)] w-full items-center justify-center rounded-xl border border-white/10 bg-[var(--card)] text-sm text-[var(--muted)]">
-            Loading board…
-          </div>
-        }
-      >
-        <ResearchBoardSection
-          graphNodes={graph.nodes}
-          graphEdges={graph.edges}
-          scenarios={graph.scenarios}
-          accentHex={track.accentHex}
-          trackLens={slug}
-          showTrackLens
-          researchPointers={track.researchPointers}
-          boardNote={`${track.title} lens — registry companies, fab pins, and supply relationships scoped to this track.`}
-          sourceCatalogCount={baselineSources.length}
-          sourceRecords={baselineSources}
-        />
-      </Suspense>
+      <ClientResearchBoardSection
+        graphNodes={graph.nodes}
+        graphEdges={graph.edges}
+        scenarios={graph.scenarios}
+        accentHex={track.accentHex}
+        trackLens={slug}
+        showTrackLens
+        researchPointers={track.researchPointers}
+        boardNote={`${track.title} lens — registry companies, fab pins, and supply relationships scoped to this track.`}
+        sourceCatalogCount={baselineSources.length}
+        sourceRecords={baselineSources}
+      />
 
       <footer className="border-t border-white/10 pt-4">
         <BoardDisclaimer />

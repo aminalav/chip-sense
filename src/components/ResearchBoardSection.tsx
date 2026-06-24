@@ -241,6 +241,9 @@ export function ResearchBoardSection({
           onShowAssemblyChange={(v) => update({ showAssembly: v })}
           showTradeFlows={state.showTradeFlows}
           onShowTradeFlowsChange={(v) => update({ showTradeFlows: v })}
+          focusConnections={state.focusConnections}
+          onFocusConnectionsChange={(v) => update({ focusConnections: v })}
+          tradeFlows={tradeFlows}
           tradeLines={tradeLinesGeo}
           selectedNodeId={state.selectedNodeId}
           onSelectNode={selectNode}

@@ -4,7 +4,7 @@ import { forwardRef, useCallback, useMemo, useState } from "react";
 import MapGL, { Layer, Marker, NavigationControl, Popup, Source } from "react-map-gl/maplibre";
 import type { MapLayerMouseEvent, MapRef } from "react-map-gl/maplibre";
 import type { FeatureCollection, LineString } from "geojson";
-import type { GraphEdge, GraphNode, Scenario } from "@/data/graph";
+import type { GraphEdge, GraphNode, Scenario, TradeFlowRecord } from "@/data/graph";
 import {
   EDGE_ROLE_COLOR,
   NODE_ROLE_LABEL,
@@ -14,6 +14,11 @@ import {
   type ScenarioEffects,
 } from "@/lib/scenarioEffects";
 import { SEGMENT_LABEL, SEGMENT_LEGEND, isCompanySegment, segmentColor } from "@/lib/segments";
+import {
+  computeFocusedPinIds,
+  isPinDimmed,
+  visibleCompanyArcLayerCount,
+} from "@/lib/mapFocus";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
@@ -189,6 +194,9 @@ export const SupplyMap = forwardRef<MapRef, {
   onShowAssemblyChange: (value: boolean) => void;
   showTradeFlows: boolean;
   onShowTradeFlowsChange: (value: boolean) => void;
+  focusConnections: boolean;
+  onFocusConnectionsChange: (value: boolean) => void;
+  tradeFlows?: TradeFlowRecord[];
   tradeLines?: FeatureCollection<LineString> | null;
   selectedNodeId?: string | null;
   onSelectNode?: (nodeId: string) => void;
@@ -216,6 +224,9 @@ export const SupplyMap = forwardRef<MapRef, {
     onShowAssemblyChange,
     showTradeFlows,
     onShowTradeFlowsChange,
+    focusConnections,
+    onFocusConnectionsChange,
+    tradeFlows = [],
     tradeLines = null,
     selectedNodeId = null,
     onSelectNode,
@@ -330,6 +341,57 @@ export const SupplyMap = forwardRef<MapRef, {
   const assemblyLineCount = assemblyLines.features.length;
   const tradeLineCount = tradeLines?.features.length ?? 0;
 
+  const mapFocus = useMemo(
+    () =>
+      computeFocusedPinIds(
+        {
+          focusConnections,
+          showSupplyLines,
+          showEquips,
+          showPackaging,
+          showMemory,
+          showAssembly,
+          showTradeFlows,
+          edges: edges ?? [],
+          tradeFlows,
+          supplyLineCount,
+          equipsLineCount,
+          packagingLineCount,
+          memoryLineCount,
+          assemblyLineCount,
+          tradeLineCount,
+        },
+        nodeById,
+      ),
+    [
+      focusConnections,
+      showSupplyLines,
+      showEquips,
+      showPackaging,
+      showMemory,
+      showAssembly,
+      showTradeFlows,
+      edges,
+      tradeFlows,
+      supplyLineCount,
+      equipsLineCount,
+      packagingLineCount,
+      memoryLineCount,
+      assemblyLineCount,
+      tradeLineCount,
+      nodeById,
+    ],
+  );
+
+  const visibleLayerCount = visibleCompanyArcLayerCount({
+    showSupplyLines,
+    showEquips,
+    showPackaging,
+    showMemory,
+    showAssembly,
+    showTradeFlows,
+  });
+
   const hoveredNode = hoveredNodeId ? (nodeById.get(hoveredNodeId) ?? null) : null;
 
   const hitLayerIds = useMemo(() => {
@@ -373,6 +435,18 @@ export const SupplyMap = forwardRef<MapRef, {
               className="rounded border-white/20"
             />
             Core supply chain view
+          </label>
+          <label
+            className="flex items-center gap-2 text-[var(--muted)]"
+            title="Dim pins not connected to the arc layers you have turned on"
+          >
+            <input
+              type="checkbox"
+              checked={focusConnections}
+              onChange={(e) => onFocusConnectionsChange(e.target.checked)}
+              className="rounded border-white/20"
+            />
+            Focus on visible connections
           </label>
           <label className="flex items-center gap-2 text-[var(--muted)]">
             <input
@@ -443,13 +517,22 @@ export const SupplyMap = forwardRef<MapRef, {
             </select>
           </label>
         </div>
-        {(essay1Only || effects) && (
+        {(essay1Only || effects || (focusConnections && mapFocus.active)) && (
           <div className="space-y-1 text-xs text-[var(--muted)]">
             {essay1Only ? (
               <p>
                 Twelve anchor companies and key fabs — a cleaner map for teaching, essays, and
                 screenshots. Amber rings mark the core set.
               </p>
+            ) : null}
+            {focusConnections && mapFocus.active ? (
+              <p>
+                Focus mode: full opacity on companies at the ends of visible arcs, their fab pins,
+                and trade-flow countries. Other pins are dimmed — they are still on the map for
+                context.
+              </p>
+            ) : focusConnections && visibleLayerCount > 0 ? (
+              <p>Turn on at least one connection layer with visible arcs to use focus mode.</p>
             ) : null}
             {effects ? (
               <p>
@@ -461,6 +544,39 @@ export const SupplyMap = forwardRef<MapRef, {
           </div>
         )}
       </div>
+      <details className="relative z-20 shrink-0 rounded-xl border border-white/10 bg-[var(--card)] px-3 py-2 text-xs text-[var(--muted)]">
+        <summary className="cursor-pointer select-none text-xs font-medium text-[var(--foreground)]/80">
+          How to read this map
+        </summary>
+        <ul className="mt-2 list-disc space-y-2 pl-4 leading-relaxed">
+          <li>
+            <span className="text-[var(--foreground)]/90">Colored arcs</span> are typed supply
+            relationships drawn between company headquarters — not shipping routes or fab-to-fab
+            flows. Click an arc for filing citations.
+          </li>
+          <li>
+            <span className="text-[var(--foreground)]/90">Layer checkboxes</span> show or hide arc
+            types only. Pins stay visible unless you turn on{" "}
+            <span className="text-[var(--foreground)]/90">Core supply chain view</span>, a track
+            lens, or <span className="text-[var(--foreground)]/90">Focus on visible connections</span>.
+          </li>
+          <li>
+            <span className="text-[var(--foreground)]/90">Hover</span> a pin for a quick card;{" "}
+            <span className="text-[var(--foreground)]/90">click</span> a pin or arc for the full
+            sidebar profile, connections, and sources.
+          </li>
+          <li>
+            <span className="text-[var(--foreground)]/90">Scenarios</span> restyle the same graph
+            for illustrative stress tests — they are not forecasts. Baseline shows relationships
+            without stress coloring.
+          </li>
+          <li>
+            <span className="text-[var(--foreground)]/90">Trade flows</span> (optional) are
+            country-to-country chip trade arcs from Comtrade data, separate from company supply
+            links.
+          </li>
+        </ul>
+      </details>
       <details className="relative z-20 shrink-0 rounded-xl border border-white/10 bg-[var(--card)] px-3 py-2 text-[10px] text-[var(--muted)]">
         <summary className="cursor-pointer select-none text-xs font-medium text-[var(--foreground)]/80">
           Map legend
@@ -832,6 +948,13 @@ export const SupplyMap = forwardRef<MapRef, {
               isSelected,
               hoveredNodeId === node.id,
             );
+            const dimmed = isPinDimmed(
+              node.id,
+              mapFocus.active,
+              mapFocus.highlightedIds,
+              selectedNodeId,
+              hoveredNodeId,
+            );
             return (
               <Marker key={node.id} longitude={lng} latitude={lat} anchor="bottom">
                 <button
@@ -841,7 +964,9 @@ export const SupplyMap = forwardRef<MapRef, {
                   onMouseLeave={() =>
                     setHoveredNodeId((cur) => (cur === node.id ? null : cur))
                   }
-                  className="flex max-w-[9rem] cursor-pointer flex-col items-center gap-0.5 border-0 bg-transparent p-0 text-left"
+                  className={`flex max-w-[9rem] cursor-pointer flex-col items-center gap-0.5 border-0 bg-transparent p-0 text-left transition-opacity ${
+                    dimmed ? "opacity-35" : "opacity-100"
+                  }`}
                 >
                   <div
                     title={detail ? `${node.label}\n${detail}` : `${node.label} (${node.kind})`}

@@ -34,3 +34,29 @@ body {
 .maplibregl-canvas {
   outline: none;
 }
+
+/* Subtle wash over OSM tiles so pins and arcs read more clearly */
+.chip-sense-map-frame::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(12, 15, 20, 0.12) 0%,
+    rgba(12, 15, 20, 0.22) 100%
+  );
+}
+
+.maplibregl-popup-content {
+  padding: 10px 12px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+}
+
+.maplibregl-popup-tip {
+  border-top-color: #fff !important;
+  border-bottom-color: #fff !important;
+}

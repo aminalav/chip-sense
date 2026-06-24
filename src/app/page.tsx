@@ -1,6 +1,5 @@
-import { Suspense } from "react";
 import { BoardDisclaimer } from "@/components/BoardDisclaimer";
-import { HomeDashboard } from "@/components/HomeDashboard";
+import { ClientHomeDashboard } from "@/components/ClientBoardSections";
 import { loadGraph } from "@/lib/graphQueries";
 import { COMPANY_RECORDS } from "@/lib/companyRecords";
 import { loadSources } from "@/lib/sourceQueries";
@@ -24,21 +23,13 @@ export default function Home() {
         </p>
       </header>
 
-      <Suspense
-        fallback={
-          <div className="flex aspect-[2/1] max-h-[min(50vh,480px)] w-full items-center justify-center rounded-xl border border-white/10 bg-[var(--card)] text-sm text-[var(--muted)]">
-            Loading board…
-          </div>
-        }
-      >
-        <HomeDashboard
-          graphNodes={graph.nodes}
-          graphEdges={graph.edges}
-          scenarios={graph.scenarios}
-          sourceCatalogCount={sources.length}
-          sourceRecords={sources}
-        />
-      </Suspense>
+      <ClientHomeDashboard
+        graphNodes={graph.nodes}
+        graphEdges={graph.edges}
+        scenarios={graph.scenarios}
+        sourceCatalogCount={sources.length}
+        sourceRecords={sources}
+      />
 
       <footer className="space-y-2 border-t border-white/10 pt-4">
         <BoardDisclaimer />

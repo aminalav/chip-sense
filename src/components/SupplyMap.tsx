@@ -19,8 +19,47 @@ import {
   isPinDimmed,
   visibleCompanyArcLayerCount,
 } from "@/lib/mapFocus";
+import {
+  MAP_ARC_CASING,
+  MAP_DIMMED_PIN_OPACITY,
+  MARKER_LABEL_CLASS,
+  MARKER_TAG_CLASS,
+  arcLayerOpacityScale,
+  showCountryPin,
+  showMarkerLabel,
+} from "@/lib/mapLabels";
 
+import type { FilterSpecification } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+
+function ArcCasingLayer({
+  id,
+  sourceId,
+  lineWidth,
+  dasharray,
+  filter,
+}: {
+  id: string;
+  sourceId: string;
+  lineWidth: number;
+  dasharray?: number[];
+  filter?: FilterSpecification;
+}) {
+  return (
+    <Layer
+      id={id}
+      source={sourceId}
+      type="line"
+      filter={filter}
+      paint={{
+        "line-color": MAP_ARC_CASING.color,
+        "line-width": lineWidth + MAP_ARC_CASING.widthExtra,
+        "line-opacity": MAP_ARC_CASING.opacity,
+        ...(dasharray ? { "line-dasharray": dasharray } : {}),
+      }}
+    />
+  );
+}
 
 const SUPPLY_LINES_SOURCE_ID = "supply-lines";
 const EQUIPS_LINES_SOURCE_ID = "equips-lines";
@@ -87,32 +126,8 @@ function markerTag(kind: GraphNode["kind"]): string {
 }
 
 /**
- * Persistent marker labels are gated by zoom so the world view stays a clean
- * field of color-coded dots (the hover card carries the detail). Names reveal
- * progressively on zoom-in, most-important entities first. Selected/hovered
- * pins are always labeled.
+ * Persistent marker labels are gated by zoom — see mapLabels.ts.
  */
-function showMarkerLabel(
-  node: GraphNode,
-  zoom: number,
-  isSelected: boolean,
-  isHovered: boolean,
-): boolean {
-  if (isSelected || isHovered) return true;
-  switch (node.kind) {
-    case "company":
-      return zoom >= 2.6;
-    case "fab":
-      return zoom >= 4;
-    case "presence":
-      return zoom >= 4.5;
-    case "country":
-      return false;
-    default:
-      return zoom >= 4;
-  }
-}
-
 function NodeHoverCard({ node }: { node: GraphNode }) {
   const rawSegment = node.meta?.segment;
   const segment = isCompanySegment(rawSegment) ? rawSegment : undefined;
@@ -392,6 +407,18 @@ export const SupplyMap = forwardRef<MapRef, {
     showTradeFlows,
   });
 
+  const arcOpacityScale = arcLayerOpacityScale(visibleLayerCount);
+
+  const tradeCountryIds = useMemo(() => {
+    if (!showTradeFlows) return new Set<string>();
+    const ids = new Set<string>();
+    for (const flow of tradeFlows) {
+      ids.add(flow.exporter_country_id);
+      ids.add(flow.importer_country_id);
+    }
+    return ids;
+  }, [showTradeFlows, tradeFlows]);
+
   const hoveredNode = hoveredNodeId ? (nodeById.get(hoveredNodeId) ?? null) : null;
 
   const hitLayerIds = useMemo(() => {
@@ -561,6 +588,11 @@ export const SupplyMap = forwardRef<MapRef, {
             lens, or <span className="text-[var(--foreground)]/90">Focus on visible connections</span>.
           </li>
           <li>
+            <span className="text-[var(--foreground)]/90">Zoom in</span> to reveal more pin
+            names, or turn on <span className="text-[var(--foreground)]/90">Focus on visible connections</span>{" "}
+            to label the companies tied to the arcs you are viewing.
+          </li>
+          <li>
             <span className="text-[var(--foreground)]/90">Hover</span> a pin for a quick card;{" "}
             <span className="text-[var(--foreground)]/90">click</span> a pin or arc for the full
             sidebar profile, connections, and sources.
@@ -658,7 +690,7 @@ export const SupplyMap = forwardRef<MapRef, {
         ) : null}
         </div>
       </details>
-      <div className="relative z-0 aspect-[2/1] w-full max-h-[min(50vh,480px)] overflow-hidden rounded-xl border border-white/10 bg-[var(--card)]">
+      <div className="chip-sense-map-frame relative z-0 aspect-[2/1] w-full min-h-[320px] max-h-[min(62vh,560px)] overflow-hidden rounded-xl border border-white/10 bg-[var(--card)]">
         <MapGL
           ref={ref}
           initialViewState={initialView}
@@ -674,32 +706,50 @@ export const SupplyMap = forwardRef<MapRef, {
           {showSupplyLines && supplyLineCount > 0 && (
             <Source id={SUPPLY_LINES_SOURCE_ID} type="geojson" data={supplyLines}>
               {!effects ? (
-                <Layer
-                  id="supply-lines-uncited"
-                  source={SUPPLY_LINES_SOURCE_ID}
-                  type="line"
-                  filter={["==", ["get", "cited"], false]}
-                  paint={{
-                    "line-color": "#94a3b8",
-                    "line-width": 1.5,
-                    "line-opacity": 0.45,
-                    "line-dasharray": [2, 2],
-                  }}
-                />
+                <>
+                  <ArcCasingLayer
+                    id="supply-lines-uncited-casing"
+                    sourceId={SUPPLY_LINES_SOURCE_ID}
+                    lineWidth={1.5}
+                    dasharray={[2, 2]}
+                    filter={["==", ["get", "cited"], false]}
+                  />
+                  <Layer
+                    id="supply-lines-uncited"
+                    source={SUPPLY_LINES_SOURCE_ID}
+                    type="line"
+                    filter={["==", ["get", "cited"], false]}
+                    paint={{
+                      "line-color": "#94a3b8",
+                      "line-width": 1.75,
+                      "line-opacity": 0.5 * arcOpacityScale,
+                      "line-dasharray": [2, 2],
+                    }}
+                  />
+                </>
               ) : null}
               {!effects ? (
-                <Layer
-                  id="supply-lines-cited"
-                  source={SUPPLY_LINES_SOURCE_ID}
-                  type="line"
-                  filter={["==", ["get", "cited"], true]}
-                  paint={{
-                    "line-color": accentHex,
-                    "line-width": 2.5,
-                    "line-opacity": 0.75,
-                    "line-dasharray": [2, 1.5],
-                  }}
-                />
+                <>
+                  <ArcCasingLayer
+                    id="supply-lines-cited-casing"
+                    sourceId={SUPPLY_LINES_SOURCE_ID}
+                    lineWidth={2.75}
+                    dasharray={[2, 1.5]}
+                    filter={["==", ["get", "cited"], true]}
+                  />
+                  <Layer
+                    id="supply-lines-cited"
+                    source={SUPPLY_LINES_SOURCE_ID}
+                    type="line"
+                    filter={["==", ["get", "cited"], true]}
+                    paint={{
+                      "line-color": accentHex,
+                      "line-width": 2.75,
+                      "line-opacity": 0.82 * arcOpacityScale,
+                      "line-dasharray": [2, 1.5],
+                    }}
+                  />
+                </>
               ) : null}
               {effects ? (
                 <Layer
@@ -773,14 +823,20 @@ export const SupplyMap = forwardRef<MapRef, {
           )}
           {showEquips && equipsLineCount > 0 && (
             <Source id={EQUIPS_LINES_SOURCE_ID} type="geojson" data={equipsLines}>
+              <ArcCasingLayer
+                id="equips-lines-casing"
+                sourceId={EQUIPS_LINES_SOURCE_ID}
+                lineWidth={2.25}
+                dasharray={[3, 2]}
+              />
               <Layer
                 id="equips-lines-main"
                 source={EQUIPS_LINES_SOURCE_ID}
                 type="line"
                 paint={{
                   "line-color": EQUIP_LINE_COLOR,
-                  "line-width": 2,
-                  "line-opacity": 0.7,
+                  "line-width": 2.25,
+                  "line-opacity": 0.78 * arcOpacityScale,
                   "line-dasharray": [3, 2],
                 }}
               />
@@ -800,14 +856,20 @@ export const SupplyMap = forwardRef<MapRef, {
           )}
           {showPackaging && packagingLineCount > 0 && (
             <Source id={PACKAGING_LINES_SOURCE_ID} type="geojson" data={packagingLines}>
+              <ArcCasingLayer
+                id="packaging-lines-casing"
+                sourceId={PACKAGING_LINES_SOURCE_ID}
+                lineWidth={2.25}
+                dasharray={[1, 1.5]}
+              />
               <Layer
                 id="packaging-lines-main"
                 source={PACKAGING_LINES_SOURCE_ID}
                 type="line"
                 paint={{
                   "line-color": PACKAGING_LINE_COLOR,
-                  "line-width": 2,
-                  "line-opacity": 0.7,
+                  "line-width": 2.25,
+                  "line-opacity": 0.78 * arcOpacityScale,
                   "line-dasharray": [1, 1.5],
                 }}
               />
@@ -827,14 +889,20 @@ export const SupplyMap = forwardRef<MapRef, {
           )}
           {showMemory && memoryLineCount > 0 && (
             <Source id={MEMORY_LINES_SOURCE_ID} type="geojson" data={memoryLines}>
+              <ArcCasingLayer
+                id="memory-lines-casing"
+                sourceId={MEMORY_LINES_SOURCE_ID}
+                lineWidth={2.5}
+                dasharray={[4, 2]}
+              />
               <Layer
                 id="memory-lines-main"
                 source={MEMORY_LINES_SOURCE_ID}
                 type="line"
                 paint={{
                   "line-color": MEMORY_LINE_COLOR,
-                  "line-width": 2.25,
-                  "line-opacity": 0.75,
+                  "line-width": 2.5,
+                  "line-opacity": 0.82 * arcOpacityScale,
                   "line-dasharray": [4, 2],
                 }}
               />
@@ -854,14 +922,20 @@ export const SupplyMap = forwardRef<MapRef, {
           )}
           {showAssembly && assemblyLineCount > 0 && (
             <Source id={ASSEMBLY_LINES_SOURCE_ID} type="geojson" data={assemblyLines}>
+              <ArcCasingLayer
+                id="assembly-lines-casing"
+                sourceId={ASSEMBLY_LINES_SOURCE_ID}
+                lineWidth={2}
+                dasharray={[2, 2.5]}
+              />
               <Layer
                 id="assembly-lines-main"
                 source={ASSEMBLY_LINES_SOURCE_ID}
                 type="line"
                 paint={{
                   "line-color": ASSEMBLY_LINE_COLOR,
-                  "line-width": 1.75,
-                  "line-opacity": 0.65,
+                  "line-width": 2,
+                  "line-opacity": 0.72 * arcOpacityScale,
                   "line-dasharray": [2, 2.5],
                 }}
               />
@@ -882,13 +956,23 @@ export const SupplyMap = forwardRef<MapRef, {
           {showTradeFlows && tradeLines && tradeLineCount > 0 && (
             <Source id={TRADE_LINES_SOURCE_ID} type="geojson" data={tradeLines}>
               <Layer
+                id="trade-lines-casing"
+                source={TRADE_LINES_SOURCE_ID}
+                type="line"
+                paint={{
+                  "line-color": MAP_ARC_CASING.color,
+                  "line-width": ["+", ["get", "width"], 2.5],
+                  "line-opacity": 0.88,
+                }}
+              />
+              <Layer
                 id="trade-lines-main"
                 source={TRADE_LINES_SOURCE_ID}
                 type="line"
                 paint={{
                   "line-color": TRADE_LINE_COLOR,
                   "line-width": ["get", "width"],
-                  "line-opacity": 0.55,
+                  "line-opacity": 0.62 * arcOpacityScale,
                 }}
               />
               {onSelectEdge ? (
@@ -907,6 +991,7 @@ export const SupplyMap = forwardRef<MapRef, {
           )}
           {points.map((node) => {
             const [lng, lat] = node.coordinates!;
+            const currentZoom = zoom ?? initialView.zoom;
             const rawSegment = node.meta?.segment;
             const segment = isCompanySegment(rawSegment) ? rawSegment : undefined;
             const ring = segmentColor(segment) ?? kindColors[node.kind];
@@ -915,6 +1000,11 @@ export const SupplyMap = forwardRef<MapRef, {
             const essayMustShow = node.meta?.must_show_essay_1 === true;
             const countryActive =
               node.kind === "country" && activeCountryIds.has(node.id);
+            if (!showCountryPin(node, currentZoom, countryActive, tradeCountryIds)) {
+              return null;
+            }
+            const focusHighlighted =
+              mapFocus.active && mapFocus.highlightedIds.has(node.id);
             const detail = [
               node.meta?.specialization,
               node.meta?.hq_country && `HQ: ${node.meta.hq_country}`,
@@ -935,18 +1025,21 @@ export const SupplyMap = forwardRef<MapRef, {
               node.kind === "country"
                 ? countryActive
                   ? "h-4 w-4"
-                  : "h-2.5 w-2.5"
+                  : "h-3 w-3"
                 : node.kind === "presence"
-                  ? "h-2 w-2"
-                  : essayMustShow
-                    ? "h-3.5 w-3.5"
-                    : "h-3 w-3";
+                  ? "h-2.5 w-2.5"
+                  : essayMustShow || focusHighlighted
+                    ? "h-4 w-4"
+                    : node.kind === "fab"
+                      ? "h-3 w-3"
+                      : "h-3.5 w-3.5";
             const isSelected = selectedNodeId === node.id;
             const labeled = showMarkerLabel(
               node,
-              zoom ?? initialView.zoom,
+              currentZoom,
               isSelected,
               hoveredNodeId === node.id,
+              { focusHighlighted, essay1Only },
             );
             const dimmed = isPinDimmed(
               node.id,
@@ -964,8 +1057,9 @@ export const SupplyMap = forwardRef<MapRef, {
                   onMouseLeave={() =>
                     setHoveredNodeId((cur) => (cur === node.id ? null : cur))
                   }
-                  className={`flex max-w-[9rem] cursor-pointer flex-col items-center gap-0.5 border-0 bg-transparent p-0 text-left transition-opacity ${
-                    dimmed ? "opacity-35" : "opacity-100"
+                  style={{ opacity: dimmed ? MAP_DIMMED_PIN_OPACITY : 1 }}
+                  className={`flex max-w-[10rem] cursor-pointer flex-col items-center gap-0.5 border-0 bg-transparent p-0 text-left transition-opacity ${
+                    isSelected ? "z-10" : focusHighlighted ? "z-[5]" : ""
                   }`}
                 >
                   <div
@@ -992,15 +1086,10 @@ export const SupplyMap = forwardRef<MapRef, {
                     }}
                   />
                   {labeled && markerTag(node.kind) && (
-                    <span className="rounded bg-black/75 px-1 text-[9px] font-medium text-white/90">
-                      {markerTag(node.kind)}
-                    </span>
+                    <span className={MARKER_TAG_CLASS}>{markerTag(node.kind)}</span>
                   )}
                   {labeled && (
-                    <span
-                      title={node.label}
-                      className="rounded bg-black/75 px-1.5 py-0.5 text-center text-[10px] font-medium leading-tight text-white/95 shadow-sm"
-                    >
+                    <span title={node.label} className={MARKER_LABEL_CLASS}>
                       {mapMarkerLabel(node)}
                     </span>
                   )}

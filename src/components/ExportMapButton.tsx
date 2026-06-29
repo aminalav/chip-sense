@@ -65,15 +65,15 @@ export function ExportMapButton({
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="inline-flex flex-wrap items-center gap-2">
       <button
         type="button"
         onClick={exportPng}
         disabled={exporting}
-        title="Downloads the visible map with connection arcs and pin markers."
-        className="rounded-md border border-white/10 bg-[var(--card)] px-3 py-1.5 text-xs font-medium text-[var(--foreground)] transition hover:border-white/20 disabled:cursor-wait disabled:opacity-60"
+        title="Download the visible map with connection arcs and pin markers."
+        className="inline-flex items-center rounded-md border border-white/10 bg-[var(--background)] px-2.5 py-1.5 text-xs font-medium text-[var(--foreground)] transition hover:border-white/20 disabled:cursor-wait disabled:opacity-60"
       >
-        {exporting ? "Exporting…" : "Export map (PNG)"}
+        {exporting ? "Exporting…" : "Export"}
       </button>
       {message ? (
         <p

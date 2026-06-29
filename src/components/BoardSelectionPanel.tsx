@@ -1,6 +1,7 @@
 "use client";
 
-import type { GraphEdge, GraphNode, SourceRecord, TradeFlowRecord } from "@/data/graph";
+import type { GraphEdge, GraphNode, SourceRecord, TradeFlowRecord, TrackSlug } from "@/data/graph";
+import { SelectionEmptyState } from "@/components/SelectionEmptyState";
 import { COMPANY_RECORDS } from "@/lib/companyRecords";
 import {
   countryRecordForNode,
@@ -20,7 +21,11 @@ export function BoardSelectionPanel({
   graphEdges,
   sourceLookup,
   hiddenFromMap = false,
+  embedded = false,
+  trackLens = null,
   onClear,
+  onRunScenario,
+  onSelectNode,
 }: {
   selectedNode: GraphNode | null;
   selectedEdge: GraphEdge | null;
@@ -29,13 +34,25 @@ export function BoardSelectionPanel({
   graphEdges: GraphEdge[];
   sourceLookup: Map<string, SourceRecord>;
   hiddenFromMap?: boolean;
+  embedded?: boolean;
+  trackLens?: TrackSlug | null;
   onClear: () => void;
+  onRunScenario?: (scenarioId: string) => void;
+  onSelectNode?: (nodeId: string) => void;
 }) {
   if (!selectedNode && !selectedEdge && !selectedTradeFlow) {
+    if (embedded) {
+      return (
+        <SelectionEmptyState
+          trackLens={trackLens}
+          onRunScenario={onRunScenario}
+          onSelectNode={onSelectNode}
+        />
+      );
+    }
     return (
       <div className="rounded-xl border border-white/10 bg-[var(--card)] px-4 py-3 text-sm text-[var(--muted)]">
-        Click a map pin or a supply link (or an edge in the list below) to inspect registry
-        fields and citations.
+        Click a map pin or a supply link to inspect profiles, connections, and citations.
       </div>
     );
   }
@@ -43,11 +60,21 @@ export function BoardSelectionPanel({
   const byId = new Map(graphNodes.map((n) => [n.id, n]));
 
   return (
-    <div className="space-y-3 rounded-xl border border-white/10 bg-[var(--card)] px-4 py-4">
+    <div
+      className={
+        embedded
+          ? "space-y-3"
+          : "space-y-3 rounded-xl border border-white/10 bg-[var(--card)] px-4 py-4"
+      }
+    >
       <div className="flex items-start justify-between gap-2">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">
-          Selection
-        </h2>
+        {!embedded ? (
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">
+            Selection
+          </h2>
+        ) : (
+          <h2 className="text-sm font-medium text-[var(--foreground)]/90">Details</h2>
+        )}
         <button
           type="button"
           onClick={onClear}

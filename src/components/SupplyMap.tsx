@@ -4,7 +4,7 @@ import { forwardRef, useCallback, useMemo, useState } from "react";
 import MapGL, { Layer, Marker, NavigationControl, Popup, Source } from "react-map-gl/maplibre";
 import type { MapLayerMouseEvent, MapRef } from "react-map-gl/maplibre";
 import type { FeatureCollection, LineString } from "geojson";
-import type { GraphEdge, GraphNode, Scenario, TradeFlowRecord } from "@/data/graph";
+import type { GraphEdge, GraphNode, TradeFlowRecord } from "@/data/graph";
 import {
   NODE_ROLE_LABEL,
   NODE_ROLE_RING,
@@ -15,7 +15,6 @@ import {
 } from "@/lib/scenarioEffects";
 import { computeScenarioEmphasis, isScenarioPinDimmed } from "@/lib/scenarioEmphasis";
 import { ScenarioArcLayers } from "@/components/ScenarioArcLayers";
-import { ScenarioRoleLegend } from "@/components/ScenarioRoleLegend";
 import { SEGMENT_LABEL, SEGMENT_LEGEND, isCompanySegment, segmentColor } from "@/lib/segments";
 import {
   computeFocusedPinIds,
@@ -194,27 +193,16 @@ function buildCompanyHqLines(
 export const SupplyMap = forwardRef<MapRef, {
   nodes: GraphNode[];
   edges?: GraphEdge[];
-  scenarios: Scenario[];
   accentHex: string;
-  scenarioId: string;
-  onScenarioIdChange: (id: string) => void;
   effects?: ScenarioEffects | null;
   essay1Only: boolean;
-  onEssay1OnlyChange: (value: boolean) => void;
   showSupplyLines: boolean;
-  onShowSupplyLinesChange: (value: boolean) => void;
   showEquips: boolean;
-  onShowEquipsChange: (value: boolean) => void;
   showPackaging: boolean;
-  onShowPackagingChange: (value: boolean) => void;
   showMemory: boolean;
-  onShowMemoryChange: (value: boolean) => void;
   showAssembly: boolean;
-  onShowAssemblyChange: (value: boolean) => void;
   showTradeFlows: boolean;
-  onShowTradeFlowsChange: (value: boolean) => void;
   focusConnections: boolean;
-  onFocusConnectionsChange: (value: boolean) => void;
   tradeFlows?: TradeFlowRecord[];
   tradeLines?: FeatureCollection<LineString> | null;
   selectedNodeId?: string | null;
@@ -224,27 +212,16 @@ export const SupplyMap = forwardRef<MapRef, {
   {
     nodes,
     edges,
-    scenarios,
     accentHex,
-    scenarioId,
-    onScenarioIdChange,
     effects = null,
     essay1Only,
-    onEssay1OnlyChange,
     showSupplyLines,
-    onShowSupplyLinesChange,
     showEquips,
-    onShowEquipsChange,
     showPackaging,
-    onShowPackagingChange,
     showMemory,
-    onShowMemoryChange,
     showAssembly,
-    onShowAssemblyChange,
     showTradeFlows,
-    onShowTradeFlowsChange,
     focusConnections,
-    onFocusConnectionsChange,
     tradeFlows = [],
     tradeLines = null,
     selectedNodeId = null,
@@ -319,14 +296,6 @@ export const SupplyMap = forwardRef<MapRef, {
       latitude: (minLat + maxLat) / 2,
       zoom,
     };
-  }, [points]);
-
-  const counts = useMemo(() => {
-    const c = { company: 0, fab: 0, presence: 0, country: 0 };
-    for (const p of points) {
-      if (p.kind in c) c[p.kind as keyof typeof c] += 1;
-    }
-    return c;
   }, [points]);
 
   const supplyLines = useMemo(
@@ -473,217 +442,9 @@ export const SupplyMap = forwardRef<MapRef, {
   );
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="relative z-20 shrink-0 space-y-3 rounded-xl border border-white/10 bg-[var(--card)] p-3">
-        <div className="text-sm text-[var(--muted)]">
-          {points.length} pins · {counts.company} HQ · {counts.fab} fabs · {supplyLineCount} supply ·{" "}
-          {equipsLineCount} equip · {packagingLineCount} pkg · {memoryLineCount} HBM ·{" "}
-          {assemblyLineCount} asm · {tradeLineCount} trade
-        </div>
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-          <label
-            className="flex items-center gap-2 text-[var(--muted)]"
-            title="Focus on twelve anchor companies and key fabs for teaching and essay screenshots"
-          >
-            <input
-              type="checkbox"
-              checked={essay1Only}
-              onChange={(e) => onEssay1OnlyChange(e.target.checked)}
-              className="rounded border-white/20"
-            />
-            Core supply chain view
-          </label>
-          <label
-            className="flex items-center gap-2 text-[var(--muted)]"
-            title="Dim pins not connected to the arc layers you have turned on"
-          >
-            <input
-              type="checkbox"
-              checked={focusConnections}
-              onChange={(e) => onFocusConnectionsChange(e.target.checked)}
-              className="rounded border-white/20"
-            />
-            Focus on visible connections
-          </label>
-          <label className="flex items-center gap-2 text-[var(--muted)]">
-            <input
-              type="checkbox"
-              checked={showSupplyLines}
-              onChange={(e) => onShowSupplyLinesChange(e.target.checked)}
-              className="rounded border-white/20"
-            />
-            Foundry supply
-          </label>
-          <label className="flex items-center gap-2 text-[var(--muted)]">
-            <input
-              type="checkbox"
-              checked={showEquips}
-              onChange={(e) => onShowEquipsChange(e.target.checked)}
-              className="rounded border-white/20"
-            />
-            Equipment
-          </label>
-          <label className="flex items-center gap-2 text-[var(--muted)]">
-            <input
-              type="checkbox"
-              checked={showPackaging}
-              onChange={(e) => onShowPackagingChange(e.target.checked)}
-              className="rounded border-white/20"
-            />
-            Packaging
-          </label>
-          <label className="flex items-center gap-2 text-[var(--muted)]">
-            <input
-              type="checkbox"
-              checked={showMemory}
-              onChange={(e) => onShowMemoryChange(e.target.checked)}
-              className="rounded border-white/20"
-            />
-            HBM / memory
-          </label>
-          <label className="flex items-center gap-2 text-[var(--muted)]">
-            <input
-              type="checkbox"
-              checked={showAssembly}
-              onChange={(e) => onShowAssemblyChange(e.target.checked)}
-              className="rounded border-white/20"
-            />
-            Assembly
-          </label>
-          <label className="flex items-center gap-2 text-[var(--muted)]">
-            <input
-              type="checkbox"
-              checked={showTradeFlows}
-              onChange={(e) => onShowTradeFlowsChange(e.target.checked)}
-              className="rounded border-white/20"
-            />
-            Trade flows
-          </label>
-          <label className="flex items-center gap-2">
-            <span className="text-[var(--muted)]">Scenario</span>
-            <select
-              className="rounded-md border border-white/10 bg-[var(--background)] px-2 py-1 text-[var(--foreground)] outline-none focus:ring-2 focus:ring-[color:var(--accent)]"
-              value={scenarioId}
-              onChange={(e) => onScenarioIdChange(e.target.value)}
-            >
-              {scenarios.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          {effects ? <ScenarioRoleLegend /> : null}
-        </div>
-        {(essay1Only || effects || (focusConnections && mapFocus.active)) && (
-          <div className="space-y-1 text-xs text-[var(--muted)]">
-            {essay1Only ? (
-              <p>
-                Twelve anchor companies and key fabs — a cleaner map for teaching, essays, and
-                screenshots. Amber rings mark the core set.
-              </p>
-            ) : null}
-            {focusConnections && mapFocus.active ? (
-              <p>
-                Focus mode: full opacity on companies at the ends of visible arcs, their fab pins,
-                and trade-flow countries. Other pins are dimmed — they are still on the map for
-                context.
-              </p>
-            ) : focusConnections && visibleLayerCount > 0 ? (
-              <p>Turn on at least one connection layer with visible arcs to use focus mode.</p>
-            ) : null}
-            {effects ? (
-              <p>
-                Scenario styling active — affected pins and arcs are highlighted; others fade.
-                See <span className="text-[var(--foreground)]">Scenario impact</span> below the map
-                for assumptions.
-              </p>
-            ) : null}
-          </div>
-        )}
-      </div>
-      <div className="relative z-20 flex shrink-0 flex-col gap-2">
-        <details className="rounded-xl border border-white/10 bg-[var(--card)] px-3 py-2 text-xs text-[var(--muted)]">
-          <summary className="cursor-pointer select-none text-xs font-medium text-[var(--foreground)]/80">
-            How to use this tool
-          </summary>
-          <ul className="mt-2 list-disc space-y-2 pl-4 leading-relaxed">
-            <li>
-              <span className="text-[var(--foreground)]/90">Start broad, then narrow.</span> Use
-              track lenses (Memory, CPUs, GPUs, Data centers) to filter the same graph to one
-              product story. The global board shows everything by default.
-            </li>
-            <li>
-              <span className="text-[var(--foreground)]/90">Inspect in the sidebar.</span> Click a
-              map pin, supply arc, or trade flow — or pick a row in{" "}
-              <span className="text-[var(--foreground)]/90">Scenario impact</span> or{" "}
-              <span className="text-[var(--foreground)]/90">Supply relationships</span> below the
-              map. The Selection panel shows profiles, connections, and source citations.
-            </li>
-            <li>
-              <span className="text-[var(--foreground)]/90">Run a scenario.</span> Choose an
-              illustrative stress test from the map toolbar. Assumptions and highlighted entities
-              appear in Scenario impact; click a row to locate it on the map.
-            </li>
-            <li>
-              <span className="text-[var(--foreground)]/90">Tune the view.</span> Layer checkboxes
-              hide arc types; Core supply chain view, Focus on visible connections, ops pins, and
-              trade flows adjust what stays prominent — the underlying registry does not change.
-            </li>
-            <li>
-              <span className="text-[var(--foreground)]/90">Share your view.</span> Filters,
-              scenario, and selection update the URL — copy the address bar to link to the same
-              board state.
-            </li>
-            <li>
-              <span className="text-[var(--foreground)]/90">Export.</span> Use{" "}
-              <span className="text-[var(--foreground)]/90">Export map (PNG)</span> above the map
-              for slides or notes.
-            </li>
-          </ul>
-        </details>
-        <details className="rounded-xl border border-white/10 bg-[var(--card)] px-3 py-2 text-xs text-[var(--muted)]">
-          <summary className="cursor-pointer select-none text-xs font-medium text-[var(--foreground)]/80">
-            How to read this map
-          </summary>
-        <ul className="mt-2 list-disc space-y-2 pl-4 leading-relaxed">
-          <li>
-            <span className="text-[var(--foreground)]/90">Colored arcs</span> are typed supply
-            relationships drawn between company headquarters — not shipping routes or fab-to-fab
-            flows. Click an arc for filing citations.
-          </li>
-          <li>
-            <span className="text-[var(--foreground)]/90">Layer checkboxes</span> show or hide arc
-            types only. Pins stay visible unless you turn on{" "}
-            <span className="text-[var(--foreground)]/90">Core supply chain view</span>, a track
-            lens, or <span className="text-[var(--foreground)]/90">Focus on visible connections</span>.
-          </li>
-          <li>
-            <span className="text-[var(--foreground)]/90">Zoom in</span> to reveal more pin
-            names, or turn on <span className="text-[var(--foreground)]/90">Focus on visible connections</span>{" "}
-            to label the companies tied to the arcs you are viewing.
-          </li>
-          <li>
-            <span className="text-[var(--foreground)]/90">Hover</span> a pin for a quick card;{" "}
-            <span className="text-[var(--foreground)]/90">click</span> a pin or arc for the full
-            sidebar profile, connections, and sources. Pins and arcs have generous click targets —
-            the cursor switches to a pointer over connections.
-          </li>
-          <li>
-            <span className="text-[var(--foreground)]/90">Scenarios</span> restyle the same graph
-            for illustrative stress tests — they are not forecasts. Baseline shows relationships
-            without stress coloring.
-          </li>
-          <li>
-            <span className="text-[var(--foreground)]/90">Trade flows</span> (optional) are
-            country-to-country chip trade arcs from Comtrade data, separate from company supply
-            links.
-          </li>
-        </ul>
-        </details>
-      </div>
-      <details className="relative z-20 shrink-0 rounded-xl border border-white/10 bg-[var(--card)] px-3 py-2 text-[10px] text-[var(--muted)]">
-        <summary className="cursor-pointer select-none text-xs font-medium text-[var(--foreground)]/80">
+    <div className="flex min-h-0 flex-1 flex-col gap-2">
+      <details className="relative z-20 shrink-0 rounded-lg bg-black/20 px-3 py-1.5 text-[10px] text-[var(--muted)]">
+        <summary className="cursor-pointer select-none text-[11px] font-medium text-[var(--foreground)]/75">
           Map legend
         </summary>
         <div className="mt-2 flex flex-wrap gap-3">
@@ -763,7 +524,7 @@ export const SupplyMap = forwardRef<MapRef, {
         ) : null}
         </div>
       </details>
-      <div className={MAP_FRAME_CLASS}>
+      <div className={`${MAP_FRAME_CLASS} min-h-[min(75vh,880px)]`}>
         <MapGL
           ref={ref}
           initialViewState={initialView}

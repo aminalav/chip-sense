@@ -34,7 +34,7 @@ export default async function TrackPage({ params }: { params: Promise<{ slug: st
   const baselineSources = loadSources();
 
   return (
-    <main className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-12">
+    <main className="mx-auto flex max-w-[90rem] flex-col gap-8 px-4 py-10 sm:px-6 sm:py-12">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <Link
@@ -67,7 +67,6 @@ export default async function TrackPage({ params }: { params: Promise<{ slug: st
         trackLens={slug}
         showTrackLens
         researchPointers={track.researchPointers}
-        boardNote={`${track.title} lens — registry companies, fab pins, and supply relationships scoped to this track.`}
         sourceCatalogCount={baselineSources.length}
         sourceRecords={baselineSources}
       />

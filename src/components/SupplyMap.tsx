@@ -15,6 +15,8 @@ import {
 } from "@/lib/scenarioEffects";
 import { computeScenarioEmphasis, isScenarioPinDimmed } from "@/lib/scenarioEmphasis";
 import { ScenarioArcLayers } from "@/components/ScenarioArcLayers";
+import { ScenarioRoleLegend } from "@/components/ScenarioRoleLegend";
+import { SEGMENT_LABEL, SEGMENT_LEGEND, isCompanySegment, segmentColor } from "@/lib/segments";
 import {
   computeFocusedPinIds,
   isPinDimmed,
@@ -571,6 +573,7 @@ export const SupplyMap = forwardRef<MapRef, {
               ))}
             </select>
           </label>
+          {effects ? <ScenarioRoleLegend /> : null}
         </div>
         {(essay1Only || effects || (focusConnections && mapFocus.active)) && (
           <div className="space-y-1 text-xs text-[var(--muted)]">
@@ -591,9 +594,9 @@ export const SupplyMap = forwardRef<MapRef, {
             ) : null}
             {effects ? (
               <p>
-                Scenario styling active — see{" "}
-                <span className="text-[var(--foreground)]">Scenario impact</span> in the sidebar for
-                assumptions and affected nodes.
+                Scenario styling active — affected pins and arcs are highlighted; others fade.
+                See <span className="text-[var(--foreground)]">Scenario impact</span> below the map
+                for assumptions.
               </p>
             ) : null}
           </div>

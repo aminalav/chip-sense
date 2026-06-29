@@ -1,22 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useRef } from "react";
 import dynamic from "next/dynamic";
 import type { MapRef } from "react-map-gl/maplibre";
+import { BoardAppBar } from "@/components/BoardAppBar";
+import { BoardInspector } from "@/components/BoardInspector";
 import { BoardLoadingPlaceholder } from "@/components/BoardLoadingPlaceholder";
-import { BoardSelectionPanel } from "@/components/BoardSelectionPanel";
-import { EditorialTracksBar } from "@/components/EditorialTracksBar";
-import { ScenarioBanner } from "@/components/BoardDisclaimer";
-import { ExportMapButton } from "@/components/ExportMapButton";
-import { ScenarioImpactPanel } from "@/components/ScenarioImpactPanel";
-import { SourcesLinkedStrip } from "@/components/SourcesLinkedStrip";
-import { TradeFlowsPanel } from "@/components/TradeFlowsPanel";
 import type { GraphEdge, GraphNode, Scenario, SourceRecord, TrackSlug } from "@/data/graph";
-import { TRACKS, type TrackDefinition } from "@/data/tracks";
+import { TRACKS } from "@/data/tracks";
 import { useBoardUrlState } from "@/hooks/useBoardUrlState";
-import { boardPath } from "@/lib/boardUrlState";
 import { buildMapView } from "@/lib/mapView";
+import { visibleCompanyArcLayerCount } from "@/lib/mapFocus";
 import { computeScenarioEffects } from "@/lib/scenarioEffects";
 import { collectBoardSourceIds } from "@/lib/sourceQueries";
 import { loadTradeFlows, tradeFlowsForTrack, tradeFlowsToGeoJSON } from "@/lib/tradeFlows";
@@ -36,9 +30,7 @@ export function ResearchBoardSection({
   accentHex,
   trackLens = null,
   showTrackLens = false,
-  showEditorialTracks = false,
   researchPointers,
-  boardNote,
   sourceCatalogCount,
   sourceRecords,
 }: {
@@ -111,6 +103,31 @@ export function ResearchBoardSection({
   );
   const edgeById = useMemo(() => new Map(graphEdges.map((e) => [e.id, e])), [graphEdges]);
 
+  const companyCount = useMemo(
+    () => mapNodes.filter((n) => n.kind === "company").length,
+    [mapNodes],
+  );
+
+  const connectionLayerCount = useMemo(() => {
+    let count = visibleCompanyArcLayerCount({
+      showSupplyLines: state.showSupplyLines,
+      showEquips: state.showEquips,
+      showPackaging: state.showPackaging,
+      showMemory: state.showMemory,
+      showAssembly: state.showAssembly,
+      showTradeFlows: false,
+    });
+    if (state.showTradeFlows) count += 1;
+    return count;
+  }, [
+    state.showSupplyLines,
+    state.showEquips,
+    state.showPackaging,
+    state.showMemory,
+    state.showAssembly,
+    state.showTradeFlows,
+  ]);
+
   const selectedNode = state.selectedNodeId
     ? (mapNodes.find((n) => n.id === state.selectedNodeId) ??
       nodeById.get(state.selectedNodeId) ??
@@ -160,12 +177,19 @@ export function ResearchBoardSection({
     update({ selectedNodeId: null, selectedEdgeId: null });
   };
 
+  const runScenario = (scenarioId: string) => {
+    update({ scenarioId, selectedNodeId: null, selectedEdgeId: null });
+  };
+
+  const statusHints = (
+    <>
+      {state.essay1Only ? <p>Core supply chain view — anchor companies and key fabs only.</p> : null}
+      {state.focusConnections ? <p>Focus mode — pins not on visible arcs are dimmed.</p> : null}
+    </>
+  );
+
   return (
-    <section className="flex flex-col gap-6">
-      {showEditorialTracks ? <EditorialTracksBar /> : null}
-      {activeScenario && activeScenario.id !== "baseline" ? (
-        <ScenarioBanner scenarioLabel={activeScenario.label} />
-      ) : null}
+    <section className="flex flex-col gap-4">
       {urlWarnings.length > 0 ? (
         <div
           className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-xs text-amber-100/90"
@@ -176,56 +200,26 @@ export function ResearchBoardSection({
           ))}
         </div>
       ) : null}
-      <div className="flex flex-col gap-6">
-        <div className="isolate space-y-3">
-          {showTrackLens ? (
-            <TrackLensBar
-              active={trackLens}
-              boardState={state}
-              useTrackRoutes
-            />
-          ) : null}
-          {boardNote ? <p className="text-sm text-[var(--muted)]">{boardNote}</p> : null}
-          {trackLens ? (
-            <p className="text-xs text-[var(--muted)]">
-              <Link
-                href={boardPath("/", state, { includeTrackParam: false })}
-                className="text-[var(--accent)] underline-offset-4 hover:underline"
-              >
-                Same filters on global board
-              </Link>
-            </p>
-          ) : null}
-          <div className="flex flex-wrap items-center gap-3">
-            <label className="flex items-center gap-2 text-xs text-[var(--muted)]">
-              <input
-                type="checkbox"
-                checked={state.includePresence}
-                onChange={(e) => update({ includePresence: e.target.checked })}
-                className="rounded border-white/20"
-              />
-              Show ops pins (country-level presence without a fab site)
-            </label>
-            <ExportMapButton
-              mapRef={mapRef}
-              nodes={mapNodes}
-              edges={edges}
-              effects={effects}
-              selectedNodeId={state.selectedNodeId}
-              labelAllPins={state.essay1Only}
-            />
-          </div>
-          <SupplyMap
-            ref={mapRef}
-            nodes={mapNodes}
-            edges={edges}
+
+      <div className="flex min-h-[min(88vh,960px)] flex-col overflow-hidden rounded-xl border border-white/10 bg-[var(--surface-workspace)] shadow-lg shadow-black/20 lg:flex-row">
+        <div className="flex min-w-0 flex-1 flex-col">
+          <BoardAppBar
+            trackLens={trackLens}
+            showTrackLens={showTrackLens}
+            boardState={state}
+            useTrackRoutes
+            scopeLabel={scopeLabel}
+            companyCount={companyCount}
+            connectionLayerCount={connectionLayerCount}
             scenarios={scenarios}
-            accentHex={accentHex}
             scenarioId={state.scenarioId}
             onScenarioIdChange={(id) => update({ scenarioId: id })}
+            activeScenarioLabel={activeScenario?.label ?? "Baseline"}
             effects={effects}
             essay1Only={state.essay1Only}
             onEssay1OnlyChange={(v) => update({ essay1Only: v })}
+            focusConnections={state.focusConnections}
+            onFocusConnectionsChange={(v) => update({ focusConnections: v })}
             showSupplyLines={state.showSupplyLines}
             onShowSupplyLinesChange={(v) => update({ showSupplyLines: v })}
             showEquips={state.showEquips}
@@ -238,159 +232,66 @@ export function ResearchBoardSection({
             onShowAssemblyChange={(v) => update({ showAssembly: v })}
             showTradeFlows={state.showTradeFlows}
             onShowTradeFlowsChange={(v) => update({ showTradeFlows: v })}
-            focusConnections={state.focusConnections}
-            onFocusConnectionsChange={(v) => update({ focusConnections: v })}
-            tradeFlows={tradeFlows}
-            tradeLines={tradeLinesGeo}
+            includePresence={state.includePresence}
+            onIncludePresenceChange={(v) => update({ includePresence: v })}
+            mapRef={mapRef}
+            mapNodes={mapNodes}
+            edges={edges}
             selectedNodeId={state.selectedNodeId}
-            onSelectNode={selectNode}
-            onSelectEdge={selectEdge}
+            statusHints={statusHints}
           />
+
+          <div className="flex min-h-0 flex-1 flex-col p-3 lg:p-4">
+            <SupplyMap
+              ref={mapRef}
+              nodes={mapNodes}
+              edges={edges}
+              accentHex={accentHex}
+              effects={effects}
+              essay1Only={state.essay1Only}
+              showSupplyLines={state.showSupplyLines}
+              showEquips={state.showEquips}
+              showPackaging={state.showPackaging}
+              showMemory={state.showMemory}
+              showAssembly={state.showAssembly}
+              showTradeFlows={state.showTradeFlows}
+              focusConnections={state.focusConnections}
+              tradeFlows={tradeFlows}
+              tradeLines={tradeLinesGeo}
+              selectedNodeId={state.selectedNodeId}
+              onSelectNode={selectNode}
+              onSelectEdge={selectEdge}
+            />
+          </div>
         </div>
-        <aside className="grid gap-5 lg:grid-cols-2">
-        <BoardSelectionPanel
+
+        <BoardInspector
           selectedNode={selectedNode}
           selectedEdge={selectedEdge}
           selectedTradeFlow={selectedTradeFlow}
+          selectedNodeId={state.selectedNodeId}
+          selectedEdgeId={state.selectedEdgeId}
+          selectedNodeHiddenFromMap={selectedNodeHiddenFromMap}
           graphNodes={graphNodes}
           graphEdges={graphEdges}
           sourceLookup={sourceLookup}
-          hiddenFromMap={selectedNodeHiddenFromMap}
-          onClear={clearSelection}
-        />
-        <ScenarioImpactPanel
-          scenario={activeScenario}
+          activeScenario={activeScenario}
           effects={effects}
+          relationships={relationships}
+          scopeLabel={scopeLabel}
+          trackLens={trackLens}
+          showTradeFlows={state.showTradeFlows}
+          tradeFlows={tradeFlows}
+          countryName={countryName}
+          trackSources={trackSources}
+          sourceCatalogCount={sourceCatalogCount}
+          researchPointers={researchPointers}
+          onClearSelection={clearSelection}
           onSelectNode={selectNode}
           onSelectEdge={selectEdge}
+          onRunScenario={runScenario}
         />
-        {state.showTradeFlows ? (
-          <TradeFlowsPanel
-            flows={tradeFlows}
-            sourceLookup={sourceLookup}
-            countryName={countryName}
-            selectedFlowId={selectedTradeFlow?.id ?? null}
-            onSelectFlow={selectEdge}
-          />
-        ) : null}
-        {researchPointers && researchPointers.length > 0 ? (
-          <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">
-              Research pointers
-            </h2>
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-[var(--foreground)]/90">
-              {researchPointers.map((p) => (
-                <li key={p}>{p}</li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
-        <details className="rounded-xl border border-white/10 bg-[var(--card)] px-4 py-3 lg:col-span-2">
-          <summary className="cursor-pointer select-none text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">
-            Supply relationships ({scopeLabel})
-            <span className="ml-1 font-normal normal-case text-[var(--foreground)]/70">
-              · {relationships.length} in view
-            </span>
-          </summary>
-          <p className="mt-2 text-xs text-[var(--muted)]">
-            Who supplies whom across the chain. Select one to see its citations.
-          </p>
-          {relationships.length === 0 ? (
-            <p className="mt-2 text-xs text-[var(--muted)]">
-              No supply relationships in this view.
-            </p>
-          ) : (
-            <ul className="mt-2 max-h-64 space-y-2 overflow-y-auto text-xs">
-              {relationships.map((e) => (
-                <li key={e.id}>
-                  <button
-                    type="button"
-                    onClick={() => selectEdge(e.id)}
-                    className={`w-full rounded-md border px-2 py-1.5 text-left text-[12px] leading-snug transition ${
-                      state.selectedEdgeId === e.id
-                        ? "border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--foreground)]"
-                        : "border-white/5 bg-black/20 text-[var(--foreground)]/85 hover:border-white/15"
-                    }`}
-                  >
-                    <span className="font-medium">{e.from}</span>{" "}
-                    <span className="text-[var(--muted)]">{e.verb}</span>{" "}
-                    <span className="font-medium">{e.to}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </details>
-        </aside>
       </div>
-      <SourcesLinkedStrip
-        sources={trackSources}
-        scopeLabel={scopeLabel}
-        sourceCatalogCount={sourceCatalogCount}
-      />
     </section>
-  );
-}
-
-function TrackLensBar({
-  active,
-  boardState,
-  useTrackRoutes,
-}: {
-  active: TrackSlug | null;
-  boardState: import("@/lib/boardUrlState").BoardUrlState;
-  /** Link to /track/slug instead of /?track=slug */
-  useTrackRoutes: boolean;
-}) {
-  const allHref = useTrackRoutes
-    ? boardPath("/", boardState, { includeTrackParam: false })
-    : boardPath("/", boardState, { track: null });
-
-  return (
-    <div className="flex flex-wrap items-center gap-2">
-      <span className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">
-        Track lens
-      </span>
-      <LensChip href={allHref} label="All" isActive={active === null} />
-      {TRACKS.map((t) => (
-        <LensChip
-          key={t.slug}
-          href={
-            useTrackRoutes
-              ? boardPath(`/track/${t.slug}`, boardState, { includeTrackParam: false })
-              : boardPath("/", boardState, { track: t.slug })
-          }
-          label={t.title}
-          isActive={active === t.slug}
-          track={t}
-        />
-      ))}
-    </div>
-  );
-}
-
-function LensChip({
-  href,
-  label,
-  isActive,
-  track,
-}: {
-  href: string;
-  label: string;
-  isActive: boolean;
-  track?: TrackDefinition;
-}) {
-  return (
-    <Link
-      href={href}
-      className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
-        isActive
-          ? "border-white/25 bg-white/10 text-[var(--foreground)]"
-          : "border-white/10 text-[var(--muted)] hover:border-white/20 hover:text-[var(--foreground)]"
-      }`}
-      style={isActive && track ? { borderLeftColor: track.cssVar, borderLeftWidth: 3 } : undefined}
-    >
-      {label}
-    </Link>
   );
 }

@@ -15,17 +15,25 @@ const ROLE_BADGE: Record<string, string> = {
 export function ScenarioImpactPanel({
   scenario,
   effects,
+  embedded = false,
   onSelectNode,
   onSelectEdge,
 }: {
   scenario: Scenario | undefined;
   effects: ScenarioEffects | null;
+  embedded?: boolean;
   onSelectNode?: (nodeId: string) => void;
   onSelectEdge?: (edgeId: string) => void;
 }) {
   if (!scenario || scenario.id === "baseline" || !effects) {
     return (
-      <div className="rounded-xl border border-white/10 bg-[var(--card)] px-4 py-3 text-sm text-[var(--muted)]">
+      <div
+        className={
+          embedded
+            ? "text-sm text-[var(--muted)]"
+            : "rounded-xl border border-white/10 bg-[var(--card)] px-4 py-3 text-sm text-[var(--muted)]"
+        }
+      >
         {scenario?.id === "baseline" ? (
           <>
             <span className="text-[var(--foreground)]/90">Baseline</span> — sourced registry and
@@ -44,11 +52,17 @@ export function ScenarioImpactPanel({
   const canSelect = Boolean(onSelectNode || onSelectEdge);
 
   return (
-    <div className="space-y-4 rounded-xl border border-white/10 bg-[var(--card)] px-4 py-4">
+    <div
+      className={
+        embedded ? "space-y-4" : "space-y-4 rounded-xl border border-white/10 bg-[var(--card)] px-4 py-4"
+      }
+    >
       <div>
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">
-          Scenario impact
-        </h2>
+        {!embedded ? (
+          <h2 className="text-sm font-medium text-[var(--muted)]">Scenario impact</h2>
+        ) : (
+          <h2 className="text-sm font-medium text-[var(--foreground)]/90">{scenario.label}</h2>
+        )}
         <p className="mt-1 text-xs text-amber-100/80">
           Illustrative only — multipliers are not sourced forecasts.
         </p>
@@ -58,9 +72,7 @@ export function ScenarioImpactPanel({
 
       {effects.assumptionLines.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
-            Assumptions
-          </h3>
+          <h3 className="text-xs font-medium text-[var(--muted)]">Assumptions</h3>
           <ul className="mt-2 list-disc space-y-1 pl-4 text-xs text-[var(--foreground)]/85">
             {effects.assumptionLines.map((line) => (
               <li key={line}>{line}</li>
@@ -70,9 +82,7 @@ export function ScenarioImpactPanel({
       )}
 
       <div>
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
-          {effects.narrative.title}
-        </h3>
+        <h3 className="text-xs font-medium text-[var(--muted)]">{effects.narrative.title}</h3>
         <ul className="mt-2 list-disc space-y-1.5 pl-4 text-xs text-[var(--foreground)]/90">
           {effects.narrative.bullets.map((b) => (
             <li key={b}>{b}</li>
@@ -82,7 +92,7 @@ export function ScenarioImpactPanel({
 
       {topImpacts.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]">
+          <h3 className="text-xs font-medium text-[var(--muted)]">
             Highlighted on map ({effects.impacts.length})
           </h3>
           {canSelect ? (

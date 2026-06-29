@@ -65,7 +65,7 @@ export const MAP_ARC_CASING = {
 
 /** Shared map canvas sizing — keep SupplyMap and loading placeholder in sync. */
 export const MAP_FRAME_CLASS =
-  "chip-sense-map-frame relative z-0 w-full h-[min(85vh,920px)] min-h-[520px] overflow-hidden rounded-xl border border-white/10 bg-[var(--card)]";
+  "chip-sense-map-frame relative z-0 w-full min-h-[480px] flex-1 overflow-hidden rounded-xl border border-white/10 bg-[var(--card)] ring-1 ring-white/5";
 
 /** Invisible line layer width for arc picking (screen pixels). */
 export const MAP_HIT_LINE_WIDTH = 24;

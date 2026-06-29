@@ -4,7 +4,6 @@ import { useSearchParams } from "next/navigation";
 import { ResearchBoardSection } from "@/components/ResearchBoardSection";
 import type { GraphEdge, GraphNode, Scenario, SourceRecord } from "@/data/graph";
 import { isTrackSlug, TRACKS } from "@/data/tracks";
-import { COMPANY_RECORDS } from "@/lib/companyRecords";
 
 export function HomeDashboard({
   graphNodes,
@@ -33,10 +32,8 @@ export function HomeDashboard({
       accentHex={trackAccent}
       trackLens={trackLens}
       showTrackLens
-      showEditorialTracks
       sourceCatalogCount={sourceCatalogCount}
       sourceRecords={sourceRecords}
-      boardNote={`${COMPANY_RECORDS.length} registry companies · cited fab pins · scenario stress-testing`}
     />
   );
 }

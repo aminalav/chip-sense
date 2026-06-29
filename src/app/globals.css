@@ -10,12 +10,14 @@
   --track-cpus: #34d399;
   --track-gpus: #f472b6;
   --track-data-centers: #38bdf8;
+  --surface-workspace: #0a0e13;
+  --surface-inspector: #111820;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
 .maplibregl-ctrl-attrib {

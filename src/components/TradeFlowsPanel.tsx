@@ -12,20 +12,28 @@ export function TradeFlowsPanel({
   sourceLookup,
   countryName,
   selectedFlowId = null,
+  embedded = false,
   onSelectFlow,
 }: {
   flows: TradeFlowRecord[];
   sourceLookup: Map<string, SourceRecord>;
   countryName: Map<string, string>;
   selectedFlowId?: string | null;
+  embedded?: boolean;
   onSelectFlow?: (id: string) => void;
 }) {
   const name = (id: string) =>
     countryName.get(id) ?? id.replace("country-", "").toUpperCase();
 
   return (
-    <div className="rounded-xl border border-white/10 bg-[var(--card)] px-4 py-4">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--muted)]">
+    <div className={embedded ? "space-y-3" : "rounded-xl border border-white/10 bg-[var(--card)] px-4 py-4"}>
+      <h2
+        className={
+          embedded
+            ? "text-xs font-medium text-[var(--foreground)]/80"
+            : "text-sm font-semibold uppercase tracking-wide text-[var(--muted)]"
+        }
+      >
         Trade flows
       </h2>
       <p className="mt-1 text-xs text-[var(--muted)]">

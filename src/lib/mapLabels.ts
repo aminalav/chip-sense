@@ -5,6 +5,8 @@ export interface MarkerLabelOptions {
   focusHighlighted?: boolean;
   /** Core supply chain view is on */
   essay1Only?: boolean;
+  /** Pin has a non-neutral scenario role or is an endpoint of a stressed arc */
+  scenarioHighlighted?: boolean;
 }
 
 /**
@@ -19,6 +21,7 @@ export function showMarkerLabel(
 ): boolean {
   if (isSelected || isHovered) return true;
   if (options.focusHighlighted) return true;
+  if (options.scenarioHighlighted) return true;
   if (options.essay1Only && node.meta?.must_show_essay_1 === true) return zoom >= 1.6;
   switch (node.kind) {
     case "company":

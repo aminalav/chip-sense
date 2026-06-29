@@ -9,10 +9,12 @@ import {
   EDGE_ROLE_COLOR,
   NODE_ROLE_LABEL,
   NODE_ROLE_RING,
+  SCENARIO_PRESENTATION,
   edgeScenarioRole,
   nodeScenarioRole,
   type ScenarioEffects,
 } from "@/lib/scenarioEffects";
+import { computeScenarioEmphasis, isScenarioPinDimmed } from "@/lib/scenarioEmphasis";
 import { SEGMENT_LABEL, SEGMENT_LEGEND, isCompanySegment, segmentColor } from "@/lib/segments";
 import {
   computeFocusedPinIds,
@@ -398,6 +400,11 @@ export const SupplyMap = forwardRef<MapRef, {
       tradeLineCount,
       nodeById,
     ],
+  );
+
+  const scenarioEmphasis = useMemo(
+    () => computeScenarioEmphasis(effects, edges ?? []),
+    [effects, edges],
   );
 
   const visibleLayerCount = visibleCompanyArcLayerCount({
@@ -1017,6 +1024,9 @@ export const SupplyMap = forwardRef<MapRef, {
             const ring = segmentColor(segment) ?? kindColors[node.kind];
             const scenarioNodeRole = nodeScenarioRole(effects, node.id);
             const scenarioRing = NODE_ROLE_RING[scenarioNodeRole];
+            const scenarioHighlighted =
+              scenarioEmphasis.active &&
+              scenarioEmphasis.highlightedNodeIds.has(node.id);
             const essayMustShow = node.meta?.must_show_essay_1 === true;
             const countryActive =
               node.kind === "country" && activeCountryIds.has(node.id);
@@ -1059,15 +1069,30 @@ export const SupplyMap = forwardRef<MapRef, {
               currentZoom,
               isSelected,
               hoveredNodeId === node.id,
-              { focusHighlighted, essay1Only },
+              { focusHighlighted, essay1Only, scenarioHighlighted },
             );
-            const dimmed = isPinDimmed(
+            const focusDimmed = isPinDimmed(
               node.id,
               mapFocus.active,
               mapFocus.highlightedIds,
               selectedNodeId,
               hoveredNodeId,
             );
+            const scenarioDimmed = isScenarioPinDimmed(
+              node.id,
+              scenarioEmphasis,
+              selectedNodeId,
+              hoveredNodeId,
+            );
+            const pinOpacity = focusDimmed
+              ? MAP_DIMMED_PIN_OPACITY
+              : scenarioDimmed
+                ? SCENARIO_PRESENTATION.neutralPinOpacity
+                : 1;
+            const pinScale =
+              scenarioNodeRole !== "neutral"
+                ? (SCENARIO_PRESENTATION.pinScale[scenarioNodeRole] ?? 1)
+                : 1;
             return (
               <Marker key={node.id} longitude={lng} latitude={lat} anchor="bottom">
                 <button
@@ -1082,14 +1107,17 @@ export const SupplyMap = forwardRef<MapRef, {
                   onMouseLeave={() =>
                     setHoveredNodeId((cur) => (cur === node.id ? null : cur))
                   }
-                  style={{ opacity: dimmed ? MAP_DIMMED_PIN_OPACITY : 1 }}
+                  style={{
+                    opacity: pinOpacity,
+                    transform: pinScale !== 1 ? `scale(${pinScale})` : undefined,
+                  }}
                   className={`flex ${MAP_PIN_HIT_CLASS} max-w-[10rem] cursor-pointer flex-col items-center gap-0.5 border-0 bg-transparent p-0 text-left transition-opacity ${
-                    isSelected ? "z-10" : focusHighlighted ? "z-[5]" : ""
+                    isSelected ? "z-10" : focusHighlighted || scenarioHighlighted ? "z-[5]" : ""
                   }`}
                 >
                   <div
                     title={detail ? `${node.label}\n${detail}` : `${node.label} (${node.kind})`}
-                    className={`shrink-0 rounded-full border-2 border-[var(--background)] shadow-md ${size} ${isSelected ? "ring-2 ring-white" : ""} ${essayMustShow && !scenarioRing && !isSelected ? "ring-2 ring-amber-400/90" : ""} ${countryActive && !scenarioRing && !isSelected ? "ring-2 ring-sky-400/80" : ""} ${scenarioRing && !isSelected ? "ring-2" : ""}`}
+                    className={`shrink-0 rounded-full border-2 border-[var(--background)] shadow-md ${size} ${isSelected ? "ring-2 ring-white" : ""} ${essayMustShow && !scenarioRing && !isSelected ? "ring-2 ring-amber-400/90" : ""} ${countryActive && !scenarioRing && !isSelected ? "ring-2 ring-sky-400/80" : ""} ${scenarioRing && !isSelected ? "ring-[3px]" : ""}`}
                     style={{
                       backgroundColor: ring,
                       opacity:

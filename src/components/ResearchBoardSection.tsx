@@ -258,7 +258,12 @@ export function ResearchBoardSection({
           hiddenFromMap={selectedNodeHiddenFromMap}
           onClear={clearSelection}
         />
-        <ScenarioImpactPanel scenario={activeScenario} effects={effects} />
+        <ScenarioImpactPanel
+          scenario={activeScenario}
+          effects={effects}
+          onSelectNode={selectNode}
+          onSelectEdge={selectEdge}
+        />
         {state.showTradeFlows ? (
           <TradeFlowsPanel
             flows={tradeFlows}

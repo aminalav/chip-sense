@@ -1069,8 +1069,10 @@ export const SupplyMap = forwardRef<MapRef, {
               {
                 focusHighlighted,
                 essay1Only,
-                scenarioHighlighted,
-                countryPinVisible: node.kind === "country",
+                countryPinVisible:
+                  node.kind === "country"
+                    ? !effects || scenarioNodeRole !== "neutral"
+                    : undefined,
               },
             );
             const focusDimmed = isPinDimmed(

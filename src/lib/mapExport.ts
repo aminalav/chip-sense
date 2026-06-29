@@ -64,10 +64,13 @@ function shouldLabelPin(
   labelAll: boolean,
   countryActive: boolean,
   tradeCountryIds: Set<string>,
+  effects: ScenarioEffects | null,
 ): boolean {
   if (selectedNodeId === node.id) return true;
   if (node.kind === "country") {
-    return showCountryPin(node, zoom, countryActive, tradeCountryIds);
+    if (!showCountryPin(node, zoom, countryActive, tradeCountryIds)) return false;
+    if (effects && nodeScenarioRole(effects, node.id) === "neutral") return false;
+    return true;
   }
   if (labelAll) return true;
   switch (node.kind) {
@@ -252,6 +255,7 @@ export function exportMapWithPins({
       labelAll,
       countryActive,
       new Set<string>(),
+      effects,
     );
     const labelY = pinCenterY + radius + 6 * scale;
 

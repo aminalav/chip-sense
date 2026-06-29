@@ -5,6 +5,7 @@ import {
   nodeScenarioRole,
   type ScenarioEffects,
 } from "@/lib/scenarioEffects";
+import { showCountryPin } from "@/lib/mapLabels";
 import { isCompanySegment, segmentColor } from "@/lib/segments";
 
 const MAP_BACKGROUND = "#0a0a0f";
@@ -61,9 +62,14 @@ function shouldLabelPin(
   zoom: number,
   selectedNodeId: string | null | undefined,
   labelAll: boolean,
+  countryActive: boolean,
+  tradeCountryIds: Set<string>,
 ): boolean {
-  if (labelAll) return node.kind !== "country";
   if (selectedNodeId === node.id) return true;
+  if (node.kind === "country") {
+    return showCountryPin(node, zoom, countryActive, tradeCountryIds);
+  }
+  if (labelAll) return true;
   switch (node.kind) {
     case "company":
       return zoom >= 2.6;
@@ -71,8 +77,6 @@ function shouldLabelPin(
       return zoom >= 4;
     case "presence":
       return zoom >= 4.5;
-    case "country":
-      return false;
     default:
       return zoom >= 4;
   }
@@ -241,7 +245,14 @@ export function exportMapWithPins({
     const opacity =
       scenarioRole === "chokepoint" ? 0.65 : node.kind === "presence" ? 0.92 : 1;
 
-    const showLabel = shouldLabelPin(node, zoom, selectedNodeId, labelAll);
+    const showLabel = shouldLabelPin(
+      node,
+      zoom,
+      selectedNodeId,
+      labelAll,
+      countryActive,
+      new Set<string>(),
+    );
     const labelY = pinCenterY + radius + 6 * scale;
 
     pinDraws.push({

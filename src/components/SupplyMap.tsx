@@ -15,7 +15,7 @@ import {
   type ScenarioEffects,
 } from "@/lib/scenarioEffects";
 import { computeScenarioEmphasis, isScenarioPinDimmed } from "@/lib/scenarioEmphasis";
-import { SEGMENT_LABEL, SEGMENT_LEGEND, isCompanySegment, segmentColor } from "@/lib/segments";
+import { ScenarioArcLayers } from "@/components/ScenarioArcLayers";
 import {
   computeFocusedPinIds,
   isPinDimmed,
@@ -783,59 +783,10 @@ export const SupplyMap = forwardRef<MapRef, {
                 />
               ) : null}
               {effects ? (
-                <Layer
-                  id="supply-lines-neutral"
-                  source={SUPPLY_LINES_SOURCE_ID}
-                  type="line"
-                  filter={["==", ["get", "scenarioRole"], "neutral"]}
-                  paint={{
-                    "line-color": "#94a3b8",
-                    "line-width": 1.25,
-                    "line-opacity": 0.35,
-                    "line-dasharray": [2, 2],
-                  }}
-                />
-              ) : null}
-              {effects ? (
-                <Layer
-                  id="supply-lines-disrupted"
-                  source={SUPPLY_LINES_SOURCE_ID}
-                  type="line"
-                  filter={["==", ["get", "scenarioRole"], "disrupted"]}
-                  paint={{
-                    "line-color": EDGE_ROLE_COLOR.disrupted ?? "#f87171",
-                    "line-width": 3.5,
-                    "line-opacity": 0.9,
-                    "line-dasharray": [2, 1],
-                  }}
-                />
-              ) : null}
-              {effects ? (
-                <Layer
-                  id="supply-lines-stressed"
-                  source={SUPPLY_LINES_SOURCE_ID}
-                  type="line"
-                  filter={["==", ["get", "scenarioRole"], "stressed"]}
-                  paint={{
-                    "line-color": EDGE_ROLE_COLOR.stressed ?? "#fb923c",
-                    "line-width": 2.75,
-                    "line-opacity": 0.8,
-                    "line-dasharray": [2, 1.5],
-                  }}
-                />
-              ) : null}
-              {effects ? (
-                <Layer
-                  id="supply-lines-buffered"
-                  source={SUPPLY_LINES_SOURCE_ID}
-                  type="line"
-                  filter={["==", ["get", "scenarioRole"], "buffered"]}
-                  paint={{
-                    "line-color": EDGE_ROLE_COLOR.buffered ?? "#22d3ee",
-                    "line-width": 2.5,
-                    "line-opacity": 0.75,
-                    "line-dasharray": [2, 2],
-                  }}
+                <ScenarioArcLayers
+                  sourceId={SUPPLY_LINES_SOURCE_ID}
+                  idPrefix="supply-lines"
+                  arcOpacityScale={arcOpacityScale}
                 />
               ) : null}
               {onSelectEdge ? (

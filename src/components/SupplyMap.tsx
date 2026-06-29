@@ -1066,7 +1066,12 @@ export const SupplyMap = forwardRef<MapRef, {
               currentZoom,
               isSelected,
               hoveredNodeId === node.id,
-              { focusHighlighted, essay1Only, scenarioHighlighted },
+              {
+                focusHighlighted,
+                essay1Only,
+                scenarioHighlighted,
+                countryPinVisible: node.kind === "country",
+              },
             );
             const focusDimmed = isPinDimmed(
               node.id,

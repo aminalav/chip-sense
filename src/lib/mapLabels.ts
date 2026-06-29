@@ -7,6 +7,8 @@ export interface MarkerLabelOptions {
   essay1Only?: boolean;
   /** Pin has a non-neutral scenario role or is an endpoint of a stressed arc */
   scenarioHighlighted?: boolean;
+  /** Country pin passed showCountryPin (active footprint, trade, or zoom) */
+  countryPinVisible?: boolean;
 }
 
 /**
@@ -31,7 +33,7 @@ export function showMarkerLabel(
     case "presence":
       return zoom >= 3.8;
     case "country":
-      return false;
+      return options.countryPinVisible === true;
     default:
       return zoom >= 3.2;
   }

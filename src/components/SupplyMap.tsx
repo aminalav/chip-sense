@@ -6,7 +6,6 @@ import type { MapLayerMouseEvent, MapRef } from "react-map-gl/maplibre";
 import type { FeatureCollection, LineString } from "geojson";
 import type { GraphEdge, GraphNode, Scenario, TradeFlowRecord } from "@/data/graph";
 import {
-  EDGE_ROLE_COLOR,
   NODE_ROLE_LABEL,
   NODE_ROLE_RING,
   SCENARIO_PRESENTATION,
@@ -805,22 +804,32 @@ export const SupplyMap = forwardRef<MapRef, {
           )}
           {showEquips && equipsLineCount > 0 && (
             <Source id={EQUIPS_LINES_SOURCE_ID} type="geojson" data={equipsLines}>
-              <ArcCasingLayer
-                id="equips-lines-casing"
-                sourceId={EQUIPS_LINES_SOURCE_ID}
-                lineWidth={2.25}
-              />
-              <Layer
-                id="equips-lines-main"
-                source={EQUIPS_LINES_SOURCE_ID}
-                type="line"
-                paint={{
-                  "line-color": EQUIP_LINE_COLOR,
-                  "line-width": 2.25,
-                  "line-opacity": 0.78 * arcOpacityScale,
-                  "line-dasharray": [3, 2],
-                }}
-              />
+              {!effects ? (
+                <>
+                  <ArcCasingLayer
+                    id="equips-lines-casing"
+                    sourceId={EQUIPS_LINES_SOURCE_ID}
+                    lineWidth={2.25}
+                  />
+                  <Layer
+                    id="equips-lines-main"
+                    source={EQUIPS_LINES_SOURCE_ID}
+                    type="line"
+                    paint={{
+                      "line-color": EQUIP_LINE_COLOR,
+                      "line-width": 2.25,
+                      "line-opacity": 0.78 * arcOpacityScale,
+                      "line-dasharray": [3, 2],
+                    }}
+                  />
+                </>
+              ) : (
+                <ScenarioArcLayers
+                  sourceId={EQUIPS_LINES_SOURCE_ID}
+                  idPrefix="equips-lines"
+                  arcOpacityScale={arcOpacityScale}
+                />
+              )}
               {onSelectEdge ? (
                 <Layer
                   id="equips-lines-hit"
@@ -837,22 +846,32 @@ export const SupplyMap = forwardRef<MapRef, {
           )}
           {showPackaging && packagingLineCount > 0 && (
             <Source id={PACKAGING_LINES_SOURCE_ID} type="geojson" data={packagingLines}>
-              <ArcCasingLayer
-                id="packaging-lines-casing"
-                sourceId={PACKAGING_LINES_SOURCE_ID}
-                lineWidth={2.25}
-              />
-              <Layer
-                id="packaging-lines-main"
-                source={PACKAGING_LINES_SOURCE_ID}
-                type="line"
-                paint={{
-                  "line-color": PACKAGING_LINE_COLOR,
-                  "line-width": 2.25,
-                  "line-opacity": 0.78 * arcOpacityScale,
-                  "line-dasharray": [1, 1.5],
-                }}
-              />
+              {!effects ? (
+                <>
+                  <ArcCasingLayer
+                    id="packaging-lines-casing"
+                    sourceId={PACKAGING_LINES_SOURCE_ID}
+                    lineWidth={2.25}
+                  />
+                  <Layer
+                    id="packaging-lines-main"
+                    source={PACKAGING_LINES_SOURCE_ID}
+                    type="line"
+                    paint={{
+                      "line-color": PACKAGING_LINE_COLOR,
+                      "line-width": 2.25,
+                      "line-opacity": 0.78 * arcOpacityScale,
+                      "line-dasharray": [1, 1.5],
+                    }}
+                  />
+                </>
+              ) : (
+                <ScenarioArcLayers
+                  sourceId={PACKAGING_LINES_SOURCE_ID}
+                  idPrefix="packaging-lines"
+                  arcOpacityScale={arcOpacityScale}
+                />
+              )}
               {onSelectEdge ? (
                 <Layer
                   id="packaging-lines-hit"
@@ -869,22 +888,32 @@ export const SupplyMap = forwardRef<MapRef, {
           )}
           {showMemory && memoryLineCount > 0 && (
             <Source id={MEMORY_LINES_SOURCE_ID} type="geojson" data={memoryLines}>
-              <ArcCasingLayer
-                id="memory-lines-casing"
-                sourceId={MEMORY_LINES_SOURCE_ID}
-                lineWidth={2.5}
-              />
-              <Layer
-                id="memory-lines-main"
-                source={MEMORY_LINES_SOURCE_ID}
-                type="line"
-                paint={{
-                  "line-color": MEMORY_LINE_COLOR,
-                  "line-width": 2.5,
-                  "line-opacity": 0.82 * arcOpacityScale,
-                  "line-dasharray": [4, 2],
-                }}
-              />
+              {!effects ? (
+                <>
+                  <ArcCasingLayer
+                    id="memory-lines-casing"
+                    sourceId={MEMORY_LINES_SOURCE_ID}
+                    lineWidth={2.5}
+                  />
+                  <Layer
+                    id="memory-lines-main"
+                    source={MEMORY_LINES_SOURCE_ID}
+                    type="line"
+                    paint={{
+                      "line-color": MEMORY_LINE_COLOR,
+                      "line-width": 2.5,
+                      "line-opacity": 0.82 * arcOpacityScale,
+                      "line-dasharray": [4, 2],
+                    }}
+                  />
+                </>
+              ) : (
+                <ScenarioArcLayers
+                  sourceId={MEMORY_LINES_SOURCE_ID}
+                  idPrefix="memory-lines"
+                  arcOpacityScale={arcOpacityScale}
+                />
+              )}
               {onSelectEdge ? (
                 <Layer
                   id="memory-lines-hit"
@@ -901,22 +930,32 @@ export const SupplyMap = forwardRef<MapRef, {
           )}
           {showAssembly && assemblyLineCount > 0 && (
             <Source id={ASSEMBLY_LINES_SOURCE_ID} type="geojson" data={assemblyLines}>
-              <ArcCasingLayer
-                id="assembly-lines-casing"
-                sourceId={ASSEMBLY_LINES_SOURCE_ID}
-                lineWidth={2}
-              />
-              <Layer
-                id="assembly-lines-main"
-                source={ASSEMBLY_LINES_SOURCE_ID}
-                type="line"
-                paint={{
-                  "line-color": ASSEMBLY_LINE_COLOR,
-                  "line-width": 2,
-                  "line-opacity": 0.72 * arcOpacityScale,
-                  "line-dasharray": [2, 2.5],
-                }}
-              />
+              {!effects ? (
+                <>
+                  <ArcCasingLayer
+                    id="assembly-lines-casing"
+                    sourceId={ASSEMBLY_LINES_SOURCE_ID}
+                    lineWidth={2}
+                  />
+                  <Layer
+                    id="assembly-lines-main"
+                    source={ASSEMBLY_LINES_SOURCE_ID}
+                    type="line"
+                    paint={{
+                      "line-color": ASSEMBLY_LINE_COLOR,
+                      "line-width": 2,
+                      "line-opacity": 0.72 * arcOpacityScale,
+                      "line-dasharray": [2, 2.5],
+                    }}
+                  />
+                </>
+              ) : (
+                <ScenarioArcLayers
+                  sourceId={ASSEMBLY_LINES_SOURCE_ID}
+                  idPrefix="assembly-lines"
+                  arcOpacityScale={arcOpacityScale}
+                />
+              )}
               {onSelectEdge ? (
                 <Layer
                   id="assembly-lines-hit"

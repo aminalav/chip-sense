@@ -21,8 +21,11 @@ import {
 } from "@/lib/mapFocus";
 import {
   MAP_ARC_CASING,
+  MAP_CLICK_RADIUS_PX,
   MAP_DIMMED_PIN_OPACITY,
   MAP_FRAME_CLASS,
+  MAP_HIT_LINE_WIDTH,
+  MAP_PIN_HIT_CLASS,
   MARKER_LABEL_CLASS,
   MARKER_TAG_CLASS,
   arcLayerOpacityScale,
@@ -249,6 +252,7 @@ export const SupplyMap = forwardRef<MapRef, {
 ) {
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
   const [zoom, setZoom] = useState<number | null>(null);
+  const [mapCursor, setMapCursor] = useState<"grab" | "pointer">("grab");
 
   const nodeById = useMemo(
     () => new globalThis.Map(nodes.map((n) => [n.id, n] as const)),
@@ -432,12 +436,32 @@ export const SupplyMap = forwardRef<MapRef, {
 
   const handleMapClick = useCallback(
     (evt: MapLayerMouseEvent) => {
-      if (!onSelectEdge) return;
-      const hit = evt.features?.find((f) => hitLayerIds.includes(f.layer.id));
+      if (!onSelectEdge || hitLayerIds.length === 0) return;
+      let hit = evt.features?.find((f) => hitLayerIds.includes(f.layer.id));
+      if (!hit) {
+        const { x, y } = evt.point;
+        const box: [[number, number], [number, number]] = [
+          [x - MAP_CLICK_RADIUS_PX, y - MAP_CLICK_RADIUS_PX],
+          [x + MAP_CLICK_RADIUS_PX, y + MAP_CLICK_RADIUS_PX],
+        ];
+        hit = evt.target.queryRenderedFeatures(box, { layers: hitLayerIds })[0];
+      }
       const id = hit?.properties?.id;
       if (typeof id === "string") onSelectEdge(id);
     },
     [onSelectEdge, hitLayerIds],
+  );
+
+  const handleMapMouseMove = useCallback(
+    (evt: MapLayerMouseEvent) => {
+      if (hitLayerIds.length === 0) {
+        setMapCursor("grab");
+        return;
+      }
+      const overLine = evt.features?.some((f) => hitLayerIds.includes(f.layer.id));
+      setMapCursor(overLine ? "pointer" : "grab");
+    },
+    [hitLayerIds],
   );
 
   return (
@@ -593,7 +617,8 @@ export const SupplyMap = forwardRef<MapRef, {
           <li>
             <span className="text-[var(--foreground)]/90">Hover</span> a pin for a quick card;{" "}
             <span className="text-[var(--foreground)]/90">click</span> a pin or arc for the full
-            sidebar profile, connections, and sources.
+            sidebar profile, connections, and sources. Pins and arcs have generous click targets —
+            the cursor switches to a pointer over connections.
           </li>
           <li>
             <span className="text-[var(--foreground)]/90">Scenarios</span> restyle the same graph
@@ -695,8 +720,11 @@ export const SupplyMap = forwardRef<MapRef, {
           style={{ width: "100%", height: "100%" }}
           mapStyle={MAP_STYLE}
           canvasContextAttributes={{ preserveDrawingBuffer: true }}
+          cursor={mapCursor}
           interactiveLayerIds={hitLayerIds.length > 0 ? hitLayerIds : undefined}
           onClick={onSelectEdge ? handleMapClick : undefined}
+          onMouseMove={onSelectEdge ? handleMapMouseMove : undefined}
+          onMouseLeave={onSelectEdge ? () => setMapCursor("grab") : undefined}
           onLoad={(e) => setZoom(e.target.getZoom())}
           onZoomEnd={(e) => setZoom(e.viewState.zoom)}
         >
@@ -810,7 +838,7 @@ export const SupplyMap = forwardRef<MapRef, {
                   type="line"
                   paint={{
                     "line-color": "#000000",
-                    "line-width": 14,
+                    "line-width": MAP_HIT_LINE_WIDTH,
                     "line-opacity": 0.01,
                   }}
                 />
@@ -842,7 +870,7 @@ export const SupplyMap = forwardRef<MapRef, {
                   type="line"
                   paint={{
                     "line-color": "#000000",
-                    "line-width": 14,
+                    "line-width": MAP_HIT_LINE_WIDTH,
                     "line-opacity": 0.01,
                   }}
                 />
@@ -874,7 +902,7 @@ export const SupplyMap = forwardRef<MapRef, {
                   type="line"
                   paint={{
                     "line-color": "#000000",
-                    "line-width": 14,
+                    "line-width": MAP_HIT_LINE_WIDTH,
                     "line-opacity": 0.01,
                   }}
                 />
@@ -906,7 +934,7 @@ export const SupplyMap = forwardRef<MapRef, {
                   type="line"
                   paint={{
                     "line-color": "#000000",
-                    "line-width": 14,
+                    "line-width": MAP_HIT_LINE_WIDTH,
                     "line-opacity": 0.01,
                   }}
                 />
@@ -938,7 +966,7 @@ export const SupplyMap = forwardRef<MapRef, {
                   type="line"
                   paint={{
                     "line-color": "#000000",
-                    "line-width": 14,
+                    "line-width": MAP_HIT_LINE_WIDTH,
                     "line-opacity": 0.01,
                   }}
                 />
@@ -974,7 +1002,7 @@ export const SupplyMap = forwardRef<MapRef, {
                   type="line"
                   paint={{
                     "line-color": "#000000",
-                    "line-width": 12,
+                    "line-width": 16,
                     "line-opacity": 0.01,
                   }}
                 />
@@ -1044,13 +1072,18 @@ export const SupplyMap = forwardRef<MapRef, {
               <Marker key={node.id} longitude={lng} latitude={lat} anchor="bottom">
                 <button
                   type="button"
-                  onClick={() => onSelectNode?.(node.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelectNode?.(node.id);
+                  }}
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onTouchStart={(e) => e.stopPropagation()}
                   onMouseEnter={() => setHoveredNodeId(node.id)}
                   onMouseLeave={() =>
                     setHoveredNodeId((cur) => (cur === node.id ? null : cur))
                   }
                   style={{ opacity: dimmed ? MAP_DIMMED_PIN_OPACITY : 1 }}
-                  className={`flex max-w-[10rem] cursor-pointer flex-col items-center gap-0.5 border-0 bg-transparent p-0 text-left transition-opacity ${
+                  className={`flex ${MAP_PIN_HIT_CLASS} max-w-[10rem] cursor-pointer flex-col items-center gap-0.5 border-0 bg-transparent p-0 text-left transition-opacity ${
                     isSelected ? "z-10" : focusHighlighted ? "z-[5]" : ""
                   }`}
                 >

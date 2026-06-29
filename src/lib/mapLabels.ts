@@ -65,6 +65,15 @@ export const MAP_ARC_CASING = {
 export const MAP_FRAME_CLASS =
   "chip-sense-map-frame relative z-0 w-full h-[min(85vh,920px)] min-h-[520px] overflow-hidden rounded-xl border border-white/10 bg-[var(--card)]";
 
+/** Invisible line layer width for arc picking (screen pixels). */
+export const MAP_HIT_LINE_WIDTH = 24;
+
+/** Extra pixel radius when a map click misses the default query box. */
+export const MAP_CLICK_RADIUS_PX = 10;
+
+/** Minimum DOM hit target for pin buttons (Tailwind spacing scale). */
+export const MAP_PIN_HIT_CLASS = "min-h-10 min-w-10 justify-end";
+
 export const MAP_DIMMED_PIN_OPACITY = 0.22;
 
 export const MARKER_LABEL_CLASS =

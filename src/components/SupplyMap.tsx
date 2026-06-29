@@ -602,10 +602,50 @@ export const SupplyMap = forwardRef<MapRef, {
           </div>
         )}
       </div>
-      <details className="relative z-20 shrink-0 rounded-xl border border-white/10 bg-[var(--card)] px-3 py-2 text-xs text-[var(--muted)]">
-        <summary className="cursor-pointer select-none text-xs font-medium text-[var(--foreground)]/80">
-          How to read this map
-        </summary>
+      <div className="relative z-20 flex shrink-0 flex-col gap-2">
+        <details className="rounded-xl border border-white/10 bg-[var(--card)] px-3 py-2 text-xs text-[var(--muted)]">
+          <summary className="cursor-pointer select-none text-xs font-medium text-[var(--foreground)]/80">
+            How to use this tool
+          </summary>
+          <ul className="mt-2 list-disc space-y-2 pl-4 leading-relaxed">
+            <li>
+              <span className="text-[var(--foreground)]/90">Start broad, then narrow.</span> Use
+              track lenses (Memory, CPUs, GPUs, Data centers) to filter the same graph to one
+              product story. The global board shows everything by default.
+            </li>
+            <li>
+              <span className="text-[var(--foreground)]/90">Inspect in the sidebar.</span> Click a
+              map pin, supply arc, or trade flow — or pick a row in{" "}
+              <span className="text-[var(--foreground)]/90">Scenario impact</span> or{" "}
+              <span className="text-[var(--foreground)]/90">Supply relationships</span> below the
+              map. The Selection panel shows profiles, connections, and source citations.
+            </li>
+            <li>
+              <span className="text-[var(--foreground)]/90">Run a scenario.</span> Choose an
+              illustrative stress test from the map toolbar. Assumptions and highlighted entities
+              appear in Scenario impact; click a row to locate it on the map.
+            </li>
+            <li>
+              <span className="text-[var(--foreground)]/90">Tune the view.</span> Layer checkboxes
+              hide arc types; Core supply chain view, Focus on visible connections, ops pins, and
+              trade flows adjust what stays prominent — the underlying registry does not change.
+            </li>
+            <li>
+              <span className="text-[var(--foreground)]/90">Share your view.</span> Filters,
+              scenario, and selection update the URL — copy the address bar to link to the same
+              board state.
+            </li>
+            <li>
+              <span className="text-[var(--foreground)]/90">Export.</span> Use{" "}
+              <span className="text-[var(--foreground)]/90">Export map (PNG)</span> above the map
+              for slides or notes.
+            </li>
+          </ul>
+        </details>
+        <details className="rounded-xl border border-white/10 bg-[var(--card)] px-3 py-2 text-xs text-[var(--muted)]">
+          <summary className="cursor-pointer select-none text-xs font-medium text-[var(--foreground)]/80">
+            How to read this map
+          </summary>
         <ul className="mt-2 list-disc space-y-2 pl-4 leading-relaxed">
           <li>
             <span className="text-[var(--foreground)]/90">Colored arcs</span> are typed supply
@@ -640,7 +680,8 @@ export const SupplyMap = forwardRef<MapRef, {
             links.
           </li>
         </ul>
-      </details>
+        </details>
+      </div>
       <details className="relative z-20 shrink-0 rounded-xl border border-white/10 bg-[var(--card)] px-3 py-2 text-[10px] text-[var(--muted)]">
         <summary className="cursor-pointer select-none text-xs font-medium text-[var(--foreground)]/80">
           Map legend

@@ -362,3 +362,27 @@ export const EDGE_ROLE_COLOR: Record<EdgeScenarioRole, string | undefined> = {
   stressed: "#fb923c",
   buffered: "#22d3ee",
 };
+
+/** Map paint tuning when a non-baseline scenario is active. */
+export const SCENARIO_PRESENTATION = {
+  neutralPinOpacity: 0.28,
+  edgeWidth: {
+    neutral: 1.1,
+    disrupted: 4,
+    stressed: 3.25,
+    buffered: 2.75,
+  },
+  edgeOpacity: {
+    neutral: 0.14,
+    disrupted: 0.95,
+    stressed: 0.88,
+    buffered: 0.84,
+  },
+  pinScale: {
+    chokepoint: 1.45,
+    partial_relief: 1.3,
+    substitution_buffer: 1.28,
+    stressed: 1.22,
+  } satisfies Partial<Record<NodeScenarioRole, number>>,
+  pinRingExtra: 1,
+} as const;

@@ -6,13 +6,16 @@ import type { MapLayerMouseEvent, MapRef } from "react-map-gl/maplibre";
 import type { FeatureCollection, LineString } from "geojson";
 import type { GraphEdge, GraphNode, Scenario, TradeFlowRecord } from "@/data/graph";
 import {
-  EDGE_ROLE_COLOR,
   NODE_ROLE_LABEL,
   NODE_ROLE_RING,
+  SCENARIO_PRESENTATION,
   edgeScenarioRole,
   nodeScenarioRole,
   type ScenarioEffects,
 } from "@/lib/scenarioEffects";
+import { computeScenarioEmphasis, isScenarioPinDimmed } from "@/lib/scenarioEmphasis";
+import { ScenarioArcLayers } from "@/components/ScenarioArcLayers";
+import { ScenarioRoleLegend } from "@/components/ScenarioRoleLegend";
 import { SEGMENT_LABEL, SEGMENT_LEGEND, isCompanySegment, segmentColor } from "@/lib/segments";
 import {
   computeFocusedPinIds,
@@ -21,8 +24,11 @@ import {
 } from "@/lib/mapFocus";
 import {
   MAP_ARC_CASING,
+  MAP_CLICK_RADIUS_PX,
   MAP_DIMMED_PIN_OPACITY,
   MAP_FRAME_CLASS,
+  MAP_HIT_LINE_WIDTH,
+  MAP_PIN_HIT_CLASS,
   MARKER_LABEL_CLASS,
   MARKER_TAG_CLASS,
   arcLayerOpacityScale,
@@ -249,6 +255,7 @@ export const SupplyMap = forwardRef<MapRef, {
 ) {
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
   const [zoom, setZoom] = useState<number | null>(null);
+  const [mapCursor, setMapCursor] = useState<"grab" | "pointer">("grab");
 
   const nodeById = useMemo(
     () => new globalThis.Map(nodes.map((n) => [n.id, n] as const)),
@@ -396,6 +403,11 @@ export const SupplyMap = forwardRef<MapRef, {
     ],
   );
 
+  const scenarioEmphasis = useMemo(
+    () => computeScenarioEmphasis(effects, edges ?? []),
+    [effects, edges],
+  );
+
   const visibleLayerCount = visibleCompanyArcLayerCount({
     showSupplyLines,
     showEquips,
@@ -432,12 +444,32 @@ export const SupplyMap = forwardRef<MapRef, {
 
   const handleMapClick = useCallback(
     (evt: MapLayerMouseEvent) => {
-      if (!onSelectEdge) return;
-      const hit = evt.features?.find((f) => hitLayerIds.includes(f.layer.id));
+      if (!onSelectEdge || hitLayerIds.length === 0) return;
+      let hit = evt.features?.find((f) => hitLayerIds.includes(f.layer.id));
+      if (!hit) {
+        const { x, y } = evt.point;
+        const box: [[number, number], [number, number]] = [
+          [x - MAP_CLICK_RADIUS_PX, y - MAP_CLICK_RADIUS_PX],
+          [x + MAP_CLICK_RADIUS_PX, y + MAP_CLICK_RADIUS_PX],
+        ];
+        hit = evt.target.queryRenderedFeatures(box, { layers: hitLayerIds })[0];
+      }
       const id = hit?.properties?.id;
       if (typeof id === "string") onSelectEdge(id);
     },
     [onSelectEdge, hitLayerIds],
+  );
+
+  const handleMapMouseMove = useCallback(
+    (evt: MapLayerMouseEvent) => {
+      if (hitLayerIds.length === 0) {
+        setMapCursor("grab");
+        return;
+      }
+      const overLine = evt.features?.some((f) => hitLayerIds.includes(f.layer.id));
+      setMapCursor(overLine ? "pointer" : "grab");
+    },
+    [hitLayerIds],
   );
 
   return (
@@ -541,6 +573,7 @@ export const SupplyMap = forwardRef<MapRef, {
               ))}
             </select>
           </label>
+          {effects ? <ScenarioRoleLegend /> : null}
         </div>
         {(essay1Only || effects || (focusConnections && mapFocus.active)) && (
           <div className="space-y-1 text-xs text-[var(--muted)]">
@@ -561,9 +594,9 @@ export const SupplyMap = forwardRef<MapRef, {
             ) : null}
             {effects ? (
               <p>
-                Scenario styling active — see{" "}
-                <span className="text-[var(--foreground)]">Scenario impact</span> in the sidebar for
-                assumptions and affected nodes.
+                Scenario styling active — affected pins and arcs are highlighted; others fade.
+                See <span className="text-[var(--foreground)]">Scenario impact</span> below the map
+                for assumptions.
               </p>
             ) : null}
           </div>
@@ -593,7 +626,8 @@ export const SupplyMap = forwardRef<MapRef, {
           <li>
             <span className="text-[var(--foreground)]/90">Hover</span> a pin for a quick card;{" "}
             <span className="text-[var(--foreground)]/90">click</span> a pin or arc for the full
-            sidebar profile, connections, and sources.
+            sidebar profile, connections, and sources. Pins and arcs have generous click targets —
+            the cursor switches to a pointer over connections.
           </li>
           <li>
             <span className="text-[var(--foreground)]/90">Scenarios</span> restyle the same graph
@@ -695,8 +729,11 @@ export const SupplyMap = forwardRef<MapRef, {
           style={{ width: "100%", height: "100%" }}
           mapStyle={MAP_STYLE}
           canvasContextAttributes={{ preserveDrawingBuffer: true }}
+          cursor={mapCursor}
           interactiveLayerIds={hitLayerIds.length > 0 ? hitLayerIds : undefined}
           onClick={onSelectEdge ? handleMapClick : undefined}
+          onMouseMove={onSelectEdge ? handleMapMouseMove : undefined}
+          onMouseLeave={onSelectEdge ? () => setMapCursor("grab") : undefined}
           onLoad={(e) => setZoom(e.target.getZoom())}
           onZoomEnd={(e) => setZoom(e.viewState.zoom)}
         >
@@ -748,59 +785,10 @@ export const SupplyMap = forwardRef<MapRef, {
                 />
               ) : null}
               {effects ? (
-                <Layer
-                  id="supply-lines-neutral"
-                  source={SUPPLY_LINES_SOURCE_ID}
-                  type="line"
-                  filter={["==", ["get", "scenarioRole"], "neutral"]}
-                  paint={{
-                    "line-color": "#94a3b8",
-                    "line-width": 1.25,
-                    "line-opacity": 0.35,
-                    "line-dasharray": [2, 2],
-                  }}
-                />
-              ) : null}
-              {effects ? (
-                <Layer
-                  id="supply-lines-disrupted"
-                  source={SUPPLY_LINES_SOURCE_ID}
-                  type="line"
-                  filter={["==", ["get", "scenarioRole"], "disrupted"]}
-                  paint={{
-                    "line-color": EDGE_ROLE_COLOR.disrupted ?? "#f87171",
-                    "line-width": 3.5,
-                    "line-opacity": 0.9,
-                    "line-dasharray": [2, 1],
-                  }}
-                />
-              ) : null}
-              {effects ? (
-                <Layer
-                  id="supply-lines-stressed"
-                  source={SUPPLY_LINES_SOURCE_ID}
-                  type="line"
-                  filter={["==", ["get", "scenarioRole"], "stressed"]}
-                  paint={{
-                    "line-color": EDGE_ROLE_COLOR.stressed ?? "#fb923c",
-                    "line-width": 2.75,
-                    "line-opacity": 0.8,
-                    "line-dasharray": [2, 1.5],
-                  }}
-                />
-              ) : null}
-              {effects ? (
-                <Layer
-                  id="supply-lines-buffered"
-                  source={SUPPLY_LINES_SOURCE_ID}
-                  type="line"
-                  filter={["==", ["get", "scenarioRole"], "buffered"]}
-                  paint={{
-                    "line-color": EDGE_ROLE_COLOR.buffered ?? "#22d3ee",
-                    "line-width": 2.5,
-                    "line-opacity": 0.75,
-                    "line-dasharray": [2, 2],
-                  }}
+                <ScenarioArcLayers
+                  sourceId={SUPPLY_LINES_SOURCE_ID}
+                  idPrefix="supply-lines"
+                  arcOpacityScale={arcOpacityScale}
                 />
               ) : null}
               {onSelectEdge ? (
@@ -810,7 +798,7 @@ export const SupplyMap = forwardRef<MapRef, {
                   type="line"
                   paint={{
                     "line-color": "#000000",
-                    "line-width": 14,
+                    "line-width": MAP_HIT_LINE_WIDTH,
                     "line-opacity": 0.01,
                   }}
                 />
@@ -819,22 +807,32 @@ export const SupplyMap = forwardRef<MapRef, {
           )}
           {showEquips && equipsLineCount > 0 && (
             <Source id={EQUIPS_LINES_SOURCE_ID} type="geojson" data={equipsLines}>
-              <ArcCasingLayer
-                id="equips-lines-casing"
-                sourceId={EQUIPS_LINES_SOURCE_ID}
-                lineWidth={2.25}
-              />
-              <Layer
-                id="equips-lines-main"
-                source={EQUIPS_LINES_SOURCE_ID}
-                type="line"
-                paint={{
-                  "line-color": EQUIP_LINE_COLOR,
-                  "line-width": 2.25,
-                  "line-opacity": 0.78 * arcOpacityScale,
-                  "line-dasharray": [3, 2],
-                }}
-              />
+              {!effects ? (
+                <>
+                  <ArcCasingLayer
+                    id="equips-lines-casing"
+                    sourceId={EQUIPS_LINES_SOURCE_ID}
+                    lineWidth={2.25}
+                  />
+                  <Layer
+                    id="equips-lines-main"
+                    source={EQUIPS_LINES_SOURCE_ID}
+                    type="line"
+                    paint={{
+                      "line-color": EQUIP_LINE_COLOR,
+                      "line-width": 2.25,
+                      "line-opacity": 0.78 * arcOpacityScale,
+                      "line-dasharray": [3, 2],
+                    }}
+                  />
+                </>
+              ) : (
+                <ScenarioArcLayers
+                  sourceId={EQUIPS_LINES_SOURCE_ID}
+                  idPrefix="equips-lines"
+                  arcOpacityScale={arcOpacityScale}
+                />
+              )}
               {onSelectEdge ? (
                 <Layer
                   id="equips-lines-hit"
@@ -842,7 +840,7 @@ export const SupplyMap = forwardRef<MapRef, {
                   type="line"
                   paint={{
                     "line-color": "#000000",
-                    "line-width": 14,
+                    "line-width": MAP_HIT_LINE_WIDTH,
                     "line-opacity": 0.01,
                   }}
                 />
@@ -851,22 +849,32 @@ export const SupplyMap = forwardRef<MapRef, {
           )}
           {showPackaging && packagingLineCount > 0 && (
             <Source id={PACKAGING_LINES_SOURCE_ID} type="geojson" data={packagingLines}>
-              <ArcCasingLayer
-                id="packaging-lines-casing"
-                sourceId={PACKAGING_LINES_SOURCE_ID}
-                lineWidth={2.25}
-              />
-              <Layer
-                id="packaging-lines-main"
-                source={PACKAGING_LINES_SOURCE_ID}
-                type="line"
-                paint={{
-                  "line-color": PACKAGING_LINE_COLOR,
-                  "line-width": 2.25,
-                  "line-opacity": 0.78 * arcOpacityScale,
-                  "line-dasharray": [1, 1.5],
-                }}
-              />
+              {!effects ? (
+                <>
+                  <ArcCasingLayer
+                    id="packaging-lines-casing"
+                    sourceId={PACKAGING_LINES_SOURCE_ID}
+                    lineWidth={2.25}
+                  />
+                  <Layer
+                    id="packaging-lines-main"
+                    source={PACKAGING_LINES_SOURCE_ID}
+                    type="line"
+                    paint={{
+                      "line-color": PACKAGING_LINE_COLOR,
+                      "line-width": 2.25,
+                      "line-opacity": 0.78 * arcOpacityScale,
+                      "line-dasharray": [1, 1.5],
+                    }}
+                  />
+                </>
+              ) : (
+                <ScenarioArcLayers
+                  sourceId={PACKAGING_LINES_SOURCE_ID}
+                  idPrefix="packaging-lines"
+                  arcOpacityScale={arcOpacityScale}
+                />
+              )}
               {onSelectEdge ? (
                 <Layer
                   id="packaging-lines-hit"
@@ -874,7 +882,7 @@ export const SupplyMap = forwardRef<MapRef, {
                   type="line"
                   paint={{
                     "line-color": "#000000",
-                    "line-width": 14,
+                    "line-width": MAP_HIT_LINE_WIDTH,
                     "line-opacity": 0.01,
                   }}
                 />
@@ -883,22 +891,32 @@ export const SupplyMap = forwardRef<MapRef, {
           )}
           {showMemory && memoryLineCount > 0 && (
             <Source id={MEMORY_LINES_SOURCE_ID} type="geojson" data={memoryLines}>
-              <ArcCasingLayer
-                id="memory-lines-casing"
-                sourceId={MEMORY_LINES_SOURCE_ID}
-                lineWidth={2.5}
-              />
-              <Layer
-                id="memory-lines-main"
-                source={MEMORY_LINES_SOURCE_ID}
-                type="line"
-                paint={{
-                  "line-color": MEMORY_LINE_COLOR,
-                  "line-width": 2.5,
-                  "line-opacity": 0.82 * arcOpacityScale,
-                  "line-dasharray": [4, 2],
-                }}
-              />
+              {!effects ? (
+                <>
+                  <ArcCasingLayer
+                    id="memory-lines-casing"
+                    sourceId={MEMORY_LINES_SOURCE_ID}
+                    lineWidth={2.5}
+                  />
+                  <Layer
+                    id="memory-lines-main"
+                    source={MEMORY_LINES_SOURCE_ID}
+                    type="line"
+                    paint={{
+                      "line-color": MEMORY_LINE_COLOR,
+                      "line-width": 2.5,
+                      "line-opacity": 0.82 * arcOpacityScale,
+                      "line-dasharray": [4, 2],
+                    }}
+                  />
+                </>
+              ) : (
+                <ScenarioArcLayers
+                  sourceId={MEMORY_LINES_SOURCE_ID}
+                  idPrefix="memory-lines"
+                  arcOpacityScale={arcOpacityScale}
+                />
+              )}
               {onSelectEdge ? (
                 <Layer
                   id="memory-lines-hit"
@@ -906,7 +924,7 @@ export const SupplyMap = forwardRef<MapRef, {
                   type="line"
                   paint={{
                     "line-color": "#000000",
-                    "line-width": 14,
+                    "line-width": MAP_HIT_LINE_WIDTH,
                     "line-opacity": 0.01,
                   }}
                 />
@@ -915,22 +933,32 @@ export const SupplyMap = forwardRef<MapRef, {
           )}
           {showAssembly && assemblyLineCount > 0 && (
             <Source id={ASSEMBLY_LINES_SOURCE_ID} type="geojson" data={assemblyLines}>
-              <ArcCasingLayer
-                id="assembly-lines-casing"
-                sourceId={ASSEMBLY_LINES_SOURCE_ID}
-                lineWidth={2}
-              />
-              <Layer
-                id="assembly-lines-main"
-                source={ASSEMBLY_LINES_SOURCE_ID}
-                type="line"
-                paint={{
-                  "line-color": ASSEMBLY_LINE_COLOR,
-                  "line-width": 2,
-                  "line-opacity": 0.72 * arcOpacityScale,
-                  "line-dasharray": [2, 2.5],
-                }}
-              />
+              {!effects ? (
+                <>
+                  <ArcCasingLayer
+                    id="assembly-lines-casing"
+                    sourceId={ASSEMBLY_LINES_SOURCE_ID}
+                    lineWidth={2}
+                  />
+                  <Layer
+                    id="assembly-lines-main"
+                    source={ASSEMBLY_LINES_SOURCE_ID}
+                    type="line"
+                    paint={{
+                      "line-color": ASSEMBLY_LINE_COLOR,
+                      "line-width": 2,
+                      "line-opacity": 0.72 * arcOpacityScale,
+                      "line-dasharray": [2, 2.5],
+                    }}
+                  />
+                </>
+              ) : (
+                <ScenarioArcLayers
+                  sourceId={ASSEMBLY_LINES_SOURCE_ID}
+                  idPrefix="assembly-lines"
+                  arcOpacityScale={arcOpacityScale}
+                />
+              )}
               {onSelectEdge ? (
                 <Layer
                   id="assembly-lines-hit"
@@ -938,7 +966,7 @@ export const SupplyMap = forwardRef<MapRef, {
                   type="line"
                   paint={{
                     "line-color": "#000000",
-                    "line-width": 14,
+                    "line-width": MAP_HIT_LINE_WIDTH,
                     "line-opacity": 0.01,
                   }}
                 />
@@ -974,7 +1002,7 @@ export const SupplyMap = forwardRef<MapRef, {
                   type="line"
                   paint={{
                     "line-color": "#000000",
-                    "line-width": 12,
+                    "line-width": 16,
                     "line-opacity": 0.01,
                   }}
                 />
@@ -989,6 +1017,9 @@ export const SupplyMap = forwardRef<MapRef, {
             const ring = segmentColor(segment) ?? kindColors[node.kind];
             const scenarioNodeRole = nodeScenarioRole(effects, node.id);
             const scenarioRing = NODE_ROLE_RING[scenarioNodeRole];
+            const scenarioHighlighted =
+              scenarioEmphasis.active &&
+              scenarioEmphasis.highlightedNodeIds.has(node.id);
             const essayMustShow = node.meta?.must_show_essay_1 === true;
             const countryActive =
               node.kind === "country" && activeCountryIds.has(node.id);
@@ -1031,32 +1062,55 @@ export const SupplyMap = forwardRef<MapRef, {
               currentZoom,
               isSelected,
               hoveredNodeId === node.id,
-              { focusHighlighted, essay1Only },
+              { focusHighlighted, essay1Only, scenarioHighlighted },
             );
-            const dimmed = isPinDimmed(
+            const focusDimmed = isPinDimmed(
               node.id,
               mapFocus.active,
               mapFocus.highlightedIds,
               selectedNodeId,
               hoveredNodeId,
             );
+            const scenarioDimmed = isScenarioPinDimmed(
+              node.id,
+              scenarioEmphasis,
+              selectedNodeId,
+              hoveredNodeId,
+            );
+            const pinOpacity = focusDimmed
+              ? MAP_DIMMED_PIN_OPACITY
+              : scenarioDimmed
+                ? SCENARIO_PRESENTATION.neutralPinOpacity
+                : 1;
+            const pinScale =
+              scenarioNodeRole !== "neutral"
+                ? (SCENARIO_PRESENTATION.pinScale[scenarioNodeRole] ?? 1)
+                : 1;
             return (
               <Marker key={node.id} longitude={lng} latitude={lat} anchor="bottom">
                 <button
                   type="button"
-                  onClick={() => onSelectNode?.(node.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelectNode?.(node.id);
+                  }}
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onTouchStart={(e) => e.stopPropagation()}
                   onMouseEnter={() => setHoveredNodeId(node.id)}
                   onMouseLeave={() =>
                     setHoveredNodeId((cur) => (cur === node.id ? null : cur))
                   }
-                  style={{ opacity: dimmed ? MAP_DIMMED_PIN_OPACITY : 1 }}
-                  className={`flex max-w-[10rem] cursor-pointer flex-col items-center gap-0.5 border-0 bg-transparent p-0 text-left transition-opacity ${
-                    isSelected ? "z-10" : focusHighlighted ? "z-[5]" : ""
+                  style={{
+                    opacity: pinOpacity,
+                    transform: pinScale !== 1 ? `scale(${pinScale})` : undefined,
+                  }}
+                  className={`flex ${MAP_PIN_HIT_CLASS} max-w-[10rem] cursor-pointer flex-col items-center gap-0.5 border-0 bg-transparent p-0 text-left transition-opacity ${
+                    isSelected ? "z-10" : focusHighlighted || scenarioHighlighted ? "z-[5]" : ""
                   }`}
                 >
                   <div
                     title={detail ? `${node.label}\n${detail}` : `${node.label} (${node.kind})`}
-                    className={`shrink-0 rounded-full border-2 border-[var(--background)] shadow-md ${size} ${isSelected ? "ring-2 ring-white" : ""} ${essayMustShow && !scenarioRing && !isSelected ? "ring-2 ring-amber-400/90" : ""} ${countryActive && !scenarioRing && !isSelected ? "ring-2 ring-sky-400/80" : ""} ${scenarioRing && !isSelected ? "ring-2" : ""}`}
+                    className={`shrink-0 rounded-full border-2 border-[var(--background)] shadow-md ${size} ${isSelected ? "ring-2 ring-white" : ""} ${essayMustShow && !scenarioRing && !isSelected ? "ring-2 ring-amber-400/90" : ""} ${countryActive && !scenarioRing && !isSelected ? "ring-2 ring-sky-400/80" : ""} ${scenarioRing && !isSelected ? "ring-[3px]" : ""}`}
                     style={{
                       backgroundColor: ring,
                       opacity:

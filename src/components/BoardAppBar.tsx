@@ -11,6 +11,7 @@ import { MapGuidePopover } from "@/components/MapGuidePopover";
 import { MapLayersPopover } from "@/components/MapLayersPopover";
 import { ScenarioRoleLegend } from "@/components/ScenarioRoleLegend";
 import { ShareBoardLinkButton } from "@/components/ShareBoardLinkButton";
+import { RegistrySearchCombobox } from "@/components/RegistrySearchCombobox";
 import { TrackIcon } from "@/components/TrackIcon";
 import type { BoardUrlState } from "@/lib/boardUrlState";
 import { boardPath } from "@/lib/boardUrlState";
@@ -51,6 +52,9 @@ export function BoardAppBar({
   mapNodes,
   edges,
   selectedNodeId,
+  graphNodes,
+  graphEdges,
+  onSelectNode,
   statusHints,
 }: {
   trackLens: TrackSlug | null;
@@ -87,6 +91,9 @@ export function BoardAppBar({
   mapNodes: GraphNode[];
   edges: GraphEdge[];
   selectedNodeId: string | null;
+  graphNodes: GraphNode[];
+  graphEdges: GraphEdge[];
+  onSelectNode: (nodeId: string) => void;
   statusHints?: ReactNode;
 }) {
   const scenarioActive = scenarioId !== "baseline";
@@ -119,6 +126,12 @@ export function BoardAppBar({
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          <RegistrySearchCombobox
+            graphNodes={graphNodes}
+            graphEdges={graphEdges}
+            trackLens={trackLens}
+            onSelectNode={onSelectNode}
+          />
           <label className="flex items-center gap-1.5 text-xs">
             <span className="hidden text-[var(--muted)] sm:inline">Scenario</span>
             <select

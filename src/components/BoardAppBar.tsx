@@ -10,6 +10,7 @@ import { ExportMapButton } from "@/components/ExportMapButton";
 import { MapGuidePopover } from "@/components/MapGuidePopover";
 import { MapLayersPopover } from "@/components/MapLayersPopover";
 import { ScenarioRoleLegend } from "@/components/ScenarioRoleLegend";
+import { ShareBoardLinkButton } from "@/components/ShareBoardLinkButton";
 import { TrackIcon } from "@/components/TrackIcon";
 import type { BoardUrlState } from "@/lib/boardUrlState";
 import { boardPath } from "@/lib/boardUrlState";
@@ -153,6 +154,7 @@ export function BoardAppBar({
             onIncludePresenceChange={onIncludePresenceChange}
           />
           <MapGuidePopover />
+          <ShareBoardLinkButton />
           <ExportMapButton
             mapRef={mapRef}
             nodes={mapNodes}

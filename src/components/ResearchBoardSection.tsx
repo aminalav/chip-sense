@@ -10,6 +10,7 @@ import type { GraphEdge, GraphNode, Scenario, SourceRecord, TrackSlug } from "@/
 import { TRACKS } from "@/data/tracks";
 import { useBoardUrlState } from "@/hooks/useBoardUrlState";
 import { buildMapView } from "@/lib/mapView";
+import { computeMapFocusTarget } from "@/lib/mapFocusCamera";
 import { visibleCompanyArcLayerCount } from "@/lib/mapFocus";
 import { computeScenarioEffects } from "@/lib/scenarioEffects";
 import { collectBoardSourceIds } from "@/lib/sourceQueries";
@@ -177,6 +178,19 @@ export function ResearchBoardSection({
     update({ selectedNodeId: null, selectedEdgeId: null });
   };
 
+  const mapFocusTarget = useMemo(
+    () =>
+      computeMapFocusTarget(
+        selectedNode,
+        selectedEdge,
+        selectedTradeFlow,
+        nodeById,
+      ),
+    [selectedNode, selectedEdge, selectedTradeFlow, nodeById],
+  );
+
+  const mapFocusKey = state.selectedNodeId ?? state.selectedEdgeId ?? null;
+
   const runScenario = (scenarioId: string) => {
     update({ scenarioId, selectedNodeId: null, selectedEdgeId: null });
   };
@@ -259,6 +273,8 @@ export function ResearchBoardSection({
               tradeFlows={tradeFlows}
               tradeLines={tradeLinesGeo}
               selectedNodeId={state.selectedNodeId}
+              focusTarget={mapFocusTarget}
+              focusKey={mapFocusKey}
               onSelectNode={selectNode}
               onSelectEdge={selectEdge}
             />

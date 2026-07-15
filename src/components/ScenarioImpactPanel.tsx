@@ -47,8 +47,7 @@ export function ScenarioImpactPanel({
     );
   }
 
-  const topImpacts = effects.impacts.slice(0, 12);
-  const moreCount = effects.impacts.length - topImpacts.length;
+  const impacts = effects.impacts;
   const canSelect = Boolean(onSelectNode || onSelectEdge);
 
   return (
@@ -90,18 +89,18 @@ export function ScenarioImpactPanel({
         </ul>
       </div>
 
-      {topImpacts.length > 0 && (
+      {impacts.length > 0 && (
         <div>
           <h3 className="text-xs font-medium text-[var(--muted)]">
-            Highlighted on map ({effects.impacts.length})
+            Highlighted on map ({impacts.length})
           </h3>
           {canSelect ? (
             <p className="mt-1 text-[10px] text-[var(--muted)]">
               Click a row to select it on the map.
             </p>
           ) : null}
-          <ul className="mt-2 max-h-48 space-y-1.5 overflow-y-auto">
-            {topImpacts.map((row) => {
+          <ul className="mt-2 max-h-[min(40vh,360px)] space-y-1.5 overflow-y-auto pr-1">
+            {impacts.map((row) => {
               const isNode = effects.nodeRoles.has(row.id);
               const isEdge = effects.edgeRoles.has(row.id);
               const selectable =
@@ -139,9 +138,6 @@ export function ScenarioImpactPanel({
               );
             })}
           </ul>
-          {moreCount > 0 && (
-            <p className="mt-1 text-[10px] text-[var(--muted)]">+{moreCount} more on map</p>
-          )}
         </div>
       )}
     </div>

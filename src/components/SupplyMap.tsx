@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useCallback, useMemo, useState } from "react";
+import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import MapGL, { Layer, Marker, NavigationControl, Popup, Source } from "react-map-gl/maplibre";
 import type { MapLayerMouseEvent, MapRef } from "react-map-gl/maplibre";
 import type { FeatureCollection, LineString } from "geojson";
@@ -34,6 +34,7 @@ import {
   showCountryPin,
   showMarkerLabel,
 } from "@/lib/mapLabels";
+import type { MapFocusTarget } from "@/lib/mapFocusCamera";
 
 import type { FilterSpecification } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -206,6 +207,8 @@ export const SupplyMap = forwardRef<MapRef, {
   tradeFlows?: TradeFlowRecord[];
   tradeLines?: FeatureCollection<LineString> | null;
   selectedNodeId?: string | null;
+  focusTarget?: MapFocusTarget | null;
+  focusKey?: string | null;
   onSelectNode?: (nodeId: string) => void;
   onSelectEdge?: (edgeId: string) => void;
 }>(function SupplyMap(
@@ -225,6 +228,8 @@ export const SupplyMap = forwardRef<MapRef, {
     tradeFlows = [],
     tradeLines = null,
     selectedNodeId = null,
+    focusTarget = null,
+    focusKey = null,
     onSelectNode,
     onSelectEdge,
   },
@@ -233,6 +238,48 @@ export const SupplyMap = forwardRef<MapRef, {
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
   const [zoom, setZoom] = useState<number | null>(null);
   const [mapCursor, setMapCursor] = useState<"grab" | "pointer">("grab");
+  const [pulseNodeId, setPulseNodeId] = useState<string | null>(null);
+  const mapReady = useRef(false);
+
+  useEffect(() => {
+    if (!focusKey || !focusTarget) return;
+    const mapRef = ref as React.RefObject<MapRef | null> | null;
+    const map = mapRef?.current?.getMap();
+    if (!map) return;
+
+    const runFly = () => {
+      const targetZoom = focusTarget.zoom ?? Math.max(map.getZoom(), 2.6);
+      map.flyTo({
+        center: [focusTarget.longitude, focusTarget.latitude],
+        zoom: targetZoom,
+        duration: 900,
+        essential: true,
+      });
+      if (focusTarget.pulseNodeId) {
+        setPulseNodeId(focusTarget.pulseNodeId);
+        const timer = window.setTimeout(() => setPulseNodeId(null), 1400);
+        return () => window.clearTimeout(timer);
+      }
+      return undefined;
+    };
+
+    if (!mapReady.current) {
+      const onLoad = () => {
+        mapReady.current = true;
+        runFly();
+      };
+      if (map.loaded()) {
+        mapReady.current = true;
+        return runFly();
+      }
+      map.once("load", onLoad);
+      return () => {
+        map.off("load", onLoad);
+      };
+    }
+
+    return runFly();
+  }, [focusKey, focusTarget, ref]);
 
   const nodeById = useMemo(
     () => new globalThis.Map(nodes.map((n) => [n.id, n] as const)),
@@ -923,7 +970,7 @@ export const SupplyMap = forwardRef<MapRef, {
                 >
                   <div
                     title={detail ? `${node.label}\n${detail}` : `${node.label} (${node.kind})`}
-                    className={`shrink-0 rounded-full border-2 border-[var(--background)] shadow-md ${size} ${isSelected ? "ring-2 ring-white" : ""} ${essayMustShow && !scenarioRing && !isSelected ? "ring-2 ring-amber-400/90" : ""} ${countryActive && !scenarioRing && !isSelected ? "ring-2 ring-sky-400/80" : ""} ${scenarioRing && !isSelected ? "ring-[3px]" : ""}`}
+                    className={`shrink-0 rounded-full border-2 border-[var(--background)] shadow-md ${size} ${isSelected ? "ring-2 ring-white" : ""} ${pulseNodeId === node.id ? "chip-sense-pin-pulse ring-2 ring-[var(--accent)]" : ""} ${essayMustShow && !scenarioRing && !isSelected && pulseNodeId !== node.id ? "ring-2 ring-amber-400/90" : ""} ${countryActive && !scenarioRing && !isSelected && pulseNodeId !== node.id ? "ring-2 ring-sky-400/80" : ""} ${scenarioRing && !isSelected && pulseNodeId !== node.id ? "ring-[3px]" : ""}`}
                     style={{
                       backgroundColor: ring,
                       opacity:

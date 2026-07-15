@@ -41,9 +41,7 @@ export function ResearchBoardSection({
   accentHex: string;
   trackLens?: TrackSlug | null;
   showTrackLens?: boolean;
-  showEditorialTracks?: boolean;
   researchPointers?: string[];
-  boardNote?: string;
   sourceCatalogCount: number;
   sourceRecords: SourceRecord[];
 }) {

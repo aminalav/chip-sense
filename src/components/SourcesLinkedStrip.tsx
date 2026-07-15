@@ -4,23 +4,15 @@ export function SourcesLinkedStrip({
   sources,
   scopeLabel,
   sourceCatalogCount,
-  embedded = false,
 }: {
   sources: SourceRecord[];
   scopeLabel: string;
   sourceCatalogCount: number;
-  embedded?: boolean;
 }) {
   return (
-    <div className={embedded ? "space-y-2" : "space-y-2 border-t border-white/10 pt-4"}>
+    <div className="space-y-2">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2
-          className={
-            embedded
-              ? "text-[11px] font-medium text-[var(--foreground)]/80"
-              : "text-xs font-semibold uppercase tracking-wide text-[var(--muted)]"
-          }
-        >
+        <h2 className="text-[11px] font-medium text-[var(--foreground)]/80">
           Sources linked ({scopeLabel})
         </h2>
         <p className="text-[11px] text-[var(--muted)]">

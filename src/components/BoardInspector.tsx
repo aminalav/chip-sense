@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BoardSelectionPanel } from "@/components/BoardSelectionPanel";
+import { RegistryBrowsePanel } from "@/components/RegistryBrowsePanel";
 import { ScenarioImpactPanel } from "@/components/ScenarioImpactPanel";
 import { SourcesLinkedStrip } from "@/components/SourcesLinkedStrip";
 import { SupplyRelationshipsPanel } from "@/components/SupplyRelationshipsPanel";
@@ -16,12 +17,13 @@ import type {
 } from "@/data/graph";
 import type { ScenarioEffects } from "@/lib/scenarioEffects";
 
-type InspectorTab = "selection" | "scenario" | "relationships";
+type InspectorTab = "selection" | "browse" | "scenario" | "relationships";
 
 const TABS: { id: InspectorTab; label: string }[] = [
   { id: "selection", label: "Selection" },
+  { id: "browse", label: "Browse" },
   { id: "scenario", label: "Scenario" },
-  { id: "relationships", label: "Relationships" },
+  { id: "relationships", label: "Links" },
 ];
 
 export function BoardInspector({
@@ -97,7 +99,7 @@ export function BoardInspector({
             role="tab"
             aria-selected={tab === item.id}
             onClick={() => setTab(item.id)}
-            className={`flex-1 px-3 py-2.5 text-xs font-medium transition ${
+            className={`flex-1 px-2 py-2.5 text-[11px] font-medium transition sm:px-3 sm:text-xs ${
               tab === item.id
                 ? "border-b-2 border-[var(--accent)] text-[var(--foreground)]"
                 : "text-[var(--muted)] hover:text-[var(--foreground)]/80"
@@ -121,6 +123,15 @@ export function BoardInspector({
             hiddenFromMap={selectedNodeHiddenFromMap}
             onClear={onClearSelection}
             onRunScenario={onRunScenario}
+            onSelectNode={onSelectNode}
+          />
+        ) : null}
+        {tab === "browse" ? (
+          <RegistryBrowsePanel
+            graphNodes={graphNodes}
+            graphEdges={graphEdges}
+            trackLens={trackLens ?? null}
+            selectedNodeId={selectedNodeId}
             onSelectNode={onSelectNode}
           />
         ) : null}

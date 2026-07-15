@@ -250,6 +250,9 @@ export function ResearchBoardSection({
             mapNodes={mapNodes}
             edges={edges}
             selectedNodeId={state.selectedNodeId}
+            graphNodes={graphNodes}
+            graphEdges={graphEdges}
+            onSelectNode={selectNode}
             statusHints={statusHints}
           />
 

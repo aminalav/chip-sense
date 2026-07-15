@@ -15,25 +15,17 @@ const ROLE_BADGE: Record<string, string> = {
 export function ScenarioImpactPanel({
   scenario,
   effects,
-  embedded = false,
   onSelectNode,
   onSelectEdge,
 }: {
   scenario: Scenario | undefined;
   effects: ScenarioEffects | null;
-  embedded?: boolean;
   onSelectNode?: (nodeId: string) => void;
   onSelectEdge?: (edgeId: string) => void;
 }) {
   if (!scenario || scenario.id === "baseline" || !effects) {
     return (
-      <div
-        className={
-          embedded
-            ? "text-sm text-[var(--muted)]"
-            : "rounded-xl border border-white/10 bg-[var(--card)] px-4 py-3 text-sm text-[var(--muted)]"
-        }
-      >
+      <div className="text-sm text-[var(--muted)]">
         {scenario?.id === "baseline" ? (
           <>
             <span className="text-[var(--foreground)]/90">Baseline</span> — sourced registry and
@@ -51,17 +43,9 @@ export function ScenarioImpactPanel({
   const canSelect = Boolean(onSelectNode || onSelectEdge);
 
   return (
-    <div
-      className={
-        embedded ? "space-y-4" : "space-y-4 rounded-xl border border-white/10 bg-[var(--card)] px-4 py-4"
-      }
-    >
+    <div className="space-y-4">
       <div>
-        {!embedded ? (
-          <h2 className="text-sm font-medium text-[var(--muted)]">Scenario impact</h2>
-        ) : (
-          <h2 className="text-sm font-medium text-[var(--foreground)]/90">{scenario.label}</h2>
-        )}
+        <h2 className="text-sm font-medium text-[var(--foreground)]/90">{scenario.label}</h2>
         <p className="mt-1 text-xs text-amber-100/80">
           Illustrative only — multipliers are not sourced forecasts.
         </p>

@@ -111,7 +111,6 @@ export function BoardInspector({
       <div className="min-h-[320px] flex-1 overflow-y-auto p-4 lg:max-h-[calc(85vh-8rem)]">
         {tab === "selection" ? (
           <BoardSelectionPanel
-            embedded
             trackLens={trackLens}
             selectedNode={selectedNode}
             selectedEdge={selectedEdge}
@@ -127,7 +126,6 @@ export function BoardInspector({
         ) : null}
         {tab === "scenario" ? (
           <ScenarioImpactPanel
-            embedded
             scenario={activeScenario}
             effects={effects}
             onSelectNode={onSelectNode}
@@ -144,7 +142,6 @@ export function BoardInspector({
             />
             {showTradeFlows ? (
               <TradeFlowsPanel
-                embedded
                 flows={tradeFlows}
                 sourceLookup={sourceLookup}
                 countryName={countryName}
@@ -168,7 +165,6 @@ export function BoardInspector({
 
       <div className="border-t border-white/10 p-3">
         <SourcesLinkedStrip
-          embedded
           sources={trackSources}
           scopeLabel={scopeLabel}
           sourceCatalogCount={sourceCatalogCount}

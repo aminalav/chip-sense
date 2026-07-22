@@ -102,7 +102,7 @@ See **[ARCHITECTURE.md](./ARCHITECTURE.md)** for the full component map, merge o
 | --- | --- |
 | Framework | Next.js 15 (App Router, static export-friendly build) |
 | UI | React 19, Tailwind CSS 4 |
-| Map | MapLibre GL 5, react-map-gl 8, OpenStreetMap raster tiles |
+| Map | MapLibre GL 5 (globe projection), react-map-gl 8, tile-free Natural Earth basemap |
 | Data | JSON on disk; Node validation scripts in `scripts/` |
 | CI | GitHub Actions — lint, `check:data`, build |
 

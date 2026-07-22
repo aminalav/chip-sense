@@ -77,23 +77,45 @@ const MEMORY_LINE_COLOR = "#f472b6";
 const ASSEMBLY_LINE_COLOR = "#2dd4bf";
 const TRADE_LINE_COLOR = "#818cf8";
 
+// Tile-free basemap: a single static world-countries GeoJSON rendered as land
+// fill + borders over an ocean-colored background. No external tile server, no
+// API key, works offline, and keeps the PNG export canvas clean (no cross-origin
+// tiles). Natural Earth 1:110m data is public domain. Globe projection suits a
+// worldwide supply chain and removes the antimeridian centering workaround.
+const OCEAN_COLOR = "#0b1017";
+const LAND_COLOR = "#18212e";
+const BORDER_COLOR = "#2c3c50";
+
 const MAP_STYLE = {
   version: 8 as const,
-  name: "chip-sense-raster",
+  name: "chip-sense-vector",
+  projection: { type: "globe" as const },
   sources: {
-    "osm-raster": {
-      type: "raster" as const,
-      tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
-      tileSize: 256,
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    world: {
+      type: "geojson" as const,
+      data: "/basemap/world-countries.json",
     },
   },
   layers: [
     {
-      id: "osm-raster-layer",
-      type: "raster" as const,
-      source: "osm-raster",
+      id: "ocean",
+      type: "background" as const,
+      paint: { "background-color": OCEAN_COLOR },
+    },
+    {
+      id: "land",
+      type: "fill" as const,
+      source: "world",
+      paint: { "fill-color": LAND_COLOR },
+    },
+    {
+      id: "country-borders",
+      type: "line" as const,
+      source: "world",
+      paint: {
+        "line-color": BORDER_COLOR,
+        "line-width": 0.6,
+      },
     },
   ],
 };
@@ -319,7 +341,7 @@ export const SupplyMap = forwardRef<MapRef, {
 
   const initialView = useMemo(() => {
     if (points.length === 0) {
-      return { longitude: 150, latitude: 20, zoom: 1.1 };
+      return { longitude: 150, latitude: 20, zoom: 1.7 };
     }
     // Pacific-centered frame: the chip world spans the Americas to East Asia.
     // Centering on the raw lng/lat centroid lands in the empty Atlantic/Sahara
@@ -337,7 +359,7 @@ export const SupplyMap = forwardRef<MapRef, {
     const centerLng = (minLng + maxLng) / 2;
     const lngSpan = maxLng - minLng;
     const latSpan = maxLat - minLat;
-    const zoom = lngSpan > 180 || latSpan > 100 ? 1.1 : lngSpan > 80 ? 1.6 : 2.4;
+    const zoom = lngSpan > 180 || latSpan > 100 ? 1.7 : lngSpan > 80 ? 2.1 : 2.6;
     return {
       longitude: centerLng > 180 ? centerLng - 360 : centerLng,
       latitude: (minLat + maxLat) / 2,

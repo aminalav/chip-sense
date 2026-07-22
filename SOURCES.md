@@ -94,7 +94,7 @@ Reference / future research (in catalog; not required on every edge):
 
 | Asset | Source | Used in |
 | --- | --- | --- |
-| Basemap tiles | [OpenStreetMap](https://www.openstreetmap.org/copyright) raster tiles | `src/components/SupplyMap.tsx` |
+| Basemap geometry | [Natural Earth](https://www.naturalearthdata.com/) 1:110m admin-0 countries (public domain), served tile-free from `public/basemap/world-countries.json` | `src/components/SupplyMap.tsx` |
 | Map library | [MapLibre GL JS](https://maplibre.org/) via `react-map-gl` | `SupplyMap.tsx` |
 
 ---

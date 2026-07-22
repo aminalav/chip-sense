@@ -132,7 +132,7 @@ export function BoardAppBar({
             trackLens={trackLens}
             onSelectNode={onSelectNode}
           />
-          <label className="flex items-center gap-1.5 text-xs">
+          <label data-tour="scenario" className="flex items-center gap-1.5 text-xs">
             <span className="hidden text-[var(--muted)] sm:inline">Scenario</span>
             <select
               className="max-w-[12rem] rounded-md border border-white/10 bg-[var(--background)] px-2 py-1.5 text-xs text-[var(--foreground)] outline-none focus:ring-2 focus:ring-[color:var(--accent)]"
@@ -181,6 +181,7 @@ export function BoardAppBar({
 
       {showTrackLens ? (
         <nav
+          data-tour="lenses"
           className="mt-3 flex flex-wrap gap-1 rounded-lg border border-white/10 bg-black/20 p-1"
           aria-label="Industry lens"
         >

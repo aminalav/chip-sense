@@ -37,7 +37,7 @@ export function SelectionEmptyState({
   onSelectNode?: (nodeId: string) => void;
 }) {
   return (
-    <div className="space-y-4">
+    <div data-tour="quickstart" className="space-y-4">
       <div>
         <h3 className="text-sm font-medium text-[var(--foreground)]/90">Start exploring</h3>
         <p className="mt-1 text-xs leading-relaxed text-[var(--muted)]">

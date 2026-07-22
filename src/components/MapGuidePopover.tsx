@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { startBoardTour } from "@/components/BoardTour";
 
 export function MapGuidePopover() {
   const [open, setOpen] = useState(false);
@@ -23,7 +24,7 @@ export function MapGuidePopover() {
   }, [open]);
 
   return (
-    <div ref={rootRef} className="relative">
+    <div ref={rootRef} data-tour="guide" className="relative">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -39,6 +40,16 @@ export function MapGuidePopover() {
           aria-label="Map guide"
           className="absolute right-0 top-full z-50 mt-1.5 max-h-[min(70vh,560px)] w-[min(92vw,24rem)] overflow-y-auto rounded-lg border border-white/10 bg-[#111820] p-3 text-xs leading-relaxed text-[var(--muted)] shadow-2xl shadow-black/50"
         >
+          <button
+            type="button"
+            onClick={() => {
+              setOpen(false);
+              startBoardTour();
+            }}
+            className="mb-3 flex w-full items-center justify-center gap-1.5 rounded-md border border-[var(--accent)]/40 bg-[var(--accent)]/10 px-2.5 py-2 text-[11px] font-medium text-[var(--foreground)] transition hover:bg-[var(--accent)]/20"
+          >
+            Take the guided tour
+          </button>
           <section className="space-y-2">
             <h3 className="text-[11px] font-medium text-[var(--foreground)]/90">How to use this tool</h3>
             <ul className="list-disc space-y-1.5 pl-4">

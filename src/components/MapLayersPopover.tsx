@@ -70,7 +70,7 @@ export function MapLayersPopover({
   }, [open]);
 
   return (
-    <div ref={rootRef} className="relative">
+    <div ref={rootRef} data-tour="layers" className="relative">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}

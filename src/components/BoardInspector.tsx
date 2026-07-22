@@ -90,7 +90,7 @@ export function BoardInspector({
   }, [activeScenario]);
 
   return (
-    <aside className="flex w-full shrink-0 flex-col border-t border-white/10 bg-[var(--surface-inspector)] lg:w-[380px] lg:border-t-0 lg:border-l">
+    <aside data-tour="inspector" className="flex w-full shrink-0 flex-col border-t border-white/10 bg-[var(--surface-inspector)] lg:w-[380px] lg:border-t-0 lg:border-l">
       <div className="flex border-b border-white/10" role="tablist" aria-label="Board inspector">
         {TABS.map((item) => (
           <button

@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import type { MapRef } from "react-map-gl/maplibre";
 import { BoardAppBar } from "@/components/BoardAppBar";
 import { BoardInspector } from "@/components/BoardInspector";
+import { BoardTourLauncher } from "@/components/BoardTour";
 import { BoardLoadingPlaceholder } from "@/components/BoardLoadingPlaceholder";
 import type { GraphEdge, GraphNode, Scenario, SourceRecord, TrackSlug } from "@/data/graph";
 import { TRACKS } from "@/data/tracks";
@@ -256,7 +257,7 @@ export function ResearchBoardSection({
             statusHints={statusHints}
           />
 
-          <div className="flex min-h-0 flex-1 flex-col p-3 lg:p-4">
+          <div data-tour="map" className="flex min-h-0 flex-1 flex-col p-3 lg:p-4">
             <SupplyMap
               ref={mapRef}
               nodes={mapNodes}
@@ -309,6 +310,7 @@ export function ResearchBoardSection({
           onRunScenario={runScenario}
         />
       </div>
+      <BoardTourLauncher />
     </section>
   );
 }

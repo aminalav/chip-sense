@@ -91,7 +91,7 @@ export function RegistrySearchCombobox({
   const showResults = open && query.trim().length > 0;
 
   return (
-    <div ref={rootRef} className="relative min-w-[10rem] flex-1 sm:max-w-[14rem]">
+    <div ref={rootRef} data-tour="search" className="relative min-w-[10rem] flex-1 sm:max-w-[14rem]">
       <label className="sr-only" htmlFor={`${listboxId}-input`}>
         Search companies, fabs, and countries
       </label>

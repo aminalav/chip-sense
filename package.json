@@ -17,6 +17,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "driver.js": "^1.8.0",
     "maplibre-gl": "^5.1.0",
     "next": "^15.1.0",
     "react": "^19.0.0",

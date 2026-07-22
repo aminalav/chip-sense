@@ -37,7 +37,7 @@ body {
   outline: none;
 }
 
-/* Subtle wash over OSM tiles so pins and arcs read more clearly */
+/* Subtle wash over the basemap so pins and arcs read more clearly */
 .chip-sense-map-frame::after {
   content: "";
   pointer-events: none;
@@ -77,4 +77,81 @@ body {
 
 .chip-sense-pin-pulse {
   animation: chip-sense-pin-pulse 0.9s ease-out 2;
+}
+
+/* Guided tour (driver.js) — themed to the dark board UI */
+.driver-popover.chip-sense-tour {
+  background-color: #111820;
+  color: var(--foreground);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  max-width: 340px;
+  padding: 16px 16px 12px;
+}
+
+.driver-popover.chip-sense-tour .driver-popover-title {
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.driver-popover.chip-sense-tour .driver-popover-description {
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.driver-popover.chip-sense-tour .driver-popover-progress-text {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+}
+
+.driver-popover.chip-sense-tour .driver-popover-footer button {
+  text-shadow: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.04);
+  color: var(--foreground);
+}
+
+.driver-popover.chip-sense-tour .driver-popover-footer button:hover {
+  background-color: rgba(255, 255, 255, 0.09);
+}
+
+.driver-popover.chip-sense-tour .driver-popover-footer .driver-popover-next-btn {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #06121f;
+  font-weight: 600;
+}
+
+.driver-popover.chip-sense-tour .driver-popover-footer .driver-popover-next-btn:hover {
+  filter: brightness(1.08);
+  background-color: var(--accent);
+}
+
+.driver-popover.chip-sense-tour .driver-popover-close-btn {
+  color: var(--muted);
+}
+
+.driver-popover.chip-sense-tour .driver-popover-close-btn:hover {
+  color: var(--foreground);
+}
+
+.driver-popover.chip-sense-tour .driver-popover-arrow-side-left {
+  border-left-color: #111820;
+}
+.driver-popover.chip-sense-tour .driver-popover-arrow-side-right {
+  border-right-color: #111820;
+}
+.driver-popover.chip-sense-tour .driver-popover-arrow-side-top {
+  border-top-color: #111820;
+}
+.driver-popover.chip-sense-tour .driver-popover-arrow-side-bottom {
+  border-bottom-color: #111820;
 }

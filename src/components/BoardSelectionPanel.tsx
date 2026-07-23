@@ -10,7 +10,7 @@ import {
   parentCompanyIdForPresence,
   sourceLinks,
 } from "@/lib/nodeProfile";
-import { dedupeRelatedEdges, edgeKindLabel } from "@/lib/edgeLabels";
+import { dedupeRelatedEdges, edgeKindLabel, edgeRelationshipSentence } from "@/lib/edgeLabels";
 import { SEGMENT_LABEL, isCompanySegment } from "@/lib/segments";
 
 export function BoardSelectionPanel({
@@ -390,12 +390,17 @@ function EdgeCard({
 }) {
   const facts = edge.facts ? Object.entries(edge.facts) : [];
 
+  const fromLabel = byId.get(edge.source)?.label ?? edge.source;
+  const toLabel = byId.get(edge.target)?.label ?? edge.target;
+
   return (
     <div className="space-y-2 border-t border-white/10 pt-3">
       <p className="font-medium text-[var(--foreground)]">
-        {byId.get(edge.source)?.label ?? edge.source} → {byId.get(edge.target)?.label ?? edge.target}
+        {edgeRelationshipSentence(edge.kind, fromLabel, toLabel)}
       </p>
-      <p className="text-xs text-[var(--muted)]">{edgeKindLabel(edge.kind)}</p>
+      <p className="text-xs text-[var(--muted)]">
+        {edgeKindLabel(edge.kind)} · {fromLabel} → {toLabel}
+      </p>
       {facts.length === 0 ? (
         <p className="text-xs text-[var(--muted)]">No cited facts on this edge yet.</p>
       ) : (

@@ -115,13 +115,46 @@ export function MapLayersPopover({
           <p className="mb-2 mt-3 text-[10px] font-medium uppercase tracking-wide text-[var(--muted)]">
             Connection arcs
           </p>
+          <p className="mb-2 text-[10px] text-[var(--muted)]/80">
+            Each line links two company HQs and points from supplier → customer.
+          </p>
           <div className="space-y-2">
-            <LayerToggle label="Foundry supply" checked={showSupplyLines} onChange={onShowSupplyLinesChange} />
-            <LayerToggle label="Equipment" checked={showEquips} onChange={onShowEquipsChange} />
-            <LayerToggle label="Packaging / OSAT" checked={showPackaging} onChange={onShowPackagingChange} />
-            <LayerToggle label="HBM / memory" checked={showMemory} onChange={onShowMemoryChange} />
-            <LayerToggle label="Assembly / EMS" checked={showAssembly} onChange={onShowAssemblyChange} />
-            <LayerToggle label="Trade flows" checked={showTradeFlows} onChange={onShowTradeFlowsChange} />
+            <LayerToggle
+              label="Foundry supply"
+              hint="Who fabricates whose wafers (foundry → customer)"
+              checked={showSupplyLines}
+              onChange={onShowSupplyLinesChange}
+            />
+            <LayerToggle
+              label="Equipment"
+              hint="Who supplies fab tools (equipment maker → fab operator)"
+              checked={showEquips}
+              onChange={onShowEquipsChange}
+            />
+            <LayerToggle
+              label="Packaging / OSAT"
+              hint="Who packages whose chips (packager → customer)"
+              checked={showPackaging}
+              onChange={onShowPackagingChange}
+            />
+            <LayerToggle
+              label="HBM / memory"
+              hint="Who supplies memory (memory maker → customer)"
+              checked={showMemory}
+              onChange={onShowMemoryChange}
+            />
+            <LayerToggle
+              label="Assembly / EMS"
+              hint="Who assembles finished products (assembler → brand)"
+              checked={showAssembly}
+              onChange={onShowAssemblyChange}
+            />
+            <LayerToggle
+              label="Trade flows"
+              hint="Country-to-country chip & equipment trade (exporter → importer)"
+              checked={showTradeFlows}
+              onChange={onShowTradeFlowsChange}
+            />
           </div>
         </div>
       ) : null}

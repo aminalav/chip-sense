@@ -65,6 +65,68 @@ function ArcCasingLayer({
   );
 }
 
+const ARROW_ICON_ID = "cs-arrow";
+
+/**
+ * Small right-pointing triangle used as a repeating arrowhead along each arc.
+ * Rendered once to a canvas and registered with the map; a light neutral fill
+ * keeps direction legible without competing with each layer's line color.
+ */
+function createArrowIcon(
+  pixelRatio = 2,
+): { width: number; height: number; data: Uint8ClampedArray } | null {
+  if (typeof document === "undefined") return null;
+  const size = 12;
+  const w = size * pixelRatio;
+  const h = size * pixelRatio;
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = "rgba(233,236,241,0.95)";
+  ctx.beginPath();
+  ctx.moveTo(w * 0.12, h * 0.12);
+  ctx.lineTo(w * 0.9, h * 0.5);
+  ctx.lineTo(w * 0.12, h * 0.88);
+  ctx.closePath();
+  ctx.fill();
+  return { width: w, height: h, data: ctx.getImageData(0, 0, w, h).data };
+}
+
+/** Repeating arrowheads along an arc, pointing from the source (supplier) to the target (customer). */
+function ArcDirectionLayer({
+  id,
+  sourceId,
+  filter,
+  spacing = 150,
+}: {
+  id: string;
+  sourceId: string;
+  filter?: FilterSpecification;
+  spacing?: number;
+}) {
+  return (
+    <Layer
+      id={id}
+      source={sourceId}
+      type="symbol"
+      {...(filter ? { filter } : {})}
+      layout={{
+        "symbol-placement": "line",
+        "symbol-spacing": spacing,
+        "icon-image": ARROW_ICON_ID,
+        "icon-size": 0.7,
+        "icon-rotation-alignment": "map",
+        "icon-allow-overlap": true,
+        "icon-ignore-placement": true,
+      }}
+      paint={{ "icon-opacity": 0.85 }}
+    />
+  );
+}
+
 const SUPPLY_LINES_SOURCE_ID = "supply-lines";
 const EQUIPS_LINES_SOURCE_ID = "equips-lines";
 const PACKAGING_LINES_SOURCE_ID = "packaging-lines";
@@ -259,6 +321,7 @@ export const SupplyMap = forwardRef<MapRef, {
 ) {
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
   const [zoom, setZoom] = useState<number | null>(null);
+  const [iconReady, setIconReady] = useState(false);
   const [mapCursor, setMapCursor] = useState<"grab" | "pointer">("grab");
   const [pulseNodeId, setPulseNodeId] = useState<string | null>(null);
   const mapReady = useRef(false);
@@ -510,6 +573,16 @@ export const SupplyMap = forwardRef<MapRef, {
     [hitLayerIds],
   );
 
+  const activeLayerMeanings: string[] = [];
+  if (showSupplyLines && supplyLineCount > 0) activeLayerMeanings.push("who fabricates whose wafers");
+  if (showEquips && equipsLineCount > 0) activeLayerMeanings.push("who supplies fab tools");
+  if (showPackaging && packagingLineCount > 0) activeLayerMeanings.push("who packages whose chips");
+  if (showMemory && memoryLineCount > 0) activeLayerMeanings.push("who supplies memory");
+  if (showAssembly && assemblyLineCount > 0)
+    activeLayerMeanings.push("who assembles finished products");
+  if (showTradeFlows && tradeLineCount > 0)
+    activeLayerMeanings.push("country-to-country trade");
+
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-2">
       <details className="relative z-20 shrink-0 rounded-lg bg-black/20 px-3 py-1.5 text-[10px] text-[var(--muted)]">
@@ -538,42 +611,46 @@ export const SupplyMap = forwardRef<MapRef, {
             className="mr-1 inline-block h-0.5 w-4 border-t-2 border-dashed align-middle"
             style={{ borderColor: accentHex }}
           />{" "}
-          foundry supply (HQ → HQ)
+          Foundry supply — who fabricates whose wafers
         </span>
         <span>
           <span
             className="mr-1 inline-block h-0.5 w-4 border-t-2 border-dashed align-middle"
             style={{ borderColor: EQUIP_LINE_COLOR }}
           />{" "}
-          equipment (HQ → HQ)
+          Equipment — who supplies fab tools
         </span>
         <span>
           <span
             className="mr-1 inline-block h-0.5 w-4 border-t-2 border-dashed align-middle"
             style={{ borderColor: PACKAGING_LINE_COLOR }}
           />{" "}
-          packaging / OSAT (HQ → HQ)
+          Packaging / OSAT — who packages whose chips
         </span>
         <span>
           <span
             className="mr-1 inline-block h-0.5 w-4 border-t-2 border-dashed align-middle"
             style={{ borderColor: MEMORY_LINE_COLOR }}
           />{" "}
-          HBM / memory (HQ → HQ)
+          HBM / memory — who supplies memory
         </span>
         <span>
           <span
             className="mr-1 inline-block h-0.5 w-4 border-t-2 border-dashed align-middle"
             style={{ borderColor: ASSEMBLY_LINE_COLOR }}
           />{" "}
-          assembly / EMS (HQ → HQ)
+          Assembly / EMS — who assembles finished products
         </span>
         <span>
           <span
             className="mr-1 inline-block h-0.5 w-4 align-middle"
             style={{ borderColor: TRADE_LINE_COLOR, borderTopWidth: 2 }}
           />{" "}
-          trade (country → country)
+          Trade — exporter → importer (country)
+        </span>
+        <span className="basis-full text-[var(--muted)]/80">
+          Lines are sourcing relationships between company HQs (who works with whom), not shipping
+          routes. Arrowheads point from supplier → customer.
         </span>
         {effects ? (
           <>
@@ -593,6 +670,17 @@ export const SupplyMap = forwardRef<MapRef, {
         ) : null}
         </div>
       </details>
+      <p className="shrink-0 px-1 text-[11px] leading-snug text-[var(--muted)]">
+        {activeLayerMeanings.length > 0 ? (
+          <>
+            <span className="text-[var(--foreground)]/70">Showing: </span>
+            {activeLayerMeanings.join(" · ")}
+            <span className="text-[var(--muted)]/70"> — arrows point supplier → customer.</span>
+          </>
+        ) : (
+          <>No connection layers on — use <span className="text-[var(--foreground)]/70">Layers</span> to show supply relationships.</>
+        )}
+      </p>
       <div className={`${MAP_FRAME_CLASS} min-h-[min(75vh,880px)]`}>
         <MapGL
           ref={ref}
@@ -605,7 +693,15 @@ export const SupplyMap = forwardRef<MapRef, {
           onClick={onSelectEdge ? handleMapClick : undefined}
           onMouseMove={onSelectEdge ? handleMapMouseMove : undefined}
           onMouseLeave={onSelectEdge ? () => setMapCursor("grab") : undefined}
-          onLoad={(e) => setZoom(e.target.getZoom())}
+          onLoad={(e) => {
+            const map = e.target;
+            setZoom(map.getZoom());
+            if (!map.hasImage(ARROW_ICON_ID)) {
+              const icon = createArrowIcon(2);
+              if (icon) map.addImage(ARROW_ICON_ID, icon, { pixelRatio: 2 });
+            }
+            setIconReady(true);
+          }}
           onZoomEnd={(e) => setZoom(e.viewState.zoom)}
         >
           <NavigationControl position="top-right" />
@@ -662,6 +758,9 @@ export const SupplyMap = forwardRef<MapRef, {
                   arcOpacityScale={arcOpacityScale}
                 />
               ) : null}
+              {iconReady ? (
+                <ArcDirectionLayer id="supply-lines-arrows" sourceId={SUPPLY_LINES_SOURCE_ID} />
+              ) : null}
               {onSelectEdge ? (
                 <Layer
                   id="supply-lines-hit"
@@ -704,6 +803,9 @@ export const SupplyMap = forwardRef<MapRef, {
                   idPrefix="equips-lines"
                   arcOpacityScale={arcOpacityScale}
                 />
+              ) : null}
+              {iconReady ? (
+                <ArcDirectionLayer id="equips-lines-arrows" sourceId={EQUIPS_LINES_SOURCE_ID} />
               ) : null}
               {onSelectEdge ? (
                 <Layer
@@ -748,6 +850,9 @@ export const SupplyMap = forwardRef<MapRef, {
                   arcOpacityScale={arcOpacityScale}
                 />
               ) : null}
+              {iconReady ? (
+                <ArcDirectionLayer id="packaging-lines-arrows" sourceId={PACKAGING_LINES_SOURCE_ID} />
+              ) : null}
               {onSelectEdge ? (
                 <Layer
                   id="packaging-lines-hit"
@@ -790,6 +895,9 @@ export const SupplyMap = forwardRef<MapRef, {
                   idPrefix="memory-lines"
                   arcOpacityScale={arcOpacityScale}
                 />
+              ) : null}
+              {iconReady ? (
+                <ArcDirectionLayer id="memory-lines-arrows" sourceId={MEMORY_LINES_SOURCE_ID} />
               ) : null}
               {onSelectEdge ? (
                 <Layer
@@ -834,6 +942,9 @@ export const SupplyMap = forwardRef<MapRef, {
                   arcOpacityScale={arcOpacityScale}
                 />
               ) : null}
+              {iconReady ? (
+                <ArcDirectionLayer id="assembly-lines-arrows" sourceId={ASSEMBLY_LINES_SOURCE_ID} />
+              ) : null}
               {onSelectEdge ? (
                 <Layer
                   id="assembly-lines-hit"
@@ -870,6 +981,13 @@ export const SupplyMap = forwardRef<MapRef, {
                   "line-opacity": 0.62 * arcOpacityScale,
                 }}
               />
+              {iconReady ? (
+                <ArcDirectionLayer
+                  id="trade-lines-arrows"
+                  sourceId={TRADE_LINES_SOURCE_ID}
+                  spacing={180}
+                />
+              ) : null}
               {onSelectEdge ? (
                 <Layer
                   id="trade-lines-hit"

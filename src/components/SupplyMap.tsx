@@ -573,15 +573,19 @@ export const SupplyMap = forwardRef<MapRef, {
     [hitLayerIds],
   );
 
-  const activeLayerMeanings: string[] = [];
-  if (showSupplyLines && supplyLineCount > 0) activeLayerMeanings.push("who fabricates whose wafers");
-  if (showEquips && equipsLineCount > 0) activeLayerMeanings.push("who supplies fab tools");
-  if (showPackaging && packagingLineCount > 0) activeLayerMeanings.push("who packages whose chips");
-  if (showMemory && memoryLineCount > 0) activeLayerMeanings.push("who supplies memory");
+  const activeLayers: { label: string; gloss: string }[] = [];
+  if (showSupplyLines && supplyLineCount > 0)
+    activeLayers.push({ label: "Foundry supply", gloss: "which foundry makes each company's chips" });
+  if (showEquips && equipsLineCount > 0)
+    activeLayers.push({ label: "Equipment", gloss: "which toolmakers supply each fab" });
+  if (showPackaging && packagingLineCount > 0)
+    activeLayers.push({ label: "Packaging", gloss: "who packages each company's chips" });
+  if (showMemory && memoryLineCount > 0)
+    activeLayers.push({ label: "Memory", gloss: "who supplies memory to each company" });
   if (showAssembly && assemblyLineCount > 0)
-    activeLayerMeanings.push("who assembles finished products");
+    activeLayers.push({ label: "Assembly", gloss: "who assembles each company's products" });
   if (showTradeFlows && tradeLineCount > 0)
-    activeLayerMeanings.push("country-to-country trade");
+    activeLayers.push({ label: "Trade", gloss: "which countries export chips to which" });
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-2">
@@ -670,15 +674,27 @@ export const SupplyMap = forwardRef<MapRef, {
         ) : null}
         </div>
       </details>
-      <p className="shrink-0 px-1 text-[11px] leading-snug text-[var(--muted)]">
-        {activeLayerMeanings.length > 0 ? (
+      <p className="shrink-0 px-1 text-[11px] leading-relaxed text-[var(--muted)]">
+        {activeLayers.length > 0 ? (
           <>
-            <span className="text-[var(--foreground)]/70">Showing: </span>
-            {activeLayerMeanings.join(" · ")}
-            <span className="text-[var(--muted)]/70"> — arrows point supplier → customer.</span>
+            <span className="font-medium text-[var(--foreground)]/80">Showing: </span>
+            {activeLayers.map((layer, i) => (
+              <span key={layer.label}>
+                {i > 0 ? <span className="text-[var(--muted)]/50"> · </span> : null}
+                <span className="font-medium text-[var(--foreground)]/70">{layer.label}</span>
+                <span className="text-[var(--muted)]"> — {layer.gloss}</span>
+              </span>
+            ))}
+            <span className="block text-[var(--muted)]/70">
+              Each arrow points from the supplier to its customer.
+            </span>
           </>
         ) : (
-          <>No connection layers on — use <span className="text-[var(--foreground)]/70">Layers</span> to show supply relationships.</>
+          <>
+            No connection layers are on. Open{" "}
+            <span className="font-medium text-[var(--foreground)]/70">Layers</span> to show who supplies
+            whom.
+          </>
         )}
       </p>
       <div className={`${MAP_FRAME_CLASS} min-h-[min(75vh,880px)]`}>

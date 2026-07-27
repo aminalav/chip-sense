@@ -34,6 +34,45 @@ export default function ToolsPage() {
 
       <EstimateBanner />
       <EstimatorsNav />
+
+      <section
+        aria-labelledby="tools-how-to"
+        className="rounded-xl border border-white/10 bg-[var(--card)]/50 px-4 py-3.5"
+      >
+        <h2
+          id="tools-how-to"
+          className="text-xs font-semibold uppercase tracking-wide text-[var(--muted)]"
+        >
+          How to use these tools
+        </h2>
+        <ol className="mt-2.5 space-y-2 text-sm leading-relaxed text-[var(--foreground)]/90">
+          <li className="flex gap-3">
+            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/10 text-[10px] font-semibold text-[var(--muted)]">
+              1
+            </span>
+            <span>Pick a calculator below for the story you want to explore.</span>
+          </li>
+          <li className="flex gap-3">
+            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/10 text-[10px] font-semibold text-[var(--muted)]">
+              2
+            </span>
+            <span>
+              On each tool page, edit Assumptions on the left. Amber badges are teaching estimates;
+              they flip to Your input when you change a value.
+            </span>
+          </li>
+          <li className="flex gap-3">
+            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/10 text-[10px] font-semibold text-[var(--muted)]">
+              3
+            </span>
+            <span>
+              Read Estimated results on the right (~ means estimate). Open Methodology for formulas
+              and default provenance.
+            </span>
+          </li>
+        </ol>
+      </section>
+
       <EstimatorsIndex />
 
       <footer className="border-t border-white/10 pt-4 text-xs text-[var(--muted)]">

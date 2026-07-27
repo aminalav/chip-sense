@@ -5,7 +5,7 @@ import { EstimateFrame } from "./EstimateFrame";
 import { AssumptionField } from "./AssumptionField";
 import { EstimateResultCard } from "./EstimateResultCard";
 import { useEditableNumbers } from "./useEstimatorState";
-import { PACKAGING_DEFAULTS } from "@/data/estimators/catalog";
+import { PACKAGING_DEFAULTS, getEstimator } from "@/data/estimators/catalog";
 import { computePackagingCost } from "@/lib/estimators/packagingModel";
 import { formatPercent, formatUsd } from "@/lib/estimators/format";
 
@@ -27,6 +27,7 @@ export function PackagingCostModel() {
     <EstimateFrame
       title="Packaging cost model"
       description="Coarse $/unit build-up for advanced packaging teaching stories (substrate + assembly + test, inflated by package yield). Not an OSAT quote."
+      howToSteps={getEstimator("packaging-cost")!.howTo}
       methodologyHref="/estimators#packaging-cost"
       onReset={reset}
       results={

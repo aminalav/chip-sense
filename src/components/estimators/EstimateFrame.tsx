@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { EstimateBanner } from "./EstimateBanner";
+import { EstimateHowTo } from "./EstimateHowTo";
 
 export function EstimateFrame({
   title,
   description,
+  howToSteps,
   methodologyHref = "/estimators#methodology",
   onReset,
   children,
@@ -13,6 +15,7 @@ export function EstimateFrame({
 }: {
   title: string;
   description: string;
+  howToSteps: string[];
   methodologyHref?: string;
   onReset: () => void;
   children: React.ReactNode;
@@ -42,6 +45,8 @@ export function EstimateFrame({
           </Link>
         </div>
       </div>
+
+      <EstimateHowTo steps={howToSteps} />
 
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="space-y-3">

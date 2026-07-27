@@ -42,4 +42,6 @@ export type EstimatorDef = {
   title: string;
   short: string;
   accent: string;
+  /** Short how-to steps shown on the tool page (clean numbered list). */
+  howTo: string[];
 };

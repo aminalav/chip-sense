@@ -6,7 +6,7 @@ import { EstimateFrame } from "./EstimateFrame";
 import { AssumptionField } from "./AssumptionField";
 import { EstimateResultCard } from "./EstimateResultCard";
 import { useEditableNumbers } from "./useEstimatorState";
-import { CLUSTER_DEFAULTS, CAPACITY_DEFAULTS } from "@/data/estimators/catalog";
+import { CLUSTER_DEFAULTS, CAPACITY_DEFAULTS, getEstimator } from "@/data/estimators/catalog";
 import { computeClusterDemand } from "@/lib/estimators/clusterModel";
 import { formatEstimateNumber } from "@/lib/estimators/format";
 
@@ -30,6 +30,7 @@ export function AiClusterDemandModel() {
     <EstimateFrame
       title="AI cluster demand model"
       description="Bill-of-materials chain for teaching: clusters → GPUs → HBM → packaging slots → implied logic wafers. Directional demand under your assumptions — not a hyperscaler forecast."
+      howToSteps={getEstimator("ai-cluster-demand")!.howTo}
       methodologyHref="/estimators#ai-cluster-demand"
       onReset={reset}
       results={

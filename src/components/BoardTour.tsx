@@ -12,7 +12,9 @@ import {
 let tourRunning = false;
 
 function buildSteps(): DriveStep[] {
-  return BOARD_TOUR_STEPS.map((step) => ({
+  return BOARD_TOUR_STEPS.filter(
+    (step) => !step.selector || document.querySelector(step.selector),
+  ).map((step) => ({
     element: step.selector,
     popover: {
       title: step.title,

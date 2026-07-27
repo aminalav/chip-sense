@@ -28,7 +28,7 @@ export default function Home() {
 
       <EditorialTracksBar />
 
-      <section className="space-y-3">
+      <section data-tour="estimate-tools" className="space-y-3">
         <div>
           <h2 className="text-sm font-medium text-[var(--foreground)]/90">Estimate tools</h2>
           <p className="mt-1 text-xs text-[var(--muted)]">

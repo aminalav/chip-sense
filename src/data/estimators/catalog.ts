@@ -7,30 +7,55 @@ export const ESTIMATORS: EstimatorDef[] = [
     title: "Yield estimator",
     short: "Die yield and good dies per wafer from area and defect density.",
     accent: "#34d399",
+    howTo: [
+      "Leave teaching defaults as-is, or set die area and defect density for your scenario.",
+      "Optionally switch Poisson ↔ Murphy to compare yield models.",
+      "Read die yield, dies per wafer, and good dies on the right — plus the sensitivity table.",
+    ],
   },
   {
     id: "export-controls",
     title: "Export control simulator",
     short: "Toggle teaching rules and see which supply-chain nodes stress.",
     accent: "#f59e0b",
+    howTo: [
+      "Defaults match the map’s export-controls scenario (EUV, DUV, and service themes on).",
+      "Toggle rules on or off to stress different companies in this teaching model.",
+      "Use company chips in the results to open the map on that node — not legal advice.",
+    ],
   },
   {
     id: "fab-capacity",
     title: "Fab capacity planner",
     short: "Convert wafer starts, utilization, and yield into good-die throughput.",
     accent: "#38bdf8",
+    howTo: [
+      "Enter wafer starts per month (WSPM) — we leave this blank so you supply a cited or assumed figure.",
+      "Adjust DPW, yield, and utilization, or seed them from the Yield tool.",
+      "Read effective wafer starts and good dies per month/year under your assumptions.",
+    ],
   },
   {
     id: "packaging-cost",
     title: "Packaging cost model",
     short: "Coarse $/unit build-up for substrate, assembly, test, and yield loss.",
     accent: "#fbbf24",
+    howTo: [
+      "Set batch size and the three cost legs (substrate, assembly, test).",
+      "Tune package yield to see how scrap inflates effective unit cost.",
+      "Compare your result to the illustrative CoWoS-class sanity band in the results panel.",
+    ],
   },
   {
     id: "ai-cluster-demand",
     title: "AI cluster demand model",
     short: "Map clusters → GPUs → HBM → packages → implied logic wafers.",
     accent: "#f472b6",
+    howTo: [
+      "Set how many clusters and GPUs per cluster for your what-if deployment.",
+      "Adjust HBM stacks/GB and yields to match the SKU you have in mind.",
+      "Read implied GPUs, HBM, packages, and logic wafers — directional only.",
+    ],
   },
 ];
 

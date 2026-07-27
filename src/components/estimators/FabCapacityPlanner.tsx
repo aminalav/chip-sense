@@ -6,7 +6,7 @@ import { EstimateFrame } from "./EstimateFrame";
 import { AssumptionField } from "./AssumptionField";
 import { EstimateResultCard } from "./EstimateResultCard";
 import { useEditableNumbers } from "./useEstimatorState";
-import { CAPACITY_DEFAULTS } from "@/data/estimators/catalog";
+import { CAPACITY_DEFAULTS, getEstimator } from "@/data/estimators/catalog";
 import { computeCapacity } from "@/lib/estimators/capacityModel";
 import { formatEstimateNumber, formatPercent } from "@/lib/estimators/format";
 
@@ -29,6 +29,7 @@ export function FabCapacityPlanner() {
     <EstimateFrame
       title="Fab capacity planner"
       description="Accounting identity for teaching: good dies/month ≈ WSPM × DPW × yield × utilization. Enter WSPM yourself — we do not invent unpublished fab throughput."
+      howToSteps={getEstimator("fab-capacity")!.howTo}
       methodologyHref="/estimators#fab-capacity"
       onReset={reset}
       results={

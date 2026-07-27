@@ -6,7 +6,7 @@ import { AssumptionField } from "./AssumptionField";
 import { EstimateResultCard } from "./EstimateResultCard";
 import { KindBadge } from "./KindBadge";
 import { useEditableNumbers } from "./useEstimatorState";
-import { YIELD_DEFAULTS } from "@/data/estimators/catalog";
+import { YIELD_DEFAULTS, getEstimator } from "@/data/estimators/catalog";
 import { computeYield, yieldSensitivity, type YieldModel } from "@/lib/estimators/yieldModel";
 import { formatEstimateNumber, formatPercent } from "@/lib/estimators/format";
 import type { EstimateKind } from "@/lib/estimators/types";
@@ -53,6 +53,7 @@ export function YieldEstimator() {
     <EstimateFrame
       title="Yield estimator"
       description="Poisson or Murphy die-yield models plus a simplified dies-per-wafer geometry. Teaching tool — not a foundry yield report."
+      howToSteps={getEstimator("yield")!.howTo}
       methodologyHref="/estimators#yield"
       onReset={() => {
         reset();

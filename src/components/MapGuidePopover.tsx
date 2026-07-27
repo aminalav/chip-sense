@@ -54,6 +54,7 @@ export function MapGuidePopover() {
             <h3 className="text-[11px] font-medium text-[var(--foreground)]/90">How to use this tool</h3>
             <ul className="list-disc space-y-1.5 pl-4">
               <li>Use track lenses to narrow the graph to one product story.</li>
+              <li>Above the map, open Estimate tools for teaching calculators (yield, export controls, capacity, packaging, AI demand).</li>
               <li>Use the registry search in the toolbar or Browse tab to find companies, fabs, and countries without panning the map.</li>
               <li>Inspect pins and links in the right-hand panel — Selection, Browse, Scenario, Links.</li>
               <li>Pick a scenario for stress-test styling; click impact rows to locate entities.</li>

@@ -1,7 +1,6 @@
 import { BoardDisclaimer } from "@/components/BoardDisclaimer";
 import { EditorialTracksBar } from "@/components/EditorialTracksBar";
-import { EstimateBanner } from "@/components/estimators/EstimateBanner";
-import { EstimatorsIndex } from "@/components/estimators/EstimatorShell";
+import { EstimatorsLinkStrip } from "@/components/estimators/EstimatorsLinkStrip";
 import { ClientHomeDashboard } from "@/components/ClientBoardSections";
 import { loadGraph } from "@/lib/graphQueries";
 import { COMPANY_RECORDS } from "@/lib/companyRecords";
@@ -28,27 +27,7 @@ export default function Home() {
 
       <EditorialTracksBar />
 
-      <section data-tour="estimate-tools" className="space-y-3">
-        <div>
-          <h2 className="text-sm font-medium text-[var(--foreground)]/90">Estimate tools</h2>
-          <p className="mt-1 text-xs text-[var(--muted)]">
-            Yield, export controls, fab capacity, packaging cost, and AI cluster demand — illustrative
-            calculators with editable assumptions.{" "}
-            <Link href="/tools" className="text-[var(--accent)] underline-offset-2 hover:underline">
-              Open tools
-            </Link>
-            {" · "}
-            <Link
-              href="/estimators"
-              className="text-[var(--accent)] underline-offset-2 hover:underline"
-            >
-              Methodology
-            </Link>
-          </p>
-        </div>
-        <EstimateBanner />
-        <EstimatorsIndex />
-      </section>
+      <EstimatorsLinkStrip />
 
       <ClientHomeDashboard
         graphNodes={graph.nodes}

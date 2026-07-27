@@ -10,6 +10,47 @@ Use it to explore how equipment vendors, foundries, memory makers, packaging hou
 
 ---
 
+## Open educational resource
+
+Chip Sense is a **free, open educational resource**. You may use, fork, cite, and share it for teaching, essays, research, and YouTube-style walkthroughs at no charge.
+
+| You may | Please don’t |
+| --- | --- |
+| Run the live demo or self-host the repo | Present scenarios as forecasts or market advice |
+| Cite the project and its source catalog in writing | Imply company endorsement or partnership |
+| Screenshot or screen-record the board (with credit) | Redistribute bulk UN Comtrade extracts via this project |
+| Reuse the MIT-licensed application code | Strip license / notice files from substantial copies |
+
+**How to use it well:** start from a shareable URL (filters sync to the query string), keep citations one click away in the selection panel, and treat scenario views as teaching stress tests. For video credits, see [docs/youtube-description.md](./docs/youtube-description.md).
+
+Third-party software and data notices: [NOTICE](./NOTICE). Sourcing rules: [SOURCES.md](./SOURCES.md).
+
+### How to cite
+
+**APA-style**
+
+> Alavi, A. (2026). *Chip Sense* [Computer software]. https://github.com/aminalav/chip-sense
+
+**BibTeX**
+
+```bibtex
+@software{alavi_chip_sense_2026,
+  author  = {Alavi, Amin},
+  title   = {{Chip Sense}},
+  year    = {2026},
+  url     = {https://github.com/aminalav/chip-sense},
+  note    = {Interactive semiconductor supply-chain research board}
+}
+```
+
+GitHub also exposes citation metadata via [`CITATION.cff`](./CITATION.cff) (“Cite this repository”).
+
+### Development assistance
+
+This project was built with human direction and review, with substantial assistance from [Cursor](https://cursor.com/) (AI coding tools). The live board does **not** call AI models at runtime; all map data is static JSON curated in this repository.
+
+---
+
 ## What it does
 
 | Feature | Description |
@@ -150,6 +191,9 @@ docs/                 # Essay outlines (research writing, not app docs)
 | [ARCHITECTURE.md](./ARCHITECTURE.md) | Deep dive: data flow, components, merge order |
 | [MAP.md](./MAP.md) | Pin colors, layer toggles, URL parameters |
 | [SOURCES.md](./SOURCES.md) | Sourcing rules and citation coverage |
+| [NOTICE](./NOTICE) | Third-party software and data notices |
+| [CITATION.cff](./CITATION.cff) | Machine-readable citation metadata |
+| [docs/youtube-description.md](./docs/youtube-description.md) | Paste-ready YouTube credits / disclaimer |
 | [SCENARIOS.md](./SCENARIOS.md) | Scenario list and assumptions |
 | [MAINTAINER.md](./MAINTAINER.md) | Deploy workflow and writing docs (maintainers) |
 
@@ -174,7 +218,7 @@ Chip Sense is an **educational visualization**. Scenario multipliers and styling
 
 ## License
 
-This project’s **source code** is released under the [MIT License](./LICENSE).
+This project’s **source code** is released under the [MIT License](./LICENSE). See [NOTICE](./NOTICE) for third-party software and data attributions.
 
 That license covers the application code in this repository (TypeScript, React components, scripts, and the structure of the JSON datasets). It does **not** mean the author claims ownership of:
 

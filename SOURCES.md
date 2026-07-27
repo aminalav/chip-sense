@@ -64,6 +64,19 @@ Chip Sense mixes **sourced registry data** (companies, fabs, supply links) with 
 
 Eight country-pair flows (HS 8542 / 8486, 2023). Five pulled from the Comtrade public preview API; three Taiwan-involved pairs use documented overrides when Comtrade returns no bilateral rows (`taiwan-mof-trade-2023`, `us-census-foreign-trade`, `taiwan-cbc-bop-2023`). Toggle **Trade flows** on the map (`?trade=1`); line width follows `value_usd_millions`.
 
+### UN Comtrade use posture (free educational resource)
+
+Chip Sense is offered **free of charge** as an open educational visualization. The baked-in trade layer is a **small curated set** (eight flows) for map teaching — not a Comtrade mirror, API, or bulk download.
+
+| Intent | Practice in this repo |
+| --- | --- |
+| Visualize a few cited country-pair values | `trade-flows.json` + optional map layer |
+| Credit the publisher | Catalog id `un-comtrade-plus`; cite UN Comtrade in essays/videos |
+| Avoid bulk redistribution | Do not add features that stream or dump large Comtrade extracts |
+| Stay free / non-commercial | Aligns with UN Comtrade FAQ examples for public educational visualization |
+
+UN Comtrade materials remain subject to [UN Comtrade terms](https://comtradeplus.un.org/LicenseAgreement). If this project’s distribution model ever becomes paid or for-profit, revisit those terms (premium / re-dissemination guidance) before shipping. See also [NOTICE](./NOTICE).
+
 ## Cited foundry supply links (seed-graph)
 
 | Edge ID | Relationship | Typical `source_ids` |
@@ -86,7 +99,7 @@ Filing / IR (used by companies and fabs):
 
 Reference / future research (in catalog; not required on every edge):
 
-`sec-edgar`, `wikipedia-fab-list`, `un-comtrade-plus`, `natural-earth`, `maplibre-demo-style`
+`sec-edgar`, `wikipedia-fab-list`, `un-comtrade-plus`, `natural-earth`, `maplibre-gl`
 
 ---
 
@@ -95,18 +108,19 @@ Reference / future research (in catalog; not required on every edge):
 | Asset | Source | Used in |
 | --- | --- | --- |
 | Basemap geometry | [Natural Earth](https://www.naturalearthdata.com/) 1:110m admin-0 countries (public domain), served tile-free from `public/basemap/world-countries.json` | `src/components/SupplyMap.tsx` |
-| Map library | [MapLibre GL JS](https://maplibre.org/) via `react-map-gl` | `SupplyMap.tsx` |
+| Map library | [MapLibre GL JS](https://maplibre.org/) via `react-map-gl` (`maplibre-gl` in catalog) | `SupplyMap.tsx` |
+
+Full third-party software notices: [NOTICE](./NOTICE).
 
 ---
 
 ## Not collected yet (recommended next sources)
 
-- **UN Comtrade Plus** — HS-level trade by country (`un-comtrade-plus` in catalog)  
-  `https://comtradeplus.un.org/`
 - **WSTS / SIA** — product-category revenue (for track narratives)
-- **Equipment supply edges** — 18 cited `equips` arcs on the map (ASML / AMAT / Lam → fabs)
 - **Per-site capacity / node** — only where operator disclosures support it
 - **Quantitative scenario impacts** — replace illustrative multipliers with cited ranges
+
+**Already on the board (keep curated, don’t bulk-expand casually):** UN Comtrade–based trade flows (`trade-flows.json`, catalog `un-comtrade-plus`) and cited equipment supply edges (`equips`).
 
 **Fab checklist (verify each site, don’t cite alone):** [Wikipedia list of semiconductor fabrication plants](https://en.wikipedia.org/wiki/List_of_semiconductor_fabrication_plants) (`wikipedia-fab-list`)
 
@@ -178,6 +192,9 @@ npm run data:coverage        # regenerate DATA_COVERAGE.md
 
 ## Related docs
 
+- `NOTICE` — third-party software and data notices  
+- `CITATION.cff` — how to cite this project  
+- `docs/youtube-description.md` — video description template  
 - `DATA_COVERAGE.md` — auto-generated matrix (companies × fabs × supply); run `npm run data:coverage`  
 - `COMPANIES.md` — company table and essay-1 must-show list  
 - `MAP.md` — what appears on the global board and URL parameters  

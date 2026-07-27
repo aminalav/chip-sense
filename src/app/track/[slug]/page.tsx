@@ -71,8 +71,27 @@ export default async function TrackPage({ params }: { params: Promise<{ slug: st
         sourceRecords={baselineSources}
       />
 
-      <footer className="border-t border-white/10 pt-4">
+      <footer className="space-y-2 border-t border-white/10 pt-4">
         <BoardDisclaimer />
+        <p className="text-xs text-[var(--muted)]">
+          <a
+            href="https://github.com/aminalav/chip-sense/blob/main/SOURCES.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[var(--accent)] underline-offset-4 hover:underline"
+          >
+            Sourcing rules
+          </a>
+          {" · "}
+          <a
+            href="https://github.com/aminalav/chip-sense/blob/main/NOTICE"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[var(--accent)] underline-offset-4 hover:underline"
+          >
+            Sources &amp; licensing
+          </a>
+        </p>
       </footer>
     </main>
   );

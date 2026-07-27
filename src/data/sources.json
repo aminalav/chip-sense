@@ -1,11 +1,11 @@
 [
   {
-    "id": "maplibre-demo-style",
-    "title": "MapLibre Demo Style",
-    "url": "https://demotiles.maplibre.org/style.json",
+    "id": "maplibre-gl",
+    "title": "MapLibre GL JS",
+    "url": "https://maplibre.org/",
     "publisher": "MapLibre",
-    "retrieved_at": "2026-04-30",
-    "notes": "Current basemap used by SupplyMap."
+    "retrieved_at": "2026-07-26",
+    "notes": "Client map library (BSD-3-Clause) used by SupplyMap via react-map-gl. Not a tile or style host for this project."
   },
   {
     "id": "sec-edgar",
@@ -26,14 +26,14 @@
     "title": "UN Comtrade Plus",
     "url": "https://comtradeplus.un.org/",
     "publisher": "United Nations",
-    "notes": "Trade flow reference by HS code and partner country."
+    "notes": "Reference for a small curated set of country-pair trade values in trade-flows.json (educational visualization only; not bulk redistribution). Subject to UN Comtrade terms."
   },
   {
     "id": "natural-earth",
     "title": "Natural Earth Data",
     "url": "https://www.naturalearthdata.com/",
     "publisher": "Natural Earth",
-    "notes": "Country boundary datasets for future choropleth layers."
+    "notes": "Current basemap: 1:110m admin-0 countries GeoJSON at public/basemap/world-countries.json (public domain)."
   },
   {
     "id": "tsmc-20f-2024",

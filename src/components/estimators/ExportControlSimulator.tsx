@@ -21,7 +21,7 @@ export function ExportControlSimulator() {
   return (
     <EstimateFrame
       title="Export control simulator"
-      description="Toggle teaching rules derived from public export-control themes. Results highlight which Chip Sense companies would be stressed in a what-if — not a legal determination."
+      description="Toggle teaching rules derived from public export-control themes. Defaults align with the map’s export-controls scenario (EUV + DUV + service themes on). Results highlight which Chip Sense companies would be stressed in a what-if — not a legal determination."
       methodologyHref="/estimators#export-controls"
       onReset={() => reset(defaultOn)}
       results={
@@ -29,7 +29,7 @@ export function ExportControlSimulator() {
           <EstimateResultCard
             label="Illustrative severity"
             display={result.severityLabel}
-            notes={`Score ${result.severityScore} from active rule weights (teaching scale, not a real risk rating).`}
+            notes={`Teaching score ~${result.severityScore} from active rule weights — not a real risk rating.`}
           />
           <div className="rounded-lg border border-amber-500/25 bg-amber-500/5 px-3 py-3">
             <div className="flex items-center gap-2">
@@ -74,41 +74,42 @@ export function ExportControlSimulator() {
       {EXPORT_RULES.map((rule) => {
         const on = active.has(rule.id);
         return (
-          <label
+          <div
             key={rule.id}
-            className={`flex cursor-pointer flex-col gap-2 rounded-lg border p-3 transition ${
+            className={`flex flex-col gap-2 rounded-lg border p-3 transition ${
               on
                 ? "border-amber-500/40 bg-amber-500/10"
-                : "border-white/10 bg-[var(--card)]/60 hover:border-white/20"
+                : "border-white/10 bg-[var(--card)]/60"
             }`}
           >
-            <span className="flex items-start justify-between gap-3">
-              <span className="space-y-1">
-                <span className="flex flex-wrap items-center gap-2 text-sm font-medium text-[var(--foreground)]">
-                  {rule.label}
-                  <KindBadge kind="estimate" />
+            <div className="flex items-start justify-between gap-3">
+              <label className="flex min-w-0 cursor-pointer items-start gap-2">
+                <input
+                  type="checkbox"
+                  checked={on}
+                  onChange={() => toggle(rule.id)}
+                  className="mt-1 h-4 w-4 shrink-0 accent-[var(--accent)]"
+                />
+                <span className="space-y-1">
+                  <span className="flex flex-wrap items-center gap-2 text-sm font-medium text-[var(--foreground)]">
+                    {rule.label}
+                    <KindBadge kind="estimate" />
+                  </span>
+                  <span className="block text-[11px] leading-relaxed text-[var(--muted)]">
+                    {rule.description}
+                  </span>
                 </span>
-                <span className="block text-[11px] leading-relaxed text-[var(--muted)]">
-                  {rule.description}
-                </span>
-                <a
-                  href={rule.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[11px] text-[var(--accent)] underline-offset-2 hover:underline"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {rule.sourceLabel}
-                </a>
-              </span>
-              <input
-                type="checkbox"
-                checked={on}
-                onChange={() => toggle(rule.id)}
-                className="mt-1 h-4 w-4 accent-[var(--accent)]"
-              />
-            </span>
-          </label>
+              </label>
+            </div>
+            <a
+              href={rule.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pl-6 text-[11px] text-[var(--accent)] underline-offset-2 hover:underline"
+            >
+              {rule.sourceLabel}
+            </a>
+          </div>
         );
       })}
     </EstimateFrame>

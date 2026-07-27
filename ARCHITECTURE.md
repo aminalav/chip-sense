@@ -117,11 +117,14 @@ Chip Sense/
 | --- | --- | --- |
 | `layout.tsx` | — | Root HTML shell, page metadata |
 | `globals.css` | — | Theme CSS variables, MapLibre canvas sizing |
-| `page.tsx` | `/` | Home — header, `HomeDashboard`, footer |
+| `page.tsx` | `/` | Home — header, estimate tools, board, footer |
 | `track/[slug]/page.tsx` | `/track/memory`, etc. | Track-specific board + research pointers |
+| `tools/page.tsx` | `/tools` | Estimate tools index |
+| `tools/[slug]/page.tsx` | `/tools/yield`, etc. | Individual teaching calculators |
+| `estimators/page.tsx` | `/estimators` | Estimator methodology (formulas + defaults) |
 | `not-found.tsx` | 404 | Not found page |
 
-Server components load data; the interactive board runs client-side inside `Suspense`. `SupplyMap` is dynamically imported with `ssr: false` (MapLibre requires the browser).
+Server components load data; the interactive board runs client-side inside `Suspense`. `SupplyMap` is dynamically imported with `ssr: false` (MapLibre requires the browser). Estimate tools are separate client calculators — they do **not** write into the map registry or cited graph facts.
 
 ---
 
@@ -136,6 +139,7 @@ Server components load data; the interactive board runs client-side inside `Susp
 | `ScenarioImpactPanel.tsx` | Scenario description, assumptions, highlighted entities |
 | `TradeFlowsPanel.tsx` | Comtrade flow list in sidebar |
 | `EditorialTracksBar.tsx` | Links to `/track/*` (home page only) |
+| `estimators/*` | Estimate-tool UI (`EstimateFrame`, per-tool calculators) |
 | `SourcesLinkedStrip.tsx` | Horizontal cited sources below the board |
 | `ExportMapButton.tsx` | PNG export from map canvas |
 
@@ -165,6 +169,7 @@ See `MAP.md` for the full parameter list.
 | `boardUrlState.ts` | Parse and build URL query strings for board state |
 | `tradeFlows.ts` | Trade JSON → GeoJSON, line width from USD or rank |
 | `sourceQueries.ts` | Load sources catalog; resolve IDs from edges |
+| `estimators/*` | Teaching formulas (yield, capacity, packaging, cluster, export) |
 | `segments.ts` | Company segment → map pin color |
 | `companySourceIds.ts` | Company ID → citation ID for footprint edges |
 
@@ -184,6 +189,7 @@ seed-graph.json
 | --- | --- |
 | `graph.ts` | TypeScript types: `GraphNode`, `GraphEdge`, `Scenario`, etc. |
 | `tracks.ts` | Editorial track definitions (slug, title, colors, research pointers) |
+| `estimators/catalog.ts` | Estimate-tool catalog, teaching defaults, export rules |
 | `seed-graph.json` | Core seed: nodes, edges, scenarios |
 | `companies.json` | Company registry (HQ, segment, sourcing URLs) |
 | `fab-sites.json` | Fab/site pins with coordinates and `source_ids` |

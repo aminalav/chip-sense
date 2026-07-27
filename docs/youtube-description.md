@@ -17,7 +17,7 @@ Third-party notices: https://github.com/aminalav/chip-sense/blob/main/NOTICE
 - Board view shown: [e.g. ?essay1=1&trade=1 or scenario=taiwan-crisis]
 
 ## Disclaimer
-Chip Sense is an educational visualization. Scenario multipliers and map styling are illustrative stress tests, not forecasts or market advice. Company names and trademarks belong to their respective owners and appear for identification only — not endorsement.
+Chip Sense is an educational visualization. Scenario multipliers and map styling are illustrative stress tests, not forecasts or market advice. Estimate tools (when shown) are teaching calculators with editable assumptions — keep the amber estimate banner visible in screenshots. Company names and trademarks belong to their respective owners and appear for identification only — not endorsement.
 
 ## Credits & data
 - Map library: MapLibre GL JS (BSD-3-Clause)
@@ -40,4 +40,4 @@ Or use the repository `CITATION.cff` / GitHub “Cite this repository”.
 **Tips**
 - Keep the disclaimer when demoing scenarios.
 - Link the exact shareable board URL you used on screen.
-- Prefer “illustrative / educational” language over “prediction” or “model output.”
+- Prefer “illustrative / educational / estimate” language over “prediction” or “authoritative model output.”

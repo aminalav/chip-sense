@@ -6,7 +6,7 @@ import { EstimateFrame } from "./EstimateFrame";
 import { AssumptionField } from "./AssumptionField";
 import { EstimateResultCard } from "./EstimateResultCard";
 import { useEditableNumbers } from "./useEstimatorState";
-import { CLUSTER_DEFAULTS } from "@/data/estimators/catalog";
+import { CLUSTER_DEFAULTS, CAPACITY_DEFAULTS } from "@/data/estimators/catalog";
 import { computeClusterDemand } from "@/lib/estimators/clusterModel";
 import { formatEstimateNumber } from "@/lib/estimators/format";
 
@@ -86,8 +86,8 @@ export function AiClusterDemandModel() {
         label="Clusters"
         value={values.clusters}
         onChange={(v) => set("clusters", v)}
-        kind={kindOf("clusters", "user")}
-        notes="Your what-if deployment size."
+        kind={kindOf("clusters")}
+        notes="Teaching default of 1 cluster — set to your what-if deployment size."
         min={0}
         step={1}
       />
@@ -129,6 +129,7 @@ export function AiClusterDemandModel() {
         value={values.packageYield}
         onChange={(v) => set("packageYield", v)}
         kind={kindOf("packageYield")}
+        notes="Teaching advanced-packaging yield default (same seed as packaging cost tool)."
         min={0.01}
         max={1}
         step={0.01}
@@ -139,6 +140,7 @@ export function AiClusterDemandModel() {
         value={values.diesPerWafer}
         onChange={(v) => set("diesPerWafer", v)}
         kind={kindOf("diesPerWafer")}
+        notes={CAPACITY_DEFAULTS.notes.diesPerWafer}
         min={1}
         step={1}
       />
@@ -149,6 +151,7 @@ export function AiClusterDemandModel() {
         value={values.dieYield}
         onChange={(v) => set("dieYield", v)}
         kind={kindOf("dieYield")}
+        notes={CAPACITY_DEFAULTS.notes.yieldFraction}
         min={0.01}
         max={1}
         step={0.01}

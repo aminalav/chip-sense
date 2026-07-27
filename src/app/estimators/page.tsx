@@ -31,7 +31,7 @@ const SECTIONS = [
       "Severity score = sum of active rule weights (teaching scale)",
     ],
     defaults:
-      "Public-policy themes (EUV block, service limits, …) as toggleable estimate rules — not legal text.",
+      "Public-policy themes (EUV + DUV + service on by default to match map scenario) — theme references, not legal text.",
   },
   {
     id: "fab-capacity",
@@ -99,7 +99,7 @@ export default function EstimatorsMethodologyPage() {
         <h2 className="text-lg font-semibold">How estimates stay estimates</h2>
         <ul className="list-disc space-y-2 pl-5 text-sm text-[var(--muted)]">
           <li>Formulas are public teaching identities, not calibrated foundry models.</li>
-          <li>Defaults are labeled estimate (or left blank, like WSPM).</li>
+          <li>Defaults are labeled estimate (or left blank, like WSPM). A <code>cited</code> kind is reserved for future filing-backed parameters — tools currently ship estimate/user only.</li>
           <li>Edits you make are labeled your input.</li>
           <li>Outputs use ~ / ranges and an amber estimate badge.</li>
         </ul>

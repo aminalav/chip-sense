@@ -112,7 +112,7 @@ export const EXPORT_RULES: ExportRule[] = [
       "No EUV tool shipments to restricted destinations (teaching rule mirroring public Dutch/US restrictions).",
     defaultOn: true,
     kind: "estimate",
-    sourceLabel: "Public export-control reporting (ASML EUV / China)",
+    sourceLabel: "Theme reference (not EAR text) — public EUV restriction coverage",
     sourceUrl: "https://www.asml.com/",
     stressedCompanyIds: ["co-smic", "co-huawei", "co-ymtc", "co-cxmt"],
     effects: [
@@ -125,9 +125,9 @@ export const EXPORT_RULES: ExportRule[] = [
     id: "duv-curtail",
     label: "Advanced DUV curtailed",
     description: "Immersion DUV sales/service limits tighten for restricted fabs.",
-    defaultOn: false,
+    defaultOn: true,
     kind: "estimate",
-    sourceLabel: "Illustrative extension of public DUV control discussions",
+    sourceLabel: "Theme reference (not EAR text) — public DUV control discussions",
     sourceUrl: "https://www.bis.doc.gov/",
     stressedCompanyIds: ["co-smic", "co-ymtc", "co-cxmt", "co-asml"],
     effects: [
@@ -142,7 +142,7 @@ export const EXPORT_RULES: ExportRule[] = [
     description: "US persons restricted from supporting certain semiconductor manufacturing.",
     defaultOn: true,
     kind: "estimate",
-    sourceLabel: "Public BIS / EAR service-rule coverage (teaching summary)",
+    sourceLabel: "Theme reference (not EAR text) — public BIS/EAR service-rule coverage",
     sourceUrl: "https://www.bis.doc.gov/",
     stressedCompanyIds: ["co-smic", "co-ymtc", "co-cxmt", "co-huawei"],
     effects: [
@@ -156,7 +156,7 @@ export const EXPORT_RULES: ExportRule[] = [
     description: "Controls on advanced memory shipments into restricted AI supply chains.",
     defaultOn: false,
     kind: "estimate",
-    sourceLabel: "Illustrative memory-control scenario",
+    sourceLabel: "Theme reference (not EAR text) — illustrative memory-control scenario",
     sourceUrl: "https://www.bis.doc.gov/",
     stressedCompanyIds: ["co-sk-hynix", "co-samsung", "co-micron", "co-huawei", "co-nvidia"],
     effects: [
@@ -170,7 +170,7 @@ export const EXPORT_RULES: ExportRule[] = [
     description: "Advanced EDA tool access restricted for certain design centers.",
     defaultOn: false,
     kind: "estimate",
-    sourceLabel: "Illustrative EDA-control scenario",
+    sourceLabel: "Theme reference (not EAR text) — illustrative EDA-control scenario",
     sourceUrl: "https://www.bis.doc.gov/",
     stressedCompanyIds: ["co-huawei", "co-smic"],
     effects: [
@@ -190,7 +190,4 @@ export const COMPANY_LABELS: Record<string, string> = {
   "co-samsung": "Samsung",
   "co-micron": "Micron",
   "co-nvidia": "NVIDIA",
-  "co-tsmc": "TSMC",
-  "co-ase": "ASE",
-  "co-amkor": "Amkor",
 };

@@ -79,7 +79,7 @@ export function FabCapacityPlanner() {
         unit="wafers"
         value={values.waferStartsPerMonth}
         onChange={(v) => set("waferStartsPerMonth", v)}
-        kind={kindOf("waferStartsPerMonth", "user")}
+        kind={kindOf("waferStartsPerMonth")}
         notes={CAPACITY_DEFAULTS.notes.waferStartsPerMonth}
         min={0}
         step={100}

@@ -68,8 +68,8 @@ export function PackagingCostModel() {
         label="Units"
         value={values.units}
         onChange={(v) => set("units", v)}
-        kind={kindOf("units", "user")}
-        notes="Your batch or shipment size."
+        kind={kindOf("units")}
+        notes="Teaching default batch size — change to your shipment or essay scenario."
         min={1}
         step={100}
       />
@@ -91,6 +91,7 @@ export function PackagingCostModel() {
         value={values.assemblyUsd}
         onChange={(v) => set("assemblyUsd", v)}
         kind={kindOf("assemblyUsd")}
+        notes={PACKAGING_DEFAULTS.notes.costs}
         min={0}
         step={10}
       />
@@ -101,6 +102,7 @@ export function PackagingCostModel() {
         value={values.testUsd}
         onChange={(v) => set("testUsd", v)}
         kind={kindOf("testUsd")}
+        notes={PACKAGING_DEFAULTS.notes.costs}
         min={0}
         step={10}
       />

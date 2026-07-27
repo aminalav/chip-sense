@@ -91,6 +91,17 @@ export default async function TrackPage({ params }: { params: Promise<{ slug: st
           >
             Sources &amp; licensing
           </a>
+          {" · "}
+          <Link href="/tools" className="text-[var(--accent)] underline-offset-4 hover:underline">
+            Estimate tools
+          </Link>
+          {" · "}
+          <Link
+            href="/estimators"
+            className="text-[var(--accent)] underline-offset-4 hover:underline"
+          >
+            Methodology
+          </Link>
         </p>
       </footer>
     </main>

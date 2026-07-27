@@ -4,10 +4,12 @@ import { useMemo, useState } from "react";
 import { EstimateFrame } from "./EstimateFrame";
 import { AssumptionField } from "./AssumptionField";
 import { EstimateResultCard } from "./EstimateResultCard";
+import { KindBadge } from "./KindBadge";
 import { useEditableNumbers } from "./useEstimatorState";
 import { YIELD_DEFAULTS } from "@/data/estimators/catalog";
 import { computeYield, yieldSensitivity, type YieldModel } from "@/lib/estimators/yieldModel";
 import { formatEstimateNumber, formatPercent } from "@/lib/estimators/format";
+import type { EstimateKind } from "@/lib/estimators/types";
 
 export function YieldEstimator() {
   const defaults = useMemo(
@@ -21,6 +23,8 @@ export function YieldEstimator() {
   );
   const { values, set, reset, kindOf } = useEditableNumbers(defaults);
   const [model, setModel] = useState<YieldModel>(YIELD_DEFAULTS.model);
+  const [modelTouched, setModelTouched] = useState(false);
+  const modelKind: EstimateKind = modelTouched ? "user" : "estimate";
 
   const result = useMemo(
     () =>
@@ -53,6 +57,7 @@ export function YieldEstimator() {
       onReset={() => {
         reset();
         setModel(YIELD_DEFAULTS.model);
+        setModelTouched(false);
       }}
       results={
         <>
@@ -91,13 +96,20 @@ export function YieldEstimator() {
       }
     >
       <div className="rounded-lg border border-white/10 bg-[var(--card)]/60 p-3">
-        <p className="mb-2 text-sm font-medium">Yield model</p>
-        <div className="flex flex-wrap gap-2">
+        <p className="mb-2 flex flex-wrap items-center gap-2 text-sm font-medium">
+          Yield model
+          <KindBadge kind={modelKind} />
+        </p>
+        <div className="flex flex-wrap gap-2" role="group" aria-label="Yield model">
           {(["poisson", "murphy"] as const).map((m) => (
             <button
               key={m}
               type="button"
-              onClick={() => setModel(m)}
+              aria-pressed={model === m}
+              onClick={() => {
+                setModel(m);
+                setModelTouched(m !== YIELD_DEFAULTS.model);
+              }}
               className={`rounded-md border px-3 py-1.5 text-xs capitalize ${
                 model === m
                   ? "border-[var(--accent)] bg-[var(--accent)]/20 text-[var(--foreground)]"
@@ -108,6 +120,9 @@ export function YieldEstimator() {
             </button>
           ))}
         </div>
+        <p className="mt-2 text-[11px] text-[var(--muted)]">
+          Poisson is the teaching default; Murphy is an alternate clustered-defect model.
+        </p>
       </div>
       <AssumptionField
         id="dieAreaCm2"
@@ -137,7 +152,7 @@ export function YieldEstimator() {
         unit="mm"
         value={values.waferDiameterMm}
         onChange={(v) => set("waferDiameterMm", v)}
-        kind={kindOf("waferDiameterMm", "estimate")}
+        kind={kindOf("waferDiameterMm")}
         notes={YIELD_DEFAULTS.notes.waferDiameterMm}
         min={100}
         step={1}

@@ -46,6 +46,7 @@ Sourced registry + cited fab pins. The "normal" map. Use it to introduce the fiv
 ### 5. US–China export controls deepen *(new)*
 **Map:** SMIC / Huawei / YMTC / CXMT as chokepoints; ASML → SMIC (DUV) arc disrupted; China fabs stressed.
 **Writing prompt:** *"The toolchain is the leverage."* How export controls on a handful of equipment makers (ASML, AMAT, Lam, TEL, KLA) cap an entire country's leading edge — and the domestic-toolmaking response.
+**Estimate tool:** Pair with [/tools/export-controls](https://chip-sense-ten.vercel.app/tools/export-controls) (same teaching themes; toggle rules; not legal advice). See [ESTIMATORS.md](./ESTIMATORS.md).
 
 ### 6. Korea memory disruption *(new)*
 **Map:** Korea + Samsung + SK hynix as chokepoints; Micron as partial relief; CXMT/YMTC as limited substitution; HBM arcs disrupted.

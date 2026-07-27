@@ -6,7 +6,7 @@ import { EstimateFrame } from "./EstimateFrame";
 import { EstimateResultCard } from "./EstimateResultCard";
 import { KindBadge } from "./KindBadge";
 import { useToggleSet } from "./useEstimatorState";
-import { COMPANY_LABELS, EXPORT_RULES } from "@/data/estimators/catalog";
+import { COMPANY_LABELS, EXPORT_RULES, getEstimator } from "@/data/estimators/catalog";
 import { simulateExportControls } from "@/lib/estimators/exportModel";
 
 export function ExportControlSimulator() {
@@ -22,6 +22,7 @@ export function ExportControlSimulator() {
     <EstimateFrame
       title="Export control simulator"
       description="Toggle teaching rules derived from public export-control themes. Defaults align with the map’s export-controls scenario (EUV + DUV + service themes on). Results highlight which Chip Sense companies would be stressed in a what-if — not a legal determination."
+      howToSteps={getEstimator("export-controls")!.howTo}
       methodologyHref="/estimators#export-controls"
       onReset={() => reset(defaultOn)}
       results={

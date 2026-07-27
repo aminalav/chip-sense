@@ -1,4 +1,4 @@
-export const BOARD_TOUR_STORAGE_KEY = "chip-sense.tour.v1";
+export const BOARD_TOUR_STORAGE_KEY = "chip-sense.tour.v2";
 
 export type BoardTourStep = {
   /** CSS selector for the element to spotlight. Omit for a centered intro card. */
@@ -18,7 +18,7 @@ export const BOARD_TOUR_STEPS: BoardTourStep[] = [
   {
     title: "Welcome to Chip Sense",
     description:
-      "A live map of the semiconductor supply chain — the companies, fabs, and relationships behind modern chips. Here's a quick 30-second tour. You can skip anytime.",
+      "A live map of the semiconductor supply chain — the companies, fabs, and relationships behind modern chips. Here's a quick tour. You can skip anytime.",
   },
   {
     selector: '[data-tour="map"]',
@@ -33,6 +33,14 @@ export const BOARD_TOUR_STEPS: BoardTourStep[] = [
     title: "Industry lenses",
     description:
       "Narrow everything to one story — memory, CPUs, GPUs, or data centers. \u201CAll\u201D shows the full picture.",
+    side: "bottom",
+    align: "start",
+  },
+  {
+    selector: '[data-tour="estimate-tools"]',
+    title: "Estimate tools",
+    description:
+      "Above the map you'll find teaching calculators — yield, export controls, fab capacity, packaging cost, and AI cluster demand. Open any tool to run what-if math with editable assumptions. Outputs are estimates, not forecasts.",
     side: "bottom",
     align: "start",
   },

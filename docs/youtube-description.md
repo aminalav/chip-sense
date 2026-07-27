@@ -24,6 +24,7 @@ Chip Sense is an educational visualization. Scenario multipliers and map styling
 - Basemap geometry: Natural Earth 1:110m countries (public domain)
 - Trade arcs (when shown): curated values derived from UN Comtrade public data and documented national overrides — for visualization only, not a bulk Comtrade redistributor
 - Relationship citations: company SEC filings / IR / annual reports (see sources.json)
+- Estimate tools (when shown): teaching formulas with editable assumptions — see ESTIMATORS.md; outputs are estimates, not forecasts
 
 ## Cite this project
 Alavi, Amin. (2026). Chip Sense [Computer software]. https://github.com/aminalav/chip-sense

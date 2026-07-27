@@ -11,7 +11,7 @@ Every tool shares the same rules:
 3. **User edits** are labeled *Your input* and never claimed as Chip Sense published facts.
 4. **Outputs** use `~` / ranges and an amber **Estimate** badge.
 
-Parameter kinds: `cited` · `estimate` · `user`.
+Parameter kinds in the UI: **`estimate`** (shipped teaching default) · **`user`** (edited by you). A `cited` kind exists in types for future filing-backed parameters; current tools do not ship cited numeric defaults (capacity WSPM stays blank on purpose).
 
 ---
 
@@ -98,12 +98,12 @@ Severity label is a coarse bin of that score (low / moderate / high) for teachin
 | Rule | Default | Basis |
 | --- | --- | --- |
 | EUV lithography blocked | On | Public ASML / Dutch–US EUV restriction theme |
-| Advanced DUV curtailed | Off | Illustrative tightening scenario |
+| Advanced DUV curtailed | On | Aligns with map `export-controls` scenario theme |
 | US-person service limits | On | Public BIS/EAR service-rule theme |
 | Advanced HBM / memory controls | Off | Illustrative |
 | EDA / design-software limits | Off | Illustrative |
 
-Effects text and company IDs align with Chip Sense map nodes (e.g. SMIC, Huawei, YMTC). Links open `/?scenario=export-controls&node=…`.
+Effects text and company IDs align with Chip Sense map nodes (e.g. SMIC, Huawei, YMTC). Links open `/?scenario=export-controls&node=…`. Rule “source” links are **theme references** (ASML / BIS homepages), not citations of specific EAR clauses.
 
 **Not legal advice.** Rules are teaching summaries, not the EAR text.
 

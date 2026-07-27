@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { EstimateBanner } from "@/components/estimators/EstimateBanner";
 import { EstimatorTool, EstimatorsNav } from "@/components/estimators/EstimatorShell";
 import { ESTIMATORS, getEstimator, isEstimatorId } from "@/data/estimators/catalog";
 
@@ -41,7 +40,6 @@ export default async function ToolPage({ params }: Props) {
         <EstimatorsNav activeId={tool.id} />
       </header>
 
-      <EstimateBanner />
       <EstimatorTool id={tool.id} />
 
       <footer className="border-t border-white/10 pt-4 text-xs text-[var(--muted)]">

@@ -188,7 +188,7 @@ npm run build
 
 ```
 src/
-├── app/              # Routes: / and /track/[slug]
+├── app/              # Routes: /, /track/[slug], /tools, /tools/[slug], /estimators
 ├── components/       # Map, sidebar panels, board shell
 ├── data/             # JSON datasets + TypeScript types
 ├── hooks/            # URL state sync
@@ -223,6 +223,8 @@ docs/                 # Essay outlines (research writing, not app docs)
 | Taiwan crisis scenario | [/?scenario=taiwan-crisis&node=co-tsmc](https://chip-sense-ten.vercel.app/?scenario=taiwan-crisis&node=co-tsmc) |
 | GPU track lens | [/track/gpus](https://chip-sense-ten.vercel.app/track/gpus) |
 | HBM shortage (memory layer story) | [/?scenario=hbm-shortage&node=co-sk-hynix](https://chip-sense-ten.vercel.app/?scenario=hbm-shortage&node=co-sk-hynix) |
+| Estimate tools | [/tools](https://chip-sense-ten.vercel.app/tools) |
+| Estimator methodology | [/estimators](https://chip-sense-ten.vercel.app/estimators) |
 
 ---
 

@@ -1,5 +1,6 @@
 import { BoardDisclaimer } from "@/components/BoardDisclaimer";
 import { EditorialTracksBar } from "@/components/EditorialTracksBar";
+import { EstimateBanner } from "@/components/estimators/EstimateBanner";
 import { EstimatorsIndex } from "@/components/estimators/EstimatorShell";
 import { ClientHomeDashboard } from "@/components/ClientBoardSections";
 import { loadGraph } from "@/lib/graphQueries";
@@ -45,6 +46,7 @@ export default function Home() {
             </Link>
           </p>
         </div>
+        <EstimateBanner />
         <EstimatorsIndex />
       </section>
 
@@ -60,6 +62,10 @@ export default function Home() {
         <BoardDisclaimer />
         <p className="text-xs text-[var(--muted)]">
           {COMPANY_RECORDS.length} companies in registry ·{" "}
+          <Link href="/tools" className="text-[var(--accent)] underline-offset-4 hover:underline">
+            Estimate tools
+          </Link>
+          {" · "}
           <a
             href="https://github.com/aminalav/chip-sense/blob/main/SOURCES.md"
             target="_blank"

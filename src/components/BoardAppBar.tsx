@@ -111,6 +111,13 @@ export function BoardAppBar({
             </Link>
             <span className="text-[var(--muted)]/50">/</span>
             <span className="text-sm text-[var(--foreground)]/85">Supply chain board</span>
+            <span className="text-[var(--muted)]/50">·</span>
+            <Link
+              href="/tools"
+              className="text-xs text-[var(--accent)] underline-offset-2 hover:underline"
+            >
+              Estimate tools
+            </Link>
           </div>
           <p className="text-xs text-[var(--muted)]">
             <span className="font-medium text-[var(--foreground)]/75">{scopeLabel}</span>

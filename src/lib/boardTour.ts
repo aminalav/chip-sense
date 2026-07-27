@@ -40,7 +40,7 @@ export const BOARD_TOUR_STEPS: BoardTourStep[] = [
     selector: '[data-tour="estimate-tools"]',
     title: "Estimate tools",
     description:
-      "Above the map you'll find teaching calculators — yield, export controls, fab capacity, packaging cost, and AI cluster demand. Open any tool to run what-if math with editable assumptions. Outputs are estimates, not forecasts.",
+      "This compact strip links to teaching calculators — yield, export controls, fab capacity, packaging cost, and AI cluster demand. Open one for what-if math with editable assumptions. Outputs are estimates, not forecasts; full how-tos live on each tool page.",
     side: "bottom",
     align: "start",
   },

@@ -60,6 +60,7 @@ This project was built with human direction and review, with substantial assista
 | **Trade flows** | Optional country-to-country chip trade arcs (UN Comtrade–based values) |
 | **Scenarios** | Nine stress-test views (Taiwan disruption, HBM shortage, export controls, …) that change pin/arc styling — not forecasts |
 | **Editorial tracks** | Lens pages for memory, CPUs, GPUs, and data centers |
+| **Estimate tools** | Yield, export controls, fab capacity, packaging cost, AI cluster demand — editable what-if calculators ([/tools](https://chip-sense-ten.vercel.app/tools)) |
 | **Shareable URLs** | Every filter, scenario, and selection syncs to the query string |
 
 **Core supply chain view** (`?essay1=1`) focuses the map on twelve anchor companies and key fabs for teaching and screenshots.
@@ -75,11 +76,25 @@ Chip Sense is a **visual reasoning tool**:
 1. **Separate structure from stress-testing** — registry facts and graph edges are distinct from scenario styling.
 2. **Make relationships typed** — a purple equipment arc and a blue foundry arc mean different things.
 3. **Keep citations one click away** — sourced edges link to filings and annual reports, not hand-wavy arrows.
-4. **Stay honest about limits** — scenarios restyle the map; they do not simulate fab capacity or lead times numerically.
+4. **Stay honest about limits** — scenarios restyle the map; estimate tools run teaching formulas with labeled assumptions, not forecasts.
 
 ---
 
-## Architecture (high level)
+## Estimate tools
+
+Five client-side calculators live under [`/tools`](https://chip-sense-ten.vercel.app/tools). Defaults are curated teaching estimates; users can overwrite every input. Outputs stay labeled as estimates (`~`, amber badges, persistent banner).
+
+| Tool | Route | Core formula (see [ESTIMATORS.md](./ESTIMATORS.md)) |
+| --- | --- | --- |
+| Yield | `/tools/yield` | Poisson / Murphy \(Y(A,D)\) + simplified DPW |
+| Export controls | `/tools/export-controls` | Rule-union → stressed companies + severity score |
+| Fab capacity | `/tools/fab-capacity` | \(WSPM \times U \times DPW \times Y\) |
+| Packaging cost | `/tools/packaging-cost` | Substrate + assembly + test, ÷ package yield |
+| AI cluster demand | `/tools/ai-cluster-demand` | Clusters → GPUs → HBM → packages → wafers |
+
+Methodology (formulas + default provenance): [ESTIMATORS.md](./ESTIMATORS.md) · in-app: [/estimators](https://chip-sense-ten.vercel.app/estimators)
+
+---
 
 ```mermaid
 flowchart TB
@@ -191,6 +206,7 @@ docs/                 # Essay outlines (research writing, not app docs)
 | [ARCHITECTURE.md](./ARCHITECTURE.md) | Deep dive: data flow, components, merge order |
 | [MAP.md](./MAP.md) | Pin colors, layer toggles, URL parameters |
 | [SOURCES.md](./SOURCES.md) | Sourcing rules and citation coverage |
+| [ESTIMATORS.md](./ESTIMATORS.md) | Estimate-tool formulas and default provenance |
 | [NOTICE](./NOTICE) | Third-party software and data notices |
 | [CITATION.cff](./CITATION.cff) | Machine-readable citation metadata |
 | [docs/youtube-description.md](./docs/youtube-description.md) | Paste-ready YouTube credits / disclaimer |

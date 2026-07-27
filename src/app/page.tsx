@@ -1,9 +1,11 @@
 import { BoardDisclaimer } from "@/components/BoardDisclaimer";
 import { EditorialTracksBar } from "@/components/EditorialTracksBar";
+import { EstimatorsIndex } from "@/components/estimators/EstimatorShell";
 import { ClientHomeDashboard } from "@/components/ClientBoardSections";
 import { loadGraph } from "@/lib/graphQueries";
 import { COMPANY_RECORDS } from "@/lib/companyRecords";
 import { loadSources } from "@/lib/sourceQueries";
+import Link from "next/link";
 
 export default function Home() {
   const graph = loadGraph();
@@ -24,6 +26,27 @@ export default function Home() {
       </header>
 
       <EditorialTracksBar />
+
+      <section className="space-y-3">
+        <div>
+          <h2 className="text-sm font-medium text-[var(--foreground)]/90">Estimate tools</h2>
+          <p className="mt-1 text-xs text-[var(--muted)]">
+            Yield, export controls, fab capacity, packaging cost, and AI cluster demand — illustrative
+            calculators with editable assumptions.{" "}
+            <Link href="/tools" className="text-[var(--accent)] underline-offset-2 hover:underline">
+              Open tools
+            </Link>
+            {" · "}
+            <Link
+              href="/estimators"
+              className="text-[var(--accent)] underline-offset-2 hover:underline"
+            >
+              Methodology
+            </Link>
+          </p>
+        </div>
+        <EstimatorsIndex />
+      </section>
 
       <ClientHomeDashboard
         graphNodes={graph.nodes}
@@ -54,6 +77,13 @@ export default function Home() {
           >
             Sources &amp; licensing
           </a>
+          {" · "}
+          <Link
+            href="/estimators"
+            className="text-[var(--accent)] underline-offset-4 hover:underline"
+          >
+            Estimator methodology
+          </Link>
           {" · "}
           <a
             href="https://github.com/aminalav/chip-sense/blob/main/DATA_COVERAGE.md"

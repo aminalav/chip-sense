@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+title: "Chip Sense"
+message: "If you use Chip Sense, please cite it as below."
+type: software
+authors:
+  - family-names: Alavi
+    given-names: Amin
+    email: alaa@oregonstate.edu
+repository-code: "https://github.com/aminalav/chip-sense"
+url: "https://chip-sense-ten.vercel.app"
+abstract: >-
+  An interactive open educational research board for the semiconductor supply
+  chain: companies, fabs, cited relationship arcs, trade flows, and illustrative
+  stress scenarios on a world map.
+keywords:
+  - semiconductors
+  - supply chain
+  - open educational resource
+  - visualization
+  - MapLibre
+license: MIT
+version: "0.1.0"
+date-released: "2026-07-26"

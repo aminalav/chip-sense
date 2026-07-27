@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updated": "2026-05-27",
-  "methodology": "UN Comtrade public preview API (HS 8542 / 8486, 2023). Taiwan bilateral rows often empty — MOF / U.S. Census overrides documented per flow. Re-run: node scripts/fetch-comtrade-trade.mjs --write",
+  "methodology": "UN Comtrade public preview API (HS 8542 / 8486, 2023) for a small curated educational visualization set — not bulk redistribution. Taiwan bilateral rows often empty — MOF / U.S. Census overrides documented per flow. Re-run: node scripts/fetch-comtrade-trade.mjs --write. See SOURCES.md and NOTICE.",
   "source_catalog_id": "un-comtrade-plus",
   "flows": [
     {

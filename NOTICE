@@ -1,0 +1,83 @@
+Chip Sense — third-party notices
+================================
+
+This file lists major third-party software and data used by Chip Sense.
+Application source code is licensed separately under the MIT License (see LICENSE).
+
+-------------------------------------------------------------------------------
+MapLibre GL JS
+License: BSD-3-Clause
+https://github.com/maplibre/maplibre-gl-js
+
+Copyright (c) 2020, MapLibre contributors
+Copyright (c) 2020, Mapbox
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+3. Neither the name of the copyright holder nor the names of its contributors
+   may be used to endorse or promote products derived from this software
+   without specific prior written permission.
+
+Full license text: https://github.com/maplibre/maplibre-gl-js/blob/main/LICENSE.txt
+
+-------------------------------------------------------------------------------
+react-map-gl (@vis.gl/react-maplibre)
+License: MIT
+https://github.com/visgl/react-map-gl
+
+-------------------------------------------------------------------------------
+Next.js, React, React DOM, driver.js
+License: MIT
+https://github.com/vercel/next.js
+https://github.com/facebook/react
+https://github.com/kamranahmedse/driver.js
+
+-------------------------------------------------------------------------------
+Tailwind CSS
+License: MIT
+https://github.com/tailwindlabs/tailwindcss
+
+-------------------------------------------------------------------------------
+TypeScript
+License: Apache-2.0
+https://github.com/microsoft/TypeScript
+
+-------------------------------------------------------------------------------
+Inter font
+License: SIL Open Font License 1.1
+https://github.com/rsms/inter
+Loaded via next/font/google.
+
+-------------------------------------------------------------------------------
+Natural Earth (basemap geometry)
+Public domain
+https://www.naturalearthdata.com/about/terms-of-use/
+
+Chip Sense serves a local copy of Natural Earth 1:110m admin-0 countries as
+`public/basemap/world-countries.json`. Attribution is optional; courtesy credit
+is welcome.
+
+-------------------------------------------------------------------------------
+UN Comtrade (trade flow reference values)
+Copyright United Nations — use subject to UN Comtrade terms
+https://comtradeplus.un.org/LicenseAgreement
+
+Chip Sense includes a small curated set of country-pair trade values in
+`src/data/trade-flows.json` for educational map visualization only. It is not a
+bulk redistributor of UN Comtrade extracts. See SOURCES.md for posture and
+citation guidance.
+
+-------------------------------------------------------------------------------
+Cited filings and company materials
+SEC filings, annual reports, investor relations pages, and similar documents
+linked from `sources.json` remain under their publishers’ terms. Chip Sense
+cites them for education; it does not claim ownership of those materials.
+
+Company names, product names, and trademarks remain the property of their
+respective owners and are used for identification only — not endorsement.

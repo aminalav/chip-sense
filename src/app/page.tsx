@@ -47,6 +47,15 @@ export default function Home() {
           </a>
           {" · "}
           <a
+            href="https://github.com/aminalav/chip-sense/blob/main/NOTICE"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[var(--accent)] underline-offset-4 hover:underline"
+          >
+            Sources &amp; licensing
+          </a>
+          {" · "}
+          <a
             href="https://github.com/aminalav/chip-sense/blob/main/DATA_COVERAGE.md"
             target="_blank"
             rel="noopener noreferrer"
